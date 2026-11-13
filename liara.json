@@ -1,0 +1,16 @@
+{
+  "app": "shadophena",
+  "platform": "docker",
+  "args": ["python", "/app/scripts/container.py"],
+  "port": 3000,
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "healthCheck": {
+    "command": "CMD python /app/scripts/container.py --healthcheck",
+    "interval": 30,
+    "timeout": 5,
+    "retries": 3,
+    "startPeriod": 180
+  }
+}

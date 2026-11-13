@@ -1,0 +1,295 @@
+{
+  "D-001": {
+    "title": "چند دقیقه با شکل ابرها",
+    "teaser": "اگه از پنجره ابرها پیدان،چند دقیقه به شکل‌هاشون نگاه کن و براشون قصه بساز.",
+    "first_step": "از پنجرهٔ بسته و امن ببین ابری توی دیدت هست یا نه.",
+    "steps": [
+      "یه ابر رو انتخاب کن و ببین شکلش یادت می‌اندازه به چی؛جواب درست لازم نیست.",
+      "همون‌جا که راحتی،چند لحظه تغییر لبه‌های ابر رو تماشا کن.",
+      "اگه دوست داشتی برای شکلش یه اسم یا یه قصهٔ کوتاه بساز."
+    ],
+    "lighter_version": "فقط برای یه ابر یه اسم خیالی انتخاب کن.",
+    "materials_note": "وسیله و خرید لازم نیست.",
+    "accessibility_note": "به دیدن ابر از پنجره وابسته‌ست؛از جای امن و راحت نگاه کن.",
+    "conditions_note": "در فضای آشنا و امن خانه؛هر وقت نخواستی می‌تونی متوقفش کنی.",
+    "primary_dimension": "detachment",
+    "secondary_dimensions": [],
+    "tags": [
+      "observation",
+      "imagination",
+      "no_screen"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": null,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید یا رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  "R-005": {
+    "title": "یه مکث کوتاه توی سکوت",
+    "teaser": "یه گوشهٔ راحت انتخاب کن و چند دقیقه بی‌عجله همون‌جا بمون.",
+    "first_step": "در جای امن و راحتی که هستی بنشین و تکیه بده.",
+    "steps": [
+      "اگه راحتی چشم‌هات رو ببند؛باز نگه‌داشتنشون هم کاملاً آزاده.",
+      "چند دقیقه بدون زمان‌سنج توی همون حالت بمون؛لازم نیست چیزی رو تمرین کنی.",
+      "هر وقت برات کافی بود،چشم‌هات رو باز کن یا نگاهت رو به اطراف برگردون."
+    ],
+    "lighter_version": "فقط برای چند لحظه راحت بنشین؛چشم‌بستن لازم نیست.",
+    "materials_note": "وسیله و خرید لازم نیست.",
+    "accessibility_note": "نشسته انجام می‌شه؛چشم‌بستن و سکوت کامل اختیاری‌اند.",
+    "conditions_note": "در فضای آشنا و امن خانه؛هر وقت نخواستی می‌تونی متوقفش کنی.",
+    "primary_dimension": "relaxation",
+    "secondary_dimensions": [],
+    "tags": [
+      "rest",
+      "choice",
+      "no_screen"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": null,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید یا رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  "A1-001": {
+    "title": "یه ساعت به انتخاب خودت",
+    "teaser": "برای یه ساعت برنامهٔ ازپیش‌چیده لازم نیست؛هر لحظه می‌تونی کار سبک دلخواهت رو انتخاب کنی.",
+    "first_step": "یه ساعت آزاد رو برای خودت کنار بذار؛کار اول رو همین حالا انتخاب نکن.",
+    "steps": [
+      "هر وقت خواستی از بین استراحت،دیدن اطراف یا خیال‌پردازی یکی رو انتخاب کن.",
+      "چند دقیقه همون کار رو انجام بده و هر زمان دلت خواست عوضش کن.",
+      "وقتی یک ساعت تموم شد یا برات کافی بود،بدون ارزیابی یا ثبت نتیجه کار رو تموم کن."
+    ],
+    "lighter_version": "فقط چند دقیقه از وقتت رو بدون برنامه و با یه انتخاب آزاد بگذرون.",
+    "materials_note": "وسیله و خرید لازم نیست.",
+    "accessibility_note": "نشسته انجام می‌شه؛گزینه‌ها بدون وسیله و بدون جابه‌جایی انتخاب شدن.",
+    "conditions_note": "در فضای آشنا و امن خانه؛هر وقت نخواستی می‌تونی متوقفش کنی.",
+    "primary_dimension": "autonomy",
+    "secondary_dimensions": [],
+    "tags": [
+      "choice",
+      "rest",
+      "no_screen"
+    ],
+    "active_minutes": 60,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": null,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید یا رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  "M1-010": {
+    "title": "دو هواپیمای کاغذی مقایسه کن",
+    "teaser": "با یه کاغذ موجود دو مدل ساده تا بزن و تفاوت پروازشون رو توی فضای امن ببین.",
+    "first_step": "یه برگهٔ کاغذ و یه جای باز و بی‌مانع در خانه پیدا کن.",
+    "steps": [
+      "برگه رو از وسط تا کن و گوشه‌های بالاش رو به سمت خط وسط بیار.",
+      "دوباره هر سمت رو به خط وسط تا بزن و بال‌ها رو به بیرون باز کن.",
+      "در فضای امن و دور از صورت آدم‌ها به‌آرومی امتحانش کن؛یه بار شکل بال‌ها رو عوض و مقایسه کن."
+    ],
+    "lighter_version": "فقط یه هواپیمای ساده تا بزن؛لازم نیست پروازش رو آزمایش کنی.",
+    "materials_note": "یه برگهٔ کاغذی که از قبل داری.",
+    "accessibility_note": "نشسته می‌تونی تا بزنی؛تا و پرتاب به حرکت دست و دید کافی نیاز داره.",
+    "conditions_note": "در فضای آشنا و امن خانه؛هر وقت نخواستی می‌تونی متوقفش کنی.",
+    "primary_dimension": "mastery",
+    "secondary_dimensions": [],
+    "tags": [
+      "craft",
+      "play",
+      "discovery"
+    ],
+    "active_minutes": 15,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [
+      "paper"
+    ],
+    "requires_async_contact": false,
+    "step_free": null,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید یا رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  "M2-004": {
+    "title": "یه خاطرهٔ سبک برای خودت بنویس",
+    "teaser": "یه لحظهٔ ساده که دوست داری یادت بمونه رو با چند جمله روی کاغذ نگه دار.",
+    "first_step": "قلم و کاغذی که داری بردار و یه خاطرهٔ راحت و بی‌حساسیت انتخاب کن.",
+    "steps": [
+      "فقط یک جزئیات از اون لحظه رو بنویس؛مثلاً نور،یه صدا یا یه جمله.",
+      "اگه دوست داشتی یکی دو جمله اضافه کن؛کامل‌بودن داستان لازم نیست.",
+      "نوشته فقط برای خودته؛می‌تونی نگهش داری یا بعداً دورش بندازی."
+    ],
+    "lighter_version": "فقط یه کلمه دربارهٔ یه لحظهٔ راحت روی کاغذ بنویس.",
+    "materials_note": "کاغذ و قلمی که از قبل داری.",
+    "accessibility_note": "نشسته انجام می‌شه؛این نسخه به نوشتن دستی وابسته‌ست.",
+    "conditions_note": "در فضای آشنا و امن خانه؛هر وقت نخواستی می‌تونی متوقفش کنی.",
+    "primary_dimension": "meaning",
+    "secondary_dimensions": [],
+    "tags": [
+      "writing",
+      "memory",
+      "reflection"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [
+      "paper",
+      "pen"
+    ],
+    "requires_async_contact": false,
+    "step_free": null,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید یا رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  "A2-002": {
+    "title": "یه خاطرهٔ بامزه رو با هم مرور کنین",
+    "teaser": "یه لحظهٔ سبک مشترک رو با آدم‌های حاضر مرور کنین؛گفتن جزئیات شخصی لازم نیست.",
+    "first_step": "از همراه‌های آشنا و موافق بپرسین دوست دارن یه خاطرهٔ سبک رو مرور کنن یا نه.",
+    "steps": [
+      "یکی یه اتفاق بامزه و غیرخصوصی رو انتخاب کنه و توی یکی دو جمله بگه.",
+      "بقیه اگه دوست داشتن یه جزئیات دلخواه اضافه کنن؛ردکردن نوبت آزاده.",
+      "با یه اسم بامزه برای اون لحظه یا هر وقت که کافی بود گفت‌وگو رو تموم کنین."
+    ],
+    "lighter_version": "فقط یه جمله دربارهٔ یه لحظهٔ مشترک و سبک بگین.",
+    "materials_note": "وسیله و خرید لازم نیست.",
+    "accessibility_note": "نشسته انجام می‌شه؛این نسخه به گفت‌وگوی شنیداری وابسته‌ست.",
+    "conditions_note": "همراه‌های آشنا،حاضر و موافق؛رفت‌وآمد لازم نیست.",
+    "primary_dimension": "affiliation",
+    "secondary_dimensions": [],
+    "tags": [
+      "conversation",
+      "friendship",
+      "memory"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "together"
+    ],
+    "min_people": 2,
+    "max_people": 4,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": null,
+    "quiet_compatible": false,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_group",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید یا رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  }
+}

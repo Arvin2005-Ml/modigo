@@ -1,0 +1,866 @@
+[
+  {
+    "title": "یه سیاره برای خودت بساز",
+    "teaser": "چند دقیقه از خونه سفر کن؛ مقصد این بار یه سیاره‌ست که فقط تو می‌شناسی.",
+    "first_step": "یه رنگ برای آسمون سیاره‌ات انتخاب کن.",
+    "steps": [
+      "تصور کن از پنجره به سیارهٔ تازه‌ات نگاه می‌کنی؛ زمینش چه شکلیه؟",
+      "برای یکی از موجودات خیالی اونجا یه عادت بامزه بساز.",
+      "یه اسم برای این دنیا پیدا کن و هر وقت دلت خواست از سفر برگرد."
+    ],
+    "lighter_version": "فقط رنگ آسمون یه دنیای خیالی رو انتخاب کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "detachment",
+    "secondary_dimensions": [],
+    "tags": [
+      "imagination",
+      "storytelling",
+      "no_screen"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "از سایه‌ها یه قصه بساز",
+    "teaser": "به سایه‌های همین اتاق نگاه کن؛ شاید گوشهٔ میز شبیه یه کوه کوچیک شده باشه.",
+    "first_step": "از جای راحتت یه سایه توی اتاق پیدا کن.",
+    "steps": [
+      "به لبهٔ سایه نگاه کن و بگو شبیه چه چیزیه؛ لازم نیست دقیق باشه.",
+      "توی ذهنت یه شخصیت بذار کنار اون شکل و براش یه جمله بساز.",
+      "اگه سایهٔ دیگه‌ای دیدی،به قصه اضافه‌ش کن؛ اگر نه همین یه قاب کافیه."
+    ],
+    "lighter_version": "فقط یه شباهت بامزه برای یه سایه پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "detachment",
+    "secondary_dimensions": [],
+    "tags": [
+      "observation",
+      "imagination",
+      "play"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "با اسم وسایل قافیه بازی کن",
+    "teaser": "یه بازی بی‌برنده و بی‌قلم؛ ببین از اسم وسایل اطرافت چه کلمه‌هایی درمیاد.",
+    "first_step": "یکی از وسایل اطرافت رو توی ذهنت اسم ببر.",
+    "steps": [
+      "یه کلمهٔ هم‌قافیه براش پیدا کن؛ ساختگی‌بودنش هم آزاده.",
+      "با اون دو کلمه یه جملهٔ کوتاه و بی‌منطق بساز.",
+      "اگه هنوز برات جالبه،اسم یه وسیلهٔ دیگه رو امتحان کن."
+    ],
+    "lighter_version": "فقط برای اسم یه وسیله یه هم‌قافیهٔ ساختگی پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "detachment",
+    "secondary_dimensions": [],
+    "tags": [
+      "language",
+      "humor",
+      "play"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "چند دقیقه فقط راحت باش",
+    "teaser": "یه مکث بدون تمرین و نتیجه؛ لازم نیست کاری رو درست انجام بدی.",
+    "first_step": "همون جا که نشستن برات امن و راحته،تکیه بده.",
+    "steps": [
+      "حالت دست‌ها و پاهات رو جوری انتخاب کن که برات راحت باشه.",
+      "به یه نقطهٔ معمولی روبه‌رو نگاه کن یا نگاهت رو آزاد بذار؛ چشم‌بستن لازم نیست.",
+      "چند دقیقه همین‌جا بمون؛ هر وقت کافی بود،آروم برگرد به روزت."
+    ],
+    "lighter_version": "فقط برای چند لحظه یه حالت نشستن راحت پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "relaxation",
+    "secondary_dimensions": [],
+    "tags": [
+      "rest",
+      "choice",
+      "no_screen"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "بافت‌های آشنا رو حس کن",
+    "teaser": "لبهٔ آستین یا دستهٔ صندلی؛ یه کشف کوچیک بین چیزهای دم‌دست.",
+    "first_step": "یه سطح آشنا و تمیز نزدیکت پیدا کن که لمسش برات خوشاینده.",
+    "steps": [
+      "اگه لمس‌کردن برات راحته،با انگشت به بافت سطح توجه کن؛ فشار لازم نیست.",
+      "توی ذهنت یه واژه براش پیدا کن؛ مثلاً نرم،صاف یا دونه‌دونه.",
+      "یه بافت دیگه رو فقط اگه دم‌دسته مقایسه کن؛ لازم نیست از جات بلند شی."
+    ],
+    "lighter_version": "فقط یه بافت آشنا رو برای چند لحظه حس کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "relaxation",
+    "secondary_dimensions": [],
+    "tags": [
+      "sensory",
+      "rest",
+      "no_screen"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "به اتاقت یه اسم آروم بده",
+    "teaser": "چند جزئیات آشنا رو ببین و برای همین گوشه یه اسم کوچیک انتخاب کن.",
+    "first_step": "از جای راحتت یه گوشهٔ معمولی اتاق رو ببین.",
+    "steps": [
+      "سه جزئیات ساده توی اون گوشه پیدا کن؛ رنگ،شکل یا فاصلهٔ بین وسایل.",
+      "تصور کن این گوشه اسم داشته باشه؛ یه اسم دلخواه انتخاب کن.",
+      "چند دقیقه به همون قاب نگاه کن؛ تغییر دادن اتاق جزو این تجربه نیست."
+    ],
+    "lighter_version": "برای همین جایی که نشستی یه اسم کوتاه پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "relaxation",
+    "secondary_dimensions": [],
+    "tags": [
+      "observation",
+      "rest",
+      "choice"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "منوی خیالیِ امروزت رو بچین",
+    "teaser": "یه کافهٔ خیالی داری و سلیقه‌اش کاملاً با توئه؛ حتی اگر منوش عجیب باشه.",
+    "first_step": "توی ذهنت یه اسم برای کافه‌ات انتخاب کن.",
+    "steps": [
+      "سه چیز خیالی برای منو انتخاب کن؛ درست‌کردن یا خوردنشون لازم نیست.",
+      "برای یکی از انتخاب‌ها یه اسم بامزه بذار و شکل ظرفش رو تصور کن.",
+      "هر بخشی رو که دوست نداری عوض کن؛ این منو قرار نیست به کسی ارائه بشه."
+    ],
+    "lighter_version": "فقط اسم یه خوراکی خیالی برای منو انتخاب کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "autonomy",
+    "secondary_dimensions": [],
+    "tags": [
+      "choice",
+      "imagination",
+      "food"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "یه پایان دلخواه برای قصه بساز",
+    "teaser": "یه داستان آشنا رو بردار و این بار پایانش رو به سلیقهٔ خودت عوض کن.",
+    "first_step": "یه قصهٔ سبک و غیرحساس که یادت مونده انتخاب کن.",
+    "steps": [
+      "توی ذهنت به لحظهٔ نزدیک پایان قصه برگرد.",
+      "یه انتخاب متفاوت به شخصیت بده؛ لازم نیست پایان منطقی یا خوشحال باشه.",
+      "پایان تازه رو توی چند جمله برای خودت تعریف کن؛ ثبت و اشتراک لازم نیست."
+    ],
+    "lighter_version": "فقط یه جملهٔ آخرِ متفاوت برای قصه پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "autonomy",
+    "secondary_dimensions": [],
+    "tags": [
+      "choice",
+      "storytelling",
+      "creativity"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "برای یه چیز معمولی کاربرد تازه پیدا کن",
+    "teaser": "یه قاشق می‌تونه پاروی یه قایق خیالی باشه؛ انتخاب کاربردها با توئه.",
+    "first_step": "یه وسیلهٔ بی‌خطر رو فقط با نگاه انتخاب کن.",
+    "steps": [
+      "بدون دست‌زدن به وسیله،سه کاربرد خیالی براش پیدا کن.",
+      "اون کاربردی رو که خودت بیشتر دوست داری انتخاب کن.",
+      "تصور کن وسیله‌ات توی یه دنیای کوچیک با اون کاربرد زندگی می‌کنه."
+    ],
+    "lighter_version": "فقط یه کاربرد خیالی برای یه وسیله پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "autonomy",
+    "secondary_dimensions": [],
+    "tags": [
+      "choice",
+      "design",
+      "imagination"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "یه الگوی دیداری کشف کن",
+    "teaser": "یه تمرین کوچیک برای دیدن الگوها؛ جواب آماده و نمره‌ای در کار نیست.",
+    "first_step": "سه شکل یا رنگ تکراری توی چیزهایی که می‌بینی پیدا کن.",
+    "steps": [
+      "از بین شکل‌ها یه ترتیب ذهنی بساز؛ مثلاً گرد،گوشه‌دار،گرد.",
+      "حدس بزن اگه الگو ادامه پیدا کنه،شکل بعدی چی می‌شه.",
+      "یه قانون دیگه امتحان کن و ببین چند جور می‌شه همون جزئیات رو دید."
+    ],
+    "lighter_version": "فقط یه شکل تکراری توی محیط پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "mastery",
+    "secondary_dimensions": [],
+    "tags": [
+      "observation",
+      "puzzles",
+      "science"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "از یه واژه یه بازی تازه بساز",
+    "teaser": "با یه کلمهٔ کوتاه شروع کن و از حروفش چند ترکیب پیدا کن؛ بی‌رقابت و بی‌زمان‌سنج.",
+    "first_step": "یه کلمهٔ آشنا و کوتاه توی ذهنت انتخاب کن.",
+    "steps": [
+      "حروف کلمه رو آروم توی ذهنت جابه‌جا کن و دنبال یه ترکیب تازه بگرد.",
+      "کلمهٔ واقعی یا اسم ساختگی هر دو قبولن؛ یکی رو انتخاب کن.",
+      "اگه دوست داشتی با یه کلمهٔ دیگه امتحان کن و یه تفاوت جالب پیدا کن."
+    ],
+    "lighter_version": "فقط یه اسم ساختگی از حروف یه کلمه بساز.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "mastery",
+    "secondary_dimensions": [],
+    "tags": [
+      "language",
+      "puzzles",
+      "play"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "یه تصویر رو از حافظه دوباره بساز",
+    "teaser": "جزئیات یه شیء ساده رو ببین و بعد توی ذهنت دوباره پیداش کن.",
+    "first_step": "یه وسیلهٔ ساده توی دیدت انتخاب کن و چند لحظه بهش نگاه کن.",
+    "steps": [
+      "به سه جزئیاتش توجه کن؛ مثلاً رنگ،لبه‌ها و جای دسته.",
+      "نگاهت رو به یه نقطهٔ دیگه ببر و تصویر وسیله رو توی ذهنت مرور کن.",
+      "دوباره نگاه کن و فقط یه جزئیات تازه پیدا کن؛ لازم نیست حافظه‌ات رو بسنجی."
+    ],
+    "lighter_version": "فقط یه جزئیات از یه شیء رو توی ذهنت نگه دار.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "mastery",
+    "secondary_dimensions": [],
+    "tags": [
+      "memory",
+      "observation",
+      "discovery"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "یه مهربونی کوچیک رو به یاد بیار",
+    "teaser": "یه لحظهٔ سبک از توجه کسی یا خودت؛ تعریف‌کردنش برای دیگران لازم نیست.",
+    "first_step": "یه اتفاق معمولی و راحت انتخاب کن که توش مهربونی دیدی.",
+    "steps": [
+      "فقط یه جزئیات از اون لحظه رو به یاد بیار؛ لازم نیست کل ماجرا رو مرور کنی.",
+      "توی ذهنت یه جملهٔ کوتاه برای همون رفتار بساز؛ خطاب‌کردن کسی لازم نیست.",
+      "اگه مرور گذشته برات خوشایند نبود،به یه چیز راحت همین اطرافت توجه کن."
+    ],
+    "lighter_version": "فقط یه رفتار مهربونانهٔ خیالی و سبک تصور کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "meaning",
+    "secondary_dimensions": [],
+    "tags": [
+      "kindness",
+      "reflection",
+      "no_screen"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "برای یه جای آشنا یه کارت‌پستال ذهنی بساز",
+    "teaser": "یه گوشهٔ آشنا که دوستش داری؛ توی چند جمله برای خودت نگهش دار.",
+    "first_step": "یه جای آشنا و بی‌حساسیت که یادت خوشه انتخاب کن.",
+    "steps": [
+      "یه رنگ یا صدای ساده از اونجا رو توی ذهنت پیدا کن.",
+      "تصور کن یه کارت‌پستال داری و فقط دو جمله دربارهٔ اونجا می‌نویسی.",
+      "یه اسم برای کارتت انتخاب کن؛ نوشتن،سفر یا فرستادن لازم نیست."
+    ],
+    "lighter_version": "فقط یه رنگ از یه جای خوشایند رو تصور کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "meaning",
+    "secondary_dimensions": [],
+    "tags": [
+      "memory",
+      "reflection",
+      "imagination"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "به یه چیز معمولی یه داستان بده",
+    "teaser": "یه وسیلهٔ قدیمی لازم نیست گران‌قیمت باشه تا ماجرای کوچیکی داشته باشه.",
+    "first_step": "یه وسیلهٔ معمولی نزدیکت رو فقط با نگاه انتخاب کن.",
+    "steps": [
+      "توی ذهنت بگو این وسیله معمولاً کجای روزت پیداش می‌شه.",
+      "یه لحظهٔ راحت مرتبط باهاش پیدا کن؛ اگر خاطره‌ای نیست یه داستان خیالی بساز.",
+      "برای اون ماجرای کوچیک یه اسم بذار و هر جا دوست داشتی تمومش کن."
+    ],
+    "lighter_version": "فقط یه اسم داستانی برای یه وسیله پیدا کن.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته قابل انجامه؛نسخه‌های دیداری به دیدن محیط و نسخه‌های ذهنی به تصورکردن وابسته‌ان.",
+    "conditions_note": "از جای امن و راحت خانه انجام بده؛جابه‌جایی و مرور موضوع حساس لازم نیست.",
+    "primary_dimension": "meaning",
+    "secondary_dimensions": [],
+    "tags": [
+      "reflection",
+      "storytelling",
+      "observation"
+    ],
+    "active_minutes": 5,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "solo"
+    ],
+    "min_people": 1,
+    "max_people": 1,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": true,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_person",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "با هم یه سفر خیالی بچینین",
+    "teaser": "بدون برنامهٔ سفر و خرج؛ فقط ببینین مقصد مشترک خیال‌هاتون کجاست.",
+    "first_step": "با همراه‌های موافقی که همین حالا کنارتن یه مقصد خیالی انتخاب کنین.",
+    "steps": [
+      "هر نفر یه چیز برای دیدن توی مقصد پیشنهاد بده؛ واقعی‌بودنش لازم نیست.",
+      "نوبتی یه اتفاق بامزه به روز اول سفر اضافه کنین.",
+      "برای سفر یه اسم مشترک انتخاب کنین؛ ردکردن نوبت آزاده."
+    ],
+    "lighter_version": "هر نفر فقط یه چیز بامزه برای یه مقصد خیالی بگه.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته انجام می‌شه؛این نسخه به گفت‌وگوی شنیداری وابسته‌ست.",
+    "conditions_note": "دو تا چهار همراهِ حاضر و موافق در خانه؛رفت‌وآمد حساب نشده چون لازم نیست.",
+    "primary_dimension": "affiliation",
+    "secondary_dimensions": [],
+    "tags": [
+      "friendship",
+      "imagination",
+      "conversation"
+    ],
+    "active_minutes": 15,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "together"
+    ],
+    "min_people": 2,
+    "max_people": 4,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": false,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_group",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "بازی حدسِ یه چیز ساده",
+    "teaser": "یه بازی کوتاه با آدم‌های حاضر؛ یکی چیزی رو توصیف کنه و بقیه حدس بزنن.",
+    "first_step": "با همراه‌های موافق یه نوبت کوتاه برای هر نفر بذارین.",
+    "steps": [
+      "نفر اول یه وسیلهٔ معمولی رو توی ذهنش انتخاب کنه و بدون گفتن اسمش دو نشونه بده.",
+      "بقیه هر کدوم یه حدس بزنن؛ اگر پیدا نشد خود انتخاب‌کننده اسمش رو بگه.",
+      "نوبت رو عوض کنین؛ امتیاز و برنده‌ای لازم نیست."
+    ],
+    "lighter_version": "فقط یه دور با یه نشونه برای هر نفر بازی کنین.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته انجام می‌شه؛این نسخه به گفت‌وگوی شنیداری وابسته‌ست.",
+    "conditions_note": "دو تا چهار همراهِ حاضر و موافق در خانه؛رفت‌وآمد حساب نشده چون لازم نیست.",
+    "primary_dimension": "affiliation",
+    "secondary_dimensions": [],
+    "tags": [
+      "games",
+      "cooperation",
+      "play"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "together"
+    ],
+    "min_people": 2,
+    "max_people": 4,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": false,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_group",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  },
+  {
+    "title": "سه انتخاب بامزه رو با هم مرور کنین",
+    "teaser": "یه گفت‌وگوی سبک با سؤال‌های خیالی؛ لازم نیست چیزی خصوصی تعریف کنین.",
+    "first_step": "از همراه‌های موافق بپرسین:اگه امروز یه رنگ بود،کدوم بود؟",
+    "steps": [
+      "هر نفر اگه دوست داشت یه رنگ بگه؛ دلیل‌گفتن و جواب‌دادن اجباری نیست.",
+      "حالا یه سؤال خیالی دیگه انتخاب کنین؛ مثلاً امروز چه اسم بامزه‌ای داشت؟",
+      "با یه اسم مشترک یا چند انتخاب متفاوت بازی رو تموم کنین."
+    ],
+    "lighter_version": "فقط هر نفر یه رنگ دلخواه بگه؛ توضیح لازم نیست.",
+    "materials_note": "وسیله،خرید یا گوشی لازم نیست.",
+    "accessibility_note": "نشسته انجام می‌شه؛این نسخه به گفت‌وگوی شنیداری وابسته‌ست.",
+    "conditions_note": "دو تا چهار همراهِ حاضر و موافق در خانه؛رفت‌وآمد حساب نشده چون لازم نیست.",
+    "primary_dimension": "affiliation",
+    "secondary_dimensions": [],
+    "tags": [
+      "conversation",
+      "choice",
+      "friendship"
+    ],
+    "active_minutes": 10,
+    "setup_minutes": 0,
+    "travel_minutes": 0,
+    "energy_required": "low",
+    "mobility_required": "seated",
+    "supported_social_modes": [
+      "together"
+    ],
+    "min_people": 2,
+    "max_people": 4,
+    "venue": "home",
+    "required_items": [],
+    "requires_async_contact": false,
+    "step_free": true,
+    "quiet_compatible": false,
+    "weather_requirement": "any",
+    "daylight_requirement": "any",
+    "cost": {
+      "kind": "free",
+      "min_toman": 0,
+      "max_toman": 0,
+      "basis": "per_group",
+      "verified_at": null,
+      "valid_until": null,
+      "note": "بدون خرید و رفت‌وآمد؛با فضای موجود خانه."
+    },
+    "safety_notes": []
+  }
+]
