@@ -1,0 +1,3233 @@
+{
+  "schema_version": "1.0",
+  "language": "fa",
+  "title": "۴۵۰ پیشنهاد تفریح بر اساس مدل DRAMMA",
+  "total_activities": 450,
+  "notes": [
+    "DRAMMA یک چارچوب روان‌شناختی است، نه قانون قطعی. دسته‌بندی بر اساس کارکرد غالب است؛ یک فعالیت می‌تواند چند نیاز را پوشش دهد.",
+    "پیشنهادهای اختیار، معنا و ارتباط گاهی تجربه‌های فراغتی‌اند، نه سرگرمی متعارف. انتخاب و علاقه فرد تعیین‌کننده است.",
+    "هزینه‌ها نسبی و بدون قیمت ثابت‌اند؛ برچسب رایگان فرض می‌کند ابزار معمول، اینترنت یا دسترسی لازم از قبل فراهم است. حمل‌ونقل می‌تواند هزینه اضافه داشته باشد.",
+    "انفرادی یعنی شروع و حضور بدون همراه آشنا؛ در فضاهای عمومی ممکن است تعامل با دیگران وجود داشته باشد.",
+    "فعالیت‌های مشابه با هدف یا شیوه اجرای متفاوت در دسته‌های مختلف آمده‌اند؛ عنوان‌های کاملاً یکسان وجود ندارد.",
+    "فراهم‌بودن خدمات به شهر و مقررات بستگی دارد؛ فعالیت‌های پرخطر فقط در مراکز معتبر، با مربی و تجهیزات ایمنی و متناسب با وضعیت سلامت انجام شوند.",
+    "تمام پیشنهادها اختیاری‌اند؛ فعالیت‌های آنلاین و مستندسازی با رعایت حریم خصوصی و رضایت افراد انجام شوند."
+  ],
+  "tag_definitions": {
+    "setting": {
+      "home": "خانگی",
+      "outdoor": "بیرون از خانه و عمدتاً فضای باز",
+      "indoor_public": "فضای سرپوشیده عمومی یا مرکز خدمات و تفریح"
+    },
+    "participation": {
+      "solo": "انفرادی یا حضور مستقل",
+      "pair": "دونفره",
+      "group": "جمعی"
+    },
+    "cost": {
+      "free": "بدون هزینه مستقیم یا با امکانات موجود",
+      "low": "کم‌هزینه",
+      "medium": "هزینه متوسط",
+      "high": "پرهزینه"
+    }
+  },
+  "categories": [
+    {
+      "id": "D",
+      "name_en": "Detachment",
+      "name_fa": "فاصله‌گیری ذهنی",
+      "count": 75,
+      "activities": [
+        {
+          "id": "D-001",
+          "title": "تماشای ابرها از پنجره بدون گوشی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-002",
+          "title": "گشتن در آلبوم عکس‌های قدیمی چاپی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-003",
+          "title": "خواندن چند فصل رمان معمایی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-004",
+          "title": "حل جدول کلمات متقاطع کاغذی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-005",
+          "title": "گوش‌دادن به نمایش رادیویی داستانی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-006",
+          "title": "چیدن پازل تصویری هزارقطعه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-007",
+          "title": "رنگ‌آمیزی کتاب طرح‌های هندسی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-008",
+          "title": "ساخت کلاژ از مجله‌های قدیمی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-009",
+          "title": "بازی داستانی آفلاین با خاموش‌کردن اعلان‌ها",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-010",
+          "title": "دیدن یک فیلم صامت کلاسیک",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-011",
+          "title": "قدم‌زدن در محله‌ای ناآشنا و امن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-012",
+          "title": "تماشای رفت‌وآمد پرنده‌ها در پارک",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-013",
+          "title": "پیداکردن شکل‌های جالب در سایه‌های شهر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-014",
+          "title": "نشستن کنار رودخانه و دنبال‌کردن حرکت آب",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-015",
+          "title": "گشت بی‌هدف در کتابخانه عمومی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "D-016",
+          "title": "سوارشدن به یک مسیر اتوبوس برای دیدن شهر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-017",
+          "title": "عکاسی از درهای قدیمی محله",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-018",
+          "title": "طرح‌زدن از نمای ساختمان‌ها در دفترچه",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-019",
+          "title": "خواندن داستان کوتاه روی نیمکت پارک",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-020",
+          "title": "خریدن خوراکی تازه از بازار و چشیدن آرام آن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "D-021",
+          "title": "تماشای فیلم در سانس خلوت سینما",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-022",
+          "title": "بازدید از موزه اسباب‌بازی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-023",
+          "title": "تماشای آکواریوم عمومی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-024",
+          "title": "گشتن در نمایشگاه عکس طبیعت",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-025",
+          "title": "نشستن در کافه و تماشای خیابان بدون لپ‌تاپ",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-026",
+          "title": "بازی اسم‌فامیل در پارک",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-027",
+          "title": "بازی پانتومیم در حیاط",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-028",
+          "title": "ساخت داستان زنجیره‌ای در جمع دوستان",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-029",
+          "title": "مسابقه پیداکردن اشیای هم‌رنگ در پیاده‌روی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-030",
+          "title": "بازی بیست‌سؤالی در گردش شهری",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-031",
+          "title": "شب بازی مافیا با دوستان",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "D-032",
+          "title": "مسابقه حدس آهنگ با چند ثانیه صدا",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "D-033",
+          "title": "بازی نقاشی و حدس کلمه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "D-034",
+          "title": "دوبله بداهه یک صحنه بی‌صدا",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "D-035",
+          "title": "ساخت نمایش عروسکی با جوراب",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "D-036",
+          "title": "رفتن به اتاق فرار داستانی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-037",
+          "title": "بازی بولینگ دوستانه",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-038",
+          "title": "بازی بیلیارد تفریحی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-039",
+          "title": "شرکت در شب مسابقه اطلاعات عمومی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-040",
+          "title": "بازی‌های رومیزی در کافه‌بازی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-041",
+          "title": "بازی پینت‌بال در مجموعه مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-042",
+          "title": "مسابقه مینی‌گلف",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-043",
+          "title": "شکار گنج با نقشه در یک باغ",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-044",
+          "title": "بازدید گروهی از باغ پرندگان معتبر",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-045",
+          "title": "گشت شهری با تور قصه‌های محلی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "D-046",
+          "title": "پرواز تفریحی با بالن در مرکز مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "D-047",
+          "title": "تجربه پاراگلایدر دونفره با مربی مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "D-048",
+          "title": "سافاری عکاسی حیات‌وحش با راهنمای مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "D-049",
+          "title": "گشت قایق موتوری با اپراتور مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "D-050",
+          "title": "گردش هوایی کوتاه با هواپیمای تفریحی مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "D-051",
+          "title": "ساخت یک دیورامای جنگل مینیاتوری",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-052",
+          "title": "مونتاژ ماکت کشتی از کیت آماده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-053",
+          "title": "بازی واقعیت مجازی اکتشافی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-054",
+          "title": "آزمایش تصویری با کالیدوسکوپ",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-055",
+          "title": "تماشای فیلم با ویدئوپروژکتور روی سقف",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "D-056",
+          "title": "پیاده‌روی دونفره با قانون حرف‌نزدن از کار",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "D-057",
+          "title": "کشیدن نقشه خیالی برای یک پارک واقعی",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "D-058",
+          "title": "مسابقه عکاسی از بافت‌های شهری",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "D-059",
+          "title": "پیداکردن تابلوهای قدیمی مغازه‌ها",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "D-060",
+          "title": "چشیدن دو طعم ناآشنا در یک بستنی‌فروشی",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "D-061",
+          "title": "تجربه شبیه‌ساز رانندگی حرفه‌ای",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-062",
+          "title": "تماشای تئاتر تعاملی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-063",
+          "title": "رفتن به شهربازی سرپوشیده",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-064",
+          "title": "تجربه تونل باد با مربی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-065",
+          "title": "شرکت در کارگاه تجربه جلوه‌های ویژه سینمایی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-066",
+          "title": "بازی داستان‌گویی با اشیای تصادفی خانه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-067",
+          "title": "ساخت مسابقه حدس شخصیت خیالی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-068",
+          "title": "اجرای نمایش سایه با دست",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-069",
+          "title": "حدس‌زدن پایان فیلم‌های کوتاه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-070",
+          "title": "طراحی یک کشور خیالی با دوستان",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "D-071",
+          "title": "سفر یک‌روزه با قطار گردشگری",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-072",
+          "title": "قایق‌رانی رفتینگ با راهنمای مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-073",
+          "title": "تور تماشای آسمان کویر با تجهیزات",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-074",
+          "title": "گردش دریایی کوتاه با شناور مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "D-075",
+          "title": "تجربه زیپ‌لاین در مجموعه استاندارد",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        }
+      ]
+    },
+    {
+      "id": "R",
+      "name_en": "Relaxation",
+      "name_fa": "آرامش",
+      "count": 75,
+      "activities": [
+        {
+          "id": "R-001",
+          "title": "تنفس آهسته و راحت برای ده دقیقه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-002",
+          "title": "اسکن بدن در حالت درازکش",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-003",
+          "title": "کشش ملایم گردن و شانه بدون درد",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-004",
+          "title": "چرت کوتاه بیست‌دقیقه‌ای",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-005",
+          "title": "نشستن در سکوت با چشم‌های بسته",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-006",
+          "title": "حمام گرم کوتاه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-007",
+          "title": "نوشیدن دمنوش دلخواه بدون کافئین",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-008",
+          "title": "ماساژ کف دست با کرم ساده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-009",
+          "title": "گوش‌دادن به صدای باران",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-010",
+          "title": "گذاشتن کمپرس گرم ملایم روی شانه‌ها",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-011",
+          "title": "نشستن زیر سایه درخت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-012",
+          "title": "تماشای غروب از یک جای امن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-013",
+          "title": "قدم‌زدن آهسته کنار ساحل",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-014",
+          "title": "تماشای موج‌های آب از فاصله امن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-015",
+          "title": "استراحت روی زیرانداز در پارک",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-016",
+          "title": "خوردن صبحانه ساده در باغ",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-017",
+          "title": "نوشتن چند خط آزاد کنار یک برکه",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-018",
+          "title": "خواندن شعر زیر سایه‌بان",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-019",
+          "title": "طراحی آرام خطوط موج در طبیعت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-020",
+          "title": "پیک‌نیک تک‌نفره بدون برنامه فشرده",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "R-021",
+          "title": "ماساژ ملایم دست با رضایت متقابل",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "R-022",
+          "title": "گوش‌دادن دونفره به موسیقی بی‌کلام",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "R-023",
+          "title": "نشستن کنار هم با نوشیدنی گرم و بدون صحبت اجباری",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "R-024",
+          "title": "تمرین کشش سبک دونفره بدون فشار",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "R-025",
+          "title": "خواندن آرام شعر برای یکدیگر",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "R-026",
+          "title": "دورهمی آرام چای و موسیقی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-027",
+          "title": "رنگ‌آمیزی جمعی بدون مسابقه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-028",
+          "title": "تا زدن اوریگامی ساده در سکوت",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-029",
+          "title": "شب تماشای فیلم طبیعت",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-030",
+          "title": "چیدن گل‌های باغچه در گلدان با همراهی خانواده",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-031",
+          "title": "ماساژ آرامش‌بخش نزد فرد آموزش‌دیده",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-032",
+          "title": "شرکت در جلسه یوگای ترمیمی مناسب مبتدیان",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-033",
+          "title": "شناکردن آرام در استخر خلوت با رعایت ایمنی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-034",
+          "title": "استراحت در فضای آرام یک کتاب‌کافه",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-035",
+          "title": "جلسه ریلکسیشن هدایت‌شده غیرپزشکی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-036",
+          "title": "رزرو تجربه اسپا در مرکز معتبر",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "high"
+        },
+        {
+          "id": "R-037",
+          "title": "اقامت یک‌شبه در هتل آرام داخل شهر",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "high"
+        },
+        {
+          "id": "R-038",
+          "title": "استفاده از حمام سنتی خدماتی معتبر",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "high"
+        },
+        {
+          "id": "R-039",
+          "title": "صرف عصرانه آرام در باغ‌رستوران خلوت",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "high"
+        },
+        {
+          "id": "R-040",
+          "title": "جلسه حمام صدا با صدای ملایم و قابل‌تحمل",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "high"
+        },
+        {
+          "id": "R-041",
+          "title": "قدم‌زدن آرام گروهی در باغ گیاه‌شناسی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-042",
+          "title": "نشستن دور هم کنار آتش در محل مجاز و ایمن",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-043",
+          "title": "تماشای طلوع با جمع کوچک",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-044",
+          "title": "گردش آرام در مسیر هموار جنگلی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-045",
+          "title": "پهن‌کردن بساط عصرانه در حیاط",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "R-046",
+          "title": "اقامت در کلبه آرام جنگلی معتبر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "R-047",
+          "title": "استراحت در اقامتگاه ساحلی خلوت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "R-048",
+          "title": "سفر به اقامتگاه کویری برای سکوت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "R-049",
+          "title": "رزرو اتاق دارای چشم‌انداز کوهستان",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "R-050",
+          "title": "گشت آرام با قایق برقی مجاز در دریاچه",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "R-051",
+          "title": "استراحت در بانوج نصب‌شده ایمن",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-052",
+          "title": "گوش‌دادن به صفحه موسیقی کامل با هدفون راحت",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-053",
+          "title": "ساخت گوشه استراحت با نور گرم",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-054",
+          "title": "باغبانی آرام با کیت گیاهان آپارتمانی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-055",
+          "title": "ماساژ ملایم پا با توپ مخصوص",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "R-056",
+          "title": "تماشای حرکت پرده در نسیم",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-057",
+          "title": "لمس و مرتب‌کردن سنگ‌های صاف موجود در خانه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-058",
+          "title": "خیره‌شدن آرام به نور و سایه دیوار",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-059",
+          "title": "زمزمه ملایم یک ملودی دلخواه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-060",
+          "title": "درازکشیدن با ساق پا روی صندلی در وضعیت راحت",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "R-061",
+          "title": "گردش آرام با کالسکه در مسیر مجاز",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "R-062",
+          "title": "اجاره دوچرخه و رکاب‌زدن بسیار سبک",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "R-063",
+          "title": "قایق پدالی آرام با جلیقه نجات",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "R-064",
+          "title": "صرف چای در چایخانه باغی خلوت",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "R-065",
+          "title": "تماشای بارش باران از ایوان کافه",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "R-066",
+          "title": "شرکت در کلاس حرکات آرام تای‌چی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "R-067",
+          "title": "جلسه مراقبه گروهی مقدماتی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "R-068",
+          "title": "تمرین شناوری آرام با مربی در بخش کم‌عمق",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "R-069",
+          "title": "استراحت جمعی در اتاق آرامش یک مجموعه معتبر",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "R-070",
+          "title": "شنیدن اجرای زنده موسیقی ملایم آکوستیک",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "R-071",
+          "title": "ساخت سینی صبحانه برای خوردن در تخت",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "R-072",
+          "title": "خواندن نوبتی یک داستان آرام",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "R-073",
+          "title": "ورزدادن خمیر نرم فقط برای لذت حسی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "R-074",
+          "title": "تماشای عکس‌های منظره روی نمایشگر بزرگ",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "R-075",
+          "title": "رسیدگی آرام دونفره به برگ‌های گیاهان",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        }
+      ]
+    },
+    {
+      "id": "A1",
+      "name_en": "Autonomy",
+      "name_fa": "اختیار و انتخاب",
+      "count": 75,
+      "activities": [
+        {
+          "id": "A1-001",
+          "title": "گذراندن یک ساعت بدون برنامه و انتخاب لحظه‌ای",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-002",
+          "title": "چیدن دوباره وسایل میز مطابق سلیقه خود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-003",
+          "title": "انتخاب لباس صرفاً بر اساس حال امروز",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-004",
+          "title": "ساخت پلی‌لیست مخصوص سلیقه شخصی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-005",
+          "title": "نوشتن فهرست تفریح‌های محبوب بدون نظر دیگران",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-006",
+          "title": "پخت صبحانه با ترکیب کاملاً دلخواه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-007",
+          "title": "طراحی جلد شخصی برای دفتر تفریح",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-008",
+          "title": "ساخت نشان‌کتاب با طرح انتخابی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-009",
+          "title": "درست‌کردن نوشیدنی ترکیبی بدون الکل",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-010",
+          "title": "تزیین یک دیوار کوچک با آثار خود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-011",
+          "title": "انتخاب مسیر پیاده‌روی در هر تقاطع امن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-012",
+          "title": "رفتن تنها به پارکی که همیشه دوست داشتی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-013",
+          "title": "گذراندن عصر بدون عکس‌گرفتن برای انتشار",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-014",
+          "title": "بازدید آزاد از یک نمایشگاه رایگان به ترتیب دلخواه",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-015",
+          "title": "نشستن در میدان شهر و انتخاب مقصد بعدی همان‌جا",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-016",
+          "title": "چیدن برنامه گردش با بودجه ثابت کوچک",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-017",
+          "title": "انتخاب یک مقصد شهری با قرعه بین گزینه‌های خودت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-018",
+          "title": "خرید یک شاخه گل صرفاً برای خود",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-019",
+          "title": "امتحان‌کردن یک غذای خیابانی به انتخاب شخصی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-020",
+          "title": "طراحی تور شخصی دیوارنگاره‌های شهر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-021",
+          "title": "رفتن تنها به تئاتر منتخب خود",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-022",
+          "title": "خوردن ناهار تک‌نفره در رستوران دلخواه",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-023",
+          "title": "انتخاب کتاب از کتاب‌فروشی بدون فهرست قبلی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-024",
+          "title": "دیدن یک مستند در اکران فرهنگی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-025",
+          "title": "ساخت عطر شخصی در کارگاه معتبر",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-026",
+          "title": "برگزاری دورهمی با حق انصراف از هر بازی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A1-027",
+          "title": "رأی‌گیری برای ساخت برنامه مشترک تفریح",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A1-028",
+          "title": "شب انتخاب نوبتی موسیقی توسط همه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A1-029",
+          "title": "ساخت منوی دورهمی با انتخاب مستقل هر نفر",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A1-030",
+          "title": "برگزاری ساعت سرگرمی موازی که هرکس کار خودش را کند",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A1-031",
+          "title": "انتخاب و سفارش یک کیت سرگرمی ناشناخته",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-032",
+          "title": "طراحی تی‌شرت با چاپ سفارشی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-033",
+          "title": "ساخت دفتر برنامه‌ریزی با ساختار دلخواه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-034",
+          "title": "انتخاب بازی و درجه سختی فقط بر اساس لذت",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-035",
+          "title": "تهیه جعبه وسایل برای سرگرمی انتخابی تازه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-036",
+          "title": "گردش دونفره با انتخاب نوبتی مقصد",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-037",
+          "title": "بازدید بازارچه با جداشدن موقت و قرار ملاقات",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-038",
+          "title": "عکاسی دونفره با موضوع مستقل برای هر نفر",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-039",
+          "title": "پیک‌نیک با دو منوی شخصی متفاوت",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-040",
+          "title": "قدم‌زدن با انتخاب مسیر توسط کسی که معمولاً تصمیم نمی‌گیرد",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-041",
+          "title": "سفر انفرادی برنامه‌ریزی‌شده به شهر امن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "A1-042",
+          "title": "رزرو تور خصوصی با مسیر انتخابی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "A1-043",
+          "title": "اجاره کلبه برای آخرهفته شخصی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "A1-044",
+          "title": "انتخاب کلاس خصوصی تفریحی به سلیقه خود",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "A1-045",
+          "title": "سفر عکاسی مستقل با حمل‌ونقل مطمئن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "A1-046",
+          "title": "رفتن به فودکورت با انتخاب مستقل غذا",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-047",
+          "title": "بازدید مرکز فرهنگی با برنامه جداگانه هر نفر",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-048",
+          "title": "کارگاه ساخت زیورآلات با طرح آزاد",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-049",
+          "title": "رفتن به مجموعه تفریحی با انتخاب آزاد ایستگاه‌ها",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-050",
+          "title": "اجاره استودیو برای اجرای ایده‌های شخصی اعضای جمع",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-051",
+          "title": "ساخت فهرست کارهایی که امروز لازم نیست انجام بدهی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-052",
+          "title": "خاموش‌کردن اعلان‌ها در بازه انتخابی خود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-053",
+          "title": "اختصاص یک کشو به مجموعه اشیای محبوب",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-054",
+          "title": "اجرای حرکت آزاد با موسیقی انتخابی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-055",
+          "title": "ضبط برنامه رادیویی شخصی بدون انتشار",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A1-056",
+          "title": "اجاره دوچرخه و تعیین مسیر کوتاه شخصی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-057",
+          "title": "انتخاب یک کارگاه یک‌جلسه‌ای از روی کنجکاوی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-058",
+          "title": "سفارش بستنی با ترکیب طعم اختصاصی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-059",
+          "title": "چیدن دسته‌گل دلخواه در گل‌فروشی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-060",
+          "title": "تجربه منوی چشیدنی با انتخاب ترتیب غذاها",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "A1-061",
+          "title": "طراحی شب قرار با دو پاکت پیشنهاد اختیاری",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-062",
+          "title": "آشپزی دونفره با ادویه‌زنی مستقل هر بشقاب",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-063",
+          "title": "ساخت دو نسخه متفاوت از یک کاردستی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-064",
+          "title": "تماشای فیلم با حق توقف و عوض‌کردن توافقی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-065",
+          "title": "ساخت نقشه تعطیلات رویایی بدون الزام اجرا",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A1-066",
+          "title": "طراحی سفر دوستانه با یک روز آزاد برای هر نفر",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A1-067",
+          "title": "اجاره باغ برای جشن با برنامه انتخابی جمع",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A1-068",
+          "title": "رزرو تور غذایی خصوصی با انتخاب توقف‌ها",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A1-069",
+          "title": "اجاره قایق همراه ناخدا با انتخاب مسیر مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A1-070",
+          "title": "ساخت برنامه چندتفریحی با اعتبار مالی مساوی برای اعضا",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A1-071",
+          "title": "ساخت ظرف تنقلات با ترکیب کاملاً شخصی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-072",
+          "title": "انتخاب یک روز با تم رنگی دلخواه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-073",
+          "title": "طراحی کارت‌های انتخاب تصادفی از تفریح‌های خود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-074",
+          "title": "ساخت آواتار بر اساس سلیقه نه شباهت واقعی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A1-075",
+          "title": "تغییر چیدمان گوشه مطالعه به فضای سرگرمی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        }
+      ]
+    },
+    {
+      "id": "M1",
+      "name_en": "Mastery",
+      "name_fa": "پیشرفت و تسلط",
+      "count": 75,
+      "activities": [
+        {
+          "id": "M1-001",
+          "title": "یادگیری سه گره کاربردی با طناب موجود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-002",
+          "title": "تمرین شعبده ساده با سکه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-003",
+          "title": "یادگیری الفبای مورس برای ارسال نام خود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-004",
+          "title": "تمرین طراحی پرسپکتیو یک اتاق",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-005",
+          "title": "حل مسئله شطرنج با تخته مجازی رایگان",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-006",
+          "title": "یادگیری مکعب روبیک سه‌درسه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-007",
+          "title": "بافت یک زیرلیوانی ساده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-008",
+          "title": "دوخت کیسه پارچه‌ای کوچک با دست",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-009",
+          "title": "تمرین خوشنویسی با قلم مناسب",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-010",
+          "title": "ساخت هواپیمای کاغذی و بهینه‌کردن پروازش",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-011",
+          "title": "تمرین تعادل روی یک پا روی زمین هموار",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-012",
+          "title": "تمرین شناسایی درختان رایج با راهنمای معتبر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-013",
+          "title": "ثبت و یادگیری صورت‌های فلکی قابل‌مشاهده",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-014",
+          "title": "تمرین جهت‌یابی در پارک با نقشه",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-015",
+          "title": "تمرین پرتاب دقیق توپ به هدف بی‌خطر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M1-016",
+          "title": "یادگیری طناب‌زدن مرحله‌ای",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-017",
+          "title": "تمرین دریبل فوتبال در زمین مناسب",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-018",
+          "title": "تمرین اسکیت با کلاه و محافظ در محوطه مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-019",
+          "title": "یادگیری عکاسی دستی با دوربین گوشی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-020",
+          "title": "تمرین طراحی سریع چهره‌های دوردست بدون مزاحمت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-021",
+          "title": "شرکت در کلاس مقدماتی سفالگری",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-022",
+          "title": "یادگیری نجاری مقدماتی زیر نظر مربی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-023",
+          "title": "شرکت در کلاس نان‌پزی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-024",
+          "title": "یادگیری مبانی سازدهنی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-025",
+          "title": "تمرین تیراندازی با کمان در باشگاه مجاز",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-026",
+          "title": "شرکت در کلاس بداهه‌پردازی تئاتر",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-027",
+          "title": "یادگیری آواز گروهی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-028",
+          "title": "کلاس آشپزی گروهی غذاهای محلی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-029",
+          "title": "کارگاه چاپ دستی لینوکات با مربی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-030",
+          "title": "تمرین والیبال مبتدی با دوستان",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-031",
+          "title": "یادگیری پاس‌کاری با توپ نرم",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M1-032",
+          "title": "تمرین مکالمه زبان از طریق نقش‌بازی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M1-033",
+          "title": "یاددادن و یادگرفتن یک بازی کارتی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M1-034",
+          "title": "ساخت پل با چوب بستنی و آزمایش بار آن",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M1-035",
+          "title": "تمرین ریتم‌خوانی با ضربه روی میز",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M1-036",
+          "title": "یادگیری صخره‌نوردی در مسیر مناسب با مربی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-037",
+          "title": "شرکت در دوره مقدماتی کایاک با جلیقه",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-038",
+          "title": "تمرین تنیس دونفره با مربی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-039",
+          "title": "یادگیری اسب‌سواری در باشگاه معتبر",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-040",
+          "title": "کارگاه عکاسی شب با راهنما",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-041",
+          "title": "یادگیری غواصی مقدماتی با مرکز مجاز",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "M1-042",
+          "title": "دوره مقدماتی نوازندگی پیانو",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "M1-043",
+          "title": "آموزش شیشه‌گری در کارگاه مجهز",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "M1-044",
+          "title": "یادگیری ساخت زیور نقره با مربی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "M1-045",
+          "title": "کلاس خصوصی پاتیناژ با تجهیزات ایمنی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "high"
+        },
+        {
+          "id": "M1-046",
+          "title": "ساخت مدار روشنایی ساده با کیت کم‌ولتاژ",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-047",
+          "title": "برنامه‌نویسی یک بازی کوچک",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-048",
+          "title": "ساخت انیمیشن استاپ‌موشن کوتاه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-049",
+          "title": "یادگیری تدوین یک ویدئوی یک‌دقیقه‌ای",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-050",
+          "title": "پرورش سبزی خوراکی در گلدان از بذر",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-051",
+          "title": "مسابقه ساخت سازه کاغذی مقاوم",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-052",
+          "title": "پخت نان مشترک و مقایسه نتیجه روش‌ها",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-053",
+          "title": "یادگیری اوریگامی ماژولار گروهی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-054",
+          "title": "تمرین اجرای نمایش رادیویی کوتاه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-055",
+          "title": "چالش ساخت بازی رومیزی با مقوا",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-056",
+          "title": "یادگیری تنیس روی میز در فضای عمومی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-057",
+          "title": "تمرین دوچرخه‌سواری مهارتی در پیست ایمن",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-058",
+          "title": "یادگیری کار با قطب‌نما در مسیر مشخص",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-059",
+          "title": "تمرین فریزبی به سمت هدف",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-060",
+          "title": "تمرین بدمینتون با دیوار مناسب و مجاز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M1-061",
+          "title": "دوره مقدماتی کرلینگ در مرکز دارای امکانات",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M1-062",
+          "title": "کارگاه ساخت ساز ساده زیر نظر استاد",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M1-063",
+          "title": "کلاس فیلم‌سازی کوتاه گروهی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M1-064",
+          "title": "تمرین اجرای موسیقی در استودیو",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M1-065",
+          "title": "کارگاه ساخت ربات متحرک آموزشی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M1-066",
+          "title": "یادگیری تردستی با سه توپ نرم",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-067",
+          "title": "تمرین برش تزیینی میوه با ابزار مناسب",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-068",
+          "title": "یادگیری صحافی دفترچه ساده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-069",
+          "title": "ساخت مهر با پاک‌کن و ابزار ایمن",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-070",
+          "title": "تمرین نقاشی آبرنگ یک منظره کوچک",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M1-071",
+          "title": "تمرین دوی امدادی تفریحی در پیست",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-072",
+          "title": "یادگیری بازی پتانک با دوستان",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-073",
+          "title": "تمرین نقشه‌خوانی در مسابقه دوستانه پارکی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-074",
+          "title": "کارگاه شناسایی پرندگان بدون نزدیک‌شدن به لانه‌ها",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M1-075",
+          "title": "تمرین حرکات پایه بسکتبال گروهی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "name_en": "Meaning",
+      "name_fa": "معنا",
+      "count": 75,
+      "activities": [
+        {
+          "id": "M2-001",
+          "title": "نوشتن نامه به خودِ پنج سال آینده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-002",
+          "title": "ثبت داستان یک شیء خانوادگی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-003",
+          "title": "ساخت فهرست لحظه‌های ارزشمند زندگی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-004",
+          "title": "نوشتن خاطره‌ای که دوست داری حفظ شود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-005",
+          "title": "ضبط روایت صوتی درباره یک تجربه آموزنده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-006",
+          "title": "ساخت دفترچه تاریخچه خانواده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M2-007",
+          "title": "کاشت بذر به مناسبت یک اتفاق مهم",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M2-008",
+          "title": "ساخت جعبه یادگاری‌های شخصی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M2-009",
+          "title": "نوشتن و تزیین نامه قدردانی برای یک نفر",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M2-010",
+          "title": "ترمیم یک یادگاری پارچه‌ای ساده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "M2-011",
+          "title": "جمع‌کردن زباله‌های معمولی پارک با دستکش و بدون مواد تیز",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-012",
+          "title": "عکاسی از میراث محلی برای آرشیو شخصی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-013",
+          "title": "بازدید تأملی از بنای تاریخی محله",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-014",
+          "title": "ثبت تغییرات فصلی یک درخت در دفتر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-015",
+          "title": "قدم‌زدن در محله کودکی و ثبت خاطره‌ها",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-016",
+          "title": "شرکت در پاک‌سازی ساحل با گروه معتبر",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-017",
+          "title": "کاشت درخت بومی با هماهنگی نهاد مسئول",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-018",
+          "title": "کمک به نگهداری باغچه محله با اجازه",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-019",
+          "title": "جمع‌آوری پسماند قابل‌بازیافت در برنامه محلی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-020",
+          "title": "ساخت نقشه مکان‌های دسترس‌پذیر محله با مشاهده دقیق",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-021",
+          "title": "شب روایت خاطرات سالمندان خانواده با رضایتشان",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-022",
+          "title": "ثبت دستور غذاهای قدیمی خانواده",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-023",
+          "title": "ساخت شجره‌نامه با اطلاعات داوطلبانه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-024",
+          "title": "گفت‌وگوی دوستانه درباره ارزش‌های شخصی بدون بحث تحمیلی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-025",
+          "title": "خواندن و صحبت درباره داستانی با موضوع انسان‌دوستی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-026",
+          "title": "بازدید از موزه تاریخ شهر با یادداشت شخصی",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-027",
+          "title": "شرکت در کارگاه مرمت ابتدایی کتاب",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-028",
+          "title": "خرید بلیت اجرای خیریه شفاف و معتبر",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-029",
+          "title": "بازدید از نمایشگاه صنایع‌دستی و گفت‌وگو با سازنده",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-030",
+          "title": "شرکت در نشست ادبی درباره یک اثر اثرگذار",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-031",
+          "title": "دیجیتال‌سازی عکس‌های قدیمی با اجازه صاحبانشان",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-032",
+          "title": "ساخت کتابچه مصور از داستان زندگی یک عزیز",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-033",
+          "title": "تهیه بسته هدیه کتاب با انتخاب متناسب گیرنده",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-034",
+          "title": "ساخت نسخه چاپی مجموعه شعرهای شخصی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-035",
+          "title": "بازسازی یک وسیله چوبی خاطره‌انگیز با روش ایمن",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-036",
+          "title": "رفتن به مکانی مهم در تاریخ دوستی و ثبت روایتش",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M2-037",
+          "title": "قدم‌زدن و گفتن داستان یک تصمیم مهم زندگی",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M2-038",
+          "title": "بازدید از آرامگاه یک چهره فرهنگی محبوب",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M2-039",
+          "title": "خرید از بازارچه تولیدکنندگان محلی",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M2-040",
+          "title": "عکاسی یادگاری در مکان آغاز یک آشنایی با رضایت دوطرف",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "M2-041",
+          "title": "سفر میراث فرهنگی با راهنمای محلی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-042",
+          "title": "تور آشنایی با صنایع‌دستی یک روستا با پرداخت منصفانه",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-043",
+          "title": "سفر داوطلبانه با سازمان معتبر و وظایف روشن",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-044",
+          "title": "حضور در جشنواره فرهنگی محلی با رعایت آداب",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-045",
+          "title": "حمایت از اجرای گروه هنری محلی با سفر گروهی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-046",
+          "title": "بافت شال برای اهدای هماهنگ‌شده",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-047",
+          "title": "ساخت کارت تبریک برای کارکنان خدمات محله",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-048",
+          "title": "تهیه کتاب صوتی از متن مجاز برای استفاده داوطلبانه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-049",
+          "title": "آماده‌کردن بسته لوازم‌تحریر با نیازسنجی خیریه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-050",
+          "title": "ساخت آلبوم مشترک از موفقیت‌های کوچک دوستان",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "M2-051",
+          "title": "کمک داوطلبانه در رویداد فرهنگی محله",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-052",
+          "title": "مشارکت در چیدمان کتابخانه عمومی با هماهنگی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-053",
+          "title": "قصه‌خوانی داوطلبانه در برنامه رسمی کتابخانه",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-054",
+          "title": "کمک به ثبت روایت‌های محلی در پروژه معتبر",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-055",
+          "title": "حضور در نشست تبادل تجربه بین نسل‌ها",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "M2-056",
+          "title": "نوشتن یک داستان بر اساس ارزش مهم زندگی",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-057",
+          "title": "ترجمه داوطلبانه متن آزاد در حوزه تخصص خود",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-058",
+          "title": "ویرایش مقاله دانشنامه آزاد با منابع معتبر",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-059",
+          "title": "ثبت مشاهده‌های طبیعت در پروژه علمی شهروندی معتبر",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-060",
+          "title": "تهیه راهنمای رایگان یک مهارت ساده برای دیگران",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "M2-061",
+          "title": "شرکت دونفره در کارگاه قصه‌گویی خانوادگی",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-062",
+          "title": "انتخاب و اهدای کتاب طبق فهرست نیاز کتابخانه",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-063",
+          "title": "حضور در نمایش مستند درباره میراث فرهنگی",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-064",
+          "title": "دیدن نمایشگاهی درباره محیط‌زیست و گفت‌وگو پس از آن",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-065",
+          "title": "ساخت شیء یادبود مشترک در کارگاه سفال",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-066",
+          "title": "بازدید از کارگاه یک هنرمند بومی با هماهنگی",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-067",
+          "title": "سفر کوتاه برای دیدن زادگاه یکی از نیاکان",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-068",
+          "title": "تهیه مجموعه عکس از مشاغل قدیمی با رضایت افراد",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-069",
+          "title": "شرکت در تور طبیعت‌گردی با محور حفاظت",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-070",
+          "title": "خرید نهال بومی و سپردن آن به طرح نگهداری معتبر",
+          "setting": "outdoor",
+          "participation": "solo",
+          "cost": "medium"
+        },
+        {
+          "id": "M2-071",
+          "title": "سفارش چاپ کتاب خاطرات خانوادگی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-072",
+          "title": "ضبط حرفه‌ای روایت زندگی بزرگ‌تر خانواده با رضایت",
+          "setting": "home",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-073",
+          "title": "برگزاری نمایشگاه خانگی خیریه با حساب شفاف",
+          "setting": "home",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-074",
+          "title": "تهیه مستند کوتاه خانوادگی با تصویربردار",
+          "setting": "home",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "M2-075",
+          "title": "سفارش بازسازی حرفه‌ای عکس تاریخی خانواده",
+          "setting": "home",
+          "participation": "group",
+          "cost": "high"
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "name_en": "Affiliation",
+      "name_fa": "ارتباط و تعلق",
+      "count": 75,
+      "activities": [
+        {
+          "id": "A2-001",
+          "title": "گفت‌وگوی دونفره با کارت سؤال‌های آشنایی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-002",
+          "title": "مرور خاطرات بامزه مشترک",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-003",
+          "title": "تماس تصویری با دوست دورافتاده",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-004",
+          "title": "مصاحبه دوستانه درباره علایق تازه یکدیگر",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-005",
+          "title": "خواندن نوبتی یک نمایشنامه دوشخصیتی",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-006",
+          "title": "دورهمی هرکس یک غذا بیاورد",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-007",
+          "title": "شب کارائوکه خانگی با رعایت همسایه‌ها",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-008",
+          "title": "جشن تولد کوچک بدون تشریفات",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-009",
+          "title": "چالش تزیین کاپ‌کیک گروهی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-010",
+          "title": "ساخت پیتزا با مشارکت همه",
+          "setting": "home",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-011",
+          "title": "قدم‌زدن و گوش‌دادن نوبتی بدون قطع حرف",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-012",
+          "title": "تماشای ستاره‌ها از فضای امن شهری",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-013",
+          "title": "گردش در بازار قدیمی با دوست",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-014",
+          "title": "رفتن به نمایش خیابانی رایگان",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-015",
+          "title": "ملاقات کوتاه در پارک با دوست قدیمی",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "free"
+        },
+        {
+          "id": "A2-016",
+          "title": "بازی وسطی با توپ نرم در محوطه مناسب",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-017",
+          "title": "پیک‌نیک خانوادگی با تقسیم کار",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-018",
+          "title": "مسابقه طناب‌کشی در زمین امن",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-019",
+          "title": "بازی فریزبی حلقه‌ای گروهی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-020",
+          "title": "گردهمایی اسکچ شهری با معرفی نقاشی‌ها",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "low"
+        },
+        {
+          "id": "A2-021",
+          "title": "قرار صبحانه در کافه",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-022",
+          "title": "تماشای استندآپ کمدی مجاز",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-023",
+          "title": "رفتن به نمایشگاه کتاب و انتخاب کتاب برای هم",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-024",
+          "title": "شرکت در کارگاه شکلات‌سازی دونفره",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-025",
+          "title": "دیدن اجرای موسیقی کوچک و گفت‌وگو پس از آن",
+          "setting": "indoor_public",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-026",
+          "title": "اجاره سالن فوتسال دوستانه",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-027",
+          "title": "مسابقه دارت در مجموعه مناسب",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-028",
+          "title": "رفتن به باشگاه سنگ‌نوردی با مربی و دوستان",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-029",
+          "title": "دورهمی باشگاه کتاب در کافه",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-030",
+          "title": "شرکت در مسابقه دوستانه بازی ویدئویی محلی",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-031",
+          "title": "نوشتن پیام شخصی برای احوال‌پرسی از دوست",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A2-032",
+          "title": "ضبط پیام صوتی قدردانی برای یک عزیز",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A2-033",
+          "title": "ساخت فهرست خاطرات خوب برای فرستادن به دوست",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A2-034",
+          "title": "پیوستن به گفت‌وگوی آنلاین مدیریت‌شده درباره سرگرمی مشترک",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A2-035",
+          "title": "بازی شطرنج آنلاین دوستانه همراه گفت‌وگوی محترمانه",
+          "setting": "home",
+          "participation": "solo",
+          "cost": "free"
+        },
+        {
+          "id": "A2-036",
+          "title": "آشپزی با دستور خانوادگی یکی از دو نفر",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A2-037",
+          "title": "ساخت آلبوم دیجیتال مشترک",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A2-038",
+          "title": "بازی همکاری‌محور دونفره رایانه‌ای",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A2-039",
+          "title": "چیدن پازل دونفره با تقسیم نقش",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A2-040",
+          "title": "نقاشی پرتره بامزه از همدیگر",
+          "setting": "home",
+          "participation": "pair",
+          "cost": "low"
+        },
+        {
+          "id": "A2-041",
+          "title": "اجاره ویلای مجاز برای دورهمی دوستانه",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-042",
+          "title": "سفر گروهی با ون و راننده مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-043",
+          "title": "رفتن خانوادگی به پارک آبی معتبر",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-044",
+          "title": "تور گروهی جزیره‌گردی با راهنمای مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-045",
+          "title": "اقامت دوستانه در مزرعه گردشگری معتبر",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-046",
+          "title": "رزرو اتاق خصوصی کارائوکه در محل مجاز",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-047",
+          "title": "اجاره سالن سینمای کوچک برای جمع دوستان",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-048",
+          "title": "برگزاری جشن موضوعی در فضای اجاره‌ای",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-049",
+          "title": "رزرو کلاس خصوصی آشپزی برای جمع",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-050",
+          "title": "تماشای مسابقه ورزشی از جایگاه مناسب ورزشگاه",
+          "setting": "indoor_public",
+          "participation": "group",
+          "cost": "high"
+        },
+        {
+          "id": "A2-051",
+          "title": "پیوستن به گروه پیاده‌روی محله با مسیر روشن",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-052",
+          "title": "شرکت در تمرین عمومی حرکات ورزشی پارک",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-053",
+          "title": "نشست تبادل کتاب در فضای عمومی مجاز",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-054",
+          "title": "بازی شطرنج با حریف داوطلب در پارک",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-055",
+          "title": "ملاقات هم‌علاقه‌های عکاسی در رویداد عمومی",
+          "setting": "outdoor",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-056",
+          "title": "اجرای نمایش بداهه با نقش‌های خانوادگی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-057",
+          "title": "بازی دو حقیقت و یک دروغ با حق رد سؤال",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-058",
+          "title": "مسابقه خاطره‌گویی خنده‌دار بدون تمسخر",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-059",
+          "title": "ساخت پلی‌لیست مشترک و تعریف دلیل انتخاب‌ها",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-060",
+          "title": "تماشای هم‌زمان فیلم با دوستان دور از راه تماس اینترنتی",
+          "setting": "home",
+          "participation": "group",
+          "cost": "free"
+        },
+        {
+          "id": "A2-061",
+          "title": "دوچرخه‌سواری دونفره روی دوچرخه تندم در مسیر ایمن",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-062",
+          "title": "کرایه میز پینگ‌پنگ و بازی دوستانه",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-063",
+          "title": "گشت دونفره با تور خوراک محلی",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-064",
+          "title": "شرکت در رویداد نقاشی در فضای باز",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-065",
+          "title": "قرار ناهار در رستورانی از فرهنگ ناآشنا",
+          "setting": "outdoor",
+          "participation": "pair",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-066",
+          "title": "شرکت در جلسه معرفی اعضای باشگاه کتاب",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A2-067",
+          "title": "رفتن به دورهمی عمومی علاقه‌مندان زبان",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A2-068",
+          "title": "حضور در جلسه باز باشگاه شطرنج",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A2-069",
+          "title": "شرکت در نشست نقد فیلم با امکان مشارکت",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A2-070",
+          "title": "رفتن به رویداد تعویض گیاه و آشنایی با پرورش‌دهندگان",
+          "setting": "indoor_public",
+          "participation": "solo",
+          "cost": "low"
+        },
+        {
+          "id": "A2-071",
+          "title": "برگزاری شام معمایی با سناریوی آماده",
+          "setting": "home",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-072",
+          "title": "شب چشیدن پنیر و نان‌های مختلف",
+          "setting": "home",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-073",
+          "title": "دورهمی ساخت تراریوم برای هدیه‌دادن به هم",
+          "setting": "home",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-074",
+          "title": "بازی نقش‌آفرینی رومیزی با گرداننده",
+          "setting": "home",
+          "participation": "group",
+          "cost": "medium"
+        },
+        {
+          "id": "A2-075",
+          "title": "پخت گروهی غذاهای چند منطقه و معرفی داستان هر غذا",
+          "setting": "home",
+          "participation": "group",
+          "cost": "medium"
+        }
+      ]
+    }
+  ]
+}
