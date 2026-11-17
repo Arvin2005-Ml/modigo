@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { User, AdminDraft, AdminActivity, AdminJob } from "@/types";
 
@@ -53,25 +53,21 @@ export default function Admin({
 
   const [reason, setReason] = useState("");
   const lock = useRef(false);
+  const clearSelection = () => {
+    setSelected(null);
+    setDraft(null);
+    setSource("");
+  };
 
   const {
     currentData: list,
     error: listError,
     isFetching,
-    refetch,
   } = useGetAdminActivitiesQuery({
     limit: 20,
     offset,
     state: filter,
   });
-
-  const load = useCallback(async () => {
-    try {
-      await refetch().unwrap();
-    } catch (error) {
-      throw toApiError(error);
-    }
-  }, [refetch]);
 
   useEffect(() => {
     if (listError) {
@@ -141,7 +137,6 @@ export default function Admin({
       }
 
       await open(selected.id);
-      await load();
 
       setMessage(name === "publish" ? "نسخه منتشر شد." : "برای بررسی ثبت شد.");
     });
@@ -167,6 +162,7 @@ export default function Admin({
             onChange={(e) => {
               setFilter(e.target.value);
               setOffset(0);
+              clearSelection();
             }}
           >
             <option value="">همه</option>
@@ -203,7 +199,10 @@ export default function Admin({
           <Button
             secondary
             disabled={busy || isFetching || offset === 0}
-            onClick={() => setOffset(Math.max(0, offset - 20))}
+            onClick={() => {
+              setOffset(Math.max(0, offset - 20));
+              clearSelection();
+            }}
           >
             قبلی
           </Button>
@@ -211,7 +210,10 @@ export default function Admin({
           <Button
             secondary
             disabled={busy || isFetching || !list?.next_offset}
-            onClick={() => setOffset(list!.next_offset!)}
+            onClick={() => {
+              setOffset(list!.next_offset!);
+              clearSelection();
+            }}
           >
             بعدی
           </Button>
@@ -486,7 +488,6 @@ export default function Admin({
                             });
 
                             await open(selected.id);
-                            await load();
 
                             setMessage("محتوا از نمایش و شروع کنار گذاشته شد.");
                           })
@@ -510,7 +511,6 @@ export default function Admin({
                             });
 
                             await open(selected.id);
-                            await load();
 
                             setMessage("محتوا دوباره فعال شد.");
                           })

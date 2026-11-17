@@ -9,6 +9,7 @@ import {
   useGetPreferencesQuery,
 } from "@/lib/store/api/apiSlice";
 import { createApiClient } from "@/lib/store/api/apiClient";
+import { toApiError } from "@/lib/store/api/baseQuery";
 import { setUser, clearUser } from "@/lib/store/slices/authSlice";
 import type {
   Context,
@@ -56,12 +57,12 @@ export default function Funilo() {
   const dispatch = useAppDispatch();
   const client = useMemo(() => createApiClient(dispatch), [dispatch]);
   const user = useAppSelector((state) => state.auth.user);
-  const { data: savedData } = useGetSavedQuery(undefined, { skip: !user });
-  const { data: preferencesData } = useGetPreferencesQuery(undefined, {
-    skip: !user,
-  });
-  const saved = savedData?.items ?? [];
-  const preferences = preferencesData ?? null;
+  const savedQuery = useGetSavedQuery(undefined, { skip: !user });
+
+  const preferencesQuery = useGetPreferencesQuery(undefined, { skip: !user });
+
+  const saved = savedQuery.data?.items ?? [];
+  const preferences = preferencesQuery.data ?? null;
   const [view, setView] = useState<View>("home");
   const [boot, setBoot] = useState(true);
   const [context, setContext] = useState<Context>(initialContext);
@@ -140,7 +141,14 @@ export default function Funilo() {
     },
     [report],
   );
-
+  useEffect(() => {
+    for (const queryError of [savedQuery.error, preferencesQuery.error]) {
+      if (queryError && "status" in queryError && queryError.status === 401) {
+        report(toApiError(queryError));
+        break;
+      }
+    }
+  }, [savedQuery.error, preferencesQuery.error, report]);
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
@@ -165,22 +173,29 @@ export default function Funilo() {
           if (e instanceof ApiError && e.status === 401) return;
           throw e;
         }
-        const [active] = await Promise.all([
-          client.getActiveExperience(),
-          client.getPreferences(),
-          client.getSaved(),
-        ]);
         dispatch(setUser(current));
+
+        const active = await client.getActiveExperience();
+
         const slateId = new URLSearchParams(window.location.search).get(
           "slate",
         );
+
         if (active.experience) {
           setExperience(active.experience);
           setView("active");
+
+          window.history.replaceState(
+            null,
+            "",
+            "/?experience=" + encodeURIComponent(active.experience.id),
+          );
         } else if (slateId) {
           setSlate(await client.getSession(slateId));
           setView("results");
-        } else setView("questions");
+        } else {
+          setView("questions");
+        }
       } catch (e) {
         report(e);
       } finally {
@@ -197,21 +212,53 @@ export default function Funilo() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [view]);
 
-  const loadSaved = async () => {
-    await client.getSaved();
-  };
   const finishLogin = async (email: string, password: string) => {
-    const response = await client.login({ email, password });
+    const response = await client.login({
+      email,
+      password,
+    });
+
+    // Clear cached data from any previous account.
     dispatch(apiSlice.util.resetApiState());
+
     clearPrivateState();
+
+    // Authentication succeeded.
     dispatch(setUser(response.user));
-    const [active] = await Promise.all([
-      client.getActiveExperience(),
-      client.getPreferences(),
-      client.getSaved(),
-    ]);
-    setExperience(active.experience);
-    navigate(active.experience ? "active" : returnView.current);
+
+    try {
+      const { experience: activeExperience } =
+        await client.getActiveExperience();
+
+      setExperience(activeExperience);
+
+      if (activeExperience) {
+        setView("active");
+
+        window.history.replaceState(
+          null,
+          "",
+          "/?experience=" + encodeURIComponent(activeExperience.id),
+        );
+      } else {
+        navigate(returnView.current);
+      }
+    } catch (error) {
+      // An invalid session must still be handled by report().
+      if (error instanceof ApiError && error.status === 401) {
+        throw error;
+      }
+
+      // Login succeeded, but restoring the active
+      // experience failed.
+      setView("home");
+
+      window.history.replaceState(null, "", "/");
+
+      setError(
+        "ورود انجام شد، اما بررسی تجربهٔ فعال ناموفق بود؛ صفحه را دوباره بارگذاری کن.",
+      );
+    }
   };
   const login = (email: string, password: string) =>
     run(() => finishLogin(email, password));
@@ -231,7 +278,12 @@ export default function Funilo() {
     });
   const open = (item: Slot) =>
     run(async () => {
-      setDetail(await client.getRevision(item.revision_id!));
+      if (!item.revision_id) {
+        throw new Error("شناسهٔ نسخهٔ پیشنهاد موجود نیست.");
+      }
+
+      setDetail(await client.getRevision(item.revision_id));
+
       setSlot(item);
       navigate("detail");
     });
@@ -306,9 +358,13 @@ export default function Funilo() {
   const toggleSave = (activityId: string) =>
     run(async () => {
       const exists = saved.some((s) => s.activity_id === activityId);
-      if (exists) await client.removeSaved(activityId);
-      else await client.saveActivity(activityId);
-      await loadSaved();
+
+      if (exists) {
+        await client.removeSaved(activityId);
+      } else {
+        await client.saveActivity(activityId);
+      }
+
       setNotice(exists ? "از ذخیره‌ها برداشته شد." : "برای بعد نگهش داشتیم.");
     });
   const start = () =>
@@ -343,20 +399,15 @@ export default function Funilo() {
   const route = (next: View) => {
     if (!user) {
       returnView.current = next === "home" ? "questions" : next;
+
       return navigate("auth");
     }
-    if (next === "saved")
-      run(async () => {
-        await loadSaved();
-        navigate("saved");
-      });
-    else if (next === "journey") showJourney();
-    else if (next === "settings")
-      run(async () => {
-        await client.getPreferences();
-        navigate("settings");
-      });
-    else navigate(next);
+
+    if (next === "journey") {
+      showJourney();
+    } else {
+      navigate(next);
+    }
   };
   const returnHome = () => {
     checkIn.current = null;
@@ -555,7 +606,14 @@ export default function Funilo() {
                     (s) => s.activity_id === slate.items[0]?.activity_id,
                   )}
                   open={open}
-                  save={(item) => toggleSave(item.activity_id!)}
+                  save={(item) => {
+                    if (!item.activity_id) {
+                      setError("شناسهٔ فعالیت موجود نیست.");
+                      return;
+                    }
+
+                    void toggleSave(item.activity_id);
+                  }}
                   replace={replace}
                   browse={browse}
                   changeConditions={returnHome}
@@ -713,7 +771,17 @@ export default function Funilo() {
                 <span className="eyebrow">برای یه وقت دیگه</span>
                 <h1>چیزهایی که نگه داشتی.</h1>
                 <p className="intro">لازم نیست نوبتشون همین امروز باشه.</p>
-                {saved.length === 0 ? (
+                {savedQuery.isLoading ? (
+                  <p role="status">در حال دریافت ذخیره‌ها…</p>
+                ) : savedQuery.isError ? (
+                  <div role="alert">
+                    <p>دریافت ذخیره‌ها انجام نشد.</p>
+
+                    <Button secondary onClick={() => void savedQuery.refetch()}>
+                      تلاش دوباره
+                    </Button>
+                  </div>
+                ) : saved.length === 0 ? (
                   <Empty title="اینجا هنوز خلوت و آرومه.">
                     <p>هر پیشنهادی دوست داشتی،برای بعد نگهش دار.</p>
                     <Button onClick={returnHome}>یه پیشنهاد ببینم</Button>
@@ -733,12 +801,19 @@ export default function Funilo() {
                         <div className="inline-actions">
                           <Button
                             secondary
-                            disabled={busy || s.unavailable}
+                            disabled={busy || s.unavailable || !s.revision_id}
                             onClick={() =>
                               run(async () => {
+                                if (!s.revision_id) {
+                                  throw new Error(
+                                    "شناسهٔ نسخهٔ ذخیره‌شده موجود نیست.",
+                                  );
+                                }
+
                                 setDetail(
-                                  await client.getRevision(s.revision_id!),
+                                  await client.getRevision(s.revision_id),
                                 );
+
                                 setSlot(null);
                                 navigate("detail");
                               })
@@ -834,20 +909,38 @@ export default function Funilo() {
                 )}
               </section>
             )}
-            {view === "settings" && preferences && (
+            {view === "settings" && (
               <>
-                <Preferences
-                  key={preferences.version}
-                  initial={preferences}
-                  busy={busy}
-                  save={(v) =>
-                    run(async () => {
-                      await client.updatePreferences(v);
-                      checkIn.current = null;
-                      setNotice("انتخاب‌هات نگه داشته شد.");
-                    })
-                  }
-                />
+                {preferencesQuery.isLoading ? (
+                  <p role="status">در حال دریافت تنظیمات…</p>
+                ) : preferencesQuery.isError ? (
+                  <div role="alert">
+                    <p>دریافت تنظیمات انجام نشد.</p>
+
+                    <Button
+                      secondary
+                      onClick={() => void preferencesQuery.refetch()}
+                    >
+                      تلاش دوباره
+                    </Button>
+                  </div>
+                ) : preferences ? (
+                  <Preferences
+                    key={preferences.version}
+                    initial={preferences}
+                    busy={busy}
+                    save={(v) =>
+                      run(async () => {
+                        await client.updatePreferences(v);
+
+                        checkIn.current = null;
+
+                        setNotice("انتخاب‌هات نگه داشته شد.");
+                      })
+                    }
+                  />
+                ) : null}
+
                 <div className="account-footer">
                   <p className="hint">{user?.email}</p>
                   <button
