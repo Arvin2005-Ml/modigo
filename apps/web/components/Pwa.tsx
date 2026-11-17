@@ -60,7 +60,7 @@ export default function Pwa() {
     {!installed && <button className="install-button" onClick={() => {
       setIos(/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
       dialog.current?.showModal();
-    }} aria-label="نصب فانیلو روی دستگاه"><Icon name="download" size={18}/><span>نصب برنامه</span></button>}
+    }} aria-label="نصب مودیگو روی دستگاه"><Icon name="download" size={18}/><span>نصب برنامه</span></button>}
     {offline && <div className="offline-notice" role="status"><Icon name="wifi" size={18}/><span>اینترنت قطع شده؛ برای دریافت پیشنهاد و ثبت تجربه دوباره وصل شو.</span></div>}
     <dialog ref={dialog} className="install-dialog" aria-labelledby="install-title" aria-describedby="install-description" onClick={e => {if(e.target === e.currentTarget) dialog.current?.close();}}>
       <button autoFocus className="icon-button dialog-close" onClick={() => dialog.current?.close()} aria-label="بستن راهنمای نصب"><Icon name="close"/></button>
