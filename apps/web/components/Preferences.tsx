@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import type {Preferences as PreferencesType} from '@/lib/contracts';
+import type {Preferences as PreferencesType} from '@/types';
 import {Button, Choices} from './ui';
 import Personalization from './Personalization';
 import {goalOptions} from '@/lib/personalization';
