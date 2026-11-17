@@ -1,6 +1,21 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import Image from "next/image";
+import Link from "next/link";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import {
+  authModeFromPathname,
+  isAuthPath,
+  paths,
+  safeNextPath,
+  viewFromPathname,
+  type AppView,
+} from "@/lib/navigation";
+
 import { ApiError, badgeNames, number, refreshCsrf } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -28,22 +43,21 @@ import Preferences from "./Preferences";
 import { ContentDetails } from "./Activity";
 import SingleSuggestion from "./SingleSuggestion";
 import { Button, Empty, Note } from "./ui";
-import Home from "./Home";
 import Icon from "./Icon";
 import Pwa from "./Pwa";
 
-type View =
-  | "home"
-  | "auth"
-  | "questions"
-  | "results"
-  | "detail"
-  | "active"
-  | "complete"
-  | "saved"
-  | "journey"
-  | "settings"
-  | "admin";
+// type View =
+//   | "home"
+//   | "auth"
+//   | "questions"
+//   | "results"
+//   | "detail"
+//   | "active"
+//   | "complete"
+//   | "saved"
+//   | "journey"
+//   | "settings"
+//   | "admin";
 const dimensionNames: Record<string, string> = {
   detachment: "فاصله از روزمرگی",
   relaxation: "یه مکث آروم",
@@ -54,6 +68,16 @@ const dimensionNames: Record<string, string> = {
 };
 
 export default function Funilo() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const view = viewFromPathname(pathname);
+  const authMode = authModeFromPathname(pathname);
+
+  const resetToken =
+    pathname === paths.reset ? searchParams.get("token") : null;
+
   const dispatch = useAppDispatch();
   const client = useMemo(() => createApiClient(dispatch), [dispatch]);
   const user = useAppSelector((state) => state.auth.user);
@@ -63,7 +87,7 @@ export default function Funilo() {
 
   const saved = savedQuery.data?.items ?? [];
   const preferences = preferencesQuery.data ?? null;
-  const [view, setView] = useState<View>("home");
+
   const [boot, setBoot] = useState(true);
   const [context, setContext] = useState<Context>(initialContext);
   const [slate, setSlate] = useState<Slate | null>(null);
@@ -77,28 +101,41 @@ export default function Funilo() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [feedbackDone, setFeedbackDone] = useState(false);
-  const [resetToken, setResetToken] = useState<string | null>(null);
-  const returnView = useRef<View>("questions");
+
+  const [routeLoading, setRouteLoading] = useState(false);
+
+  const [authState, setAuthState] = useState<
+    "checking" | "guest" | "authenticated" | "unavailable"
+  >("checking");
+
   const main = useRef<HTMLElement>(null);
   const lock = useRef(false);
   const checkIn = useRef<{ fingerprint: string; id: string } | null>(null);
-  const initialized = useRef(false);
 
   const navigate = useCallback(
-    (next: View) => {
-      setView(next);
+    (next: AppView) => {
       setError("");
       setNotice("");
-      const query =
-        next === "results" && slate
-          ? "?slate=" + slate.id
-          : next === "active" && experience
-            ? "?experience=" + experience.id
-            : "";
-      window.history.replaceState(null, "", "/" + query);
+
+      const staticPaths: Partial<Record<AppView, string>> = {
+        discover: paths.discover,
+        auth: paths.login,
+        questions: paths.questions,
+        saved: paths.saved,
+        journey: paths.journey,
+        settings: paths.settings,
+        admin: paths.admin,
+      };
+
+      const href = staticPaths[next];
+
+      if (href) {
+        router.push(href);
+      }
     },
-    [slate, experience],
+    [router],
   );
+
   const clearPrivateState = useCallback(() => {
     setSlate(null);
     setDetail(null);
@@ -118,10 +155,12 @@ export default function Funilo() {
         dispatch(clearUser());
         dispatch(apiSlice.util.resetApiState());
         clearPrivateState();
-        setView("auth");
+
+        setAuthState("guest");
+        router.replace(paths.login);
       }
     },
-    [dispatch, clearPrivateState],
+    [dispatch, clearPrivateState, router],
   );
   const run = useCallback(
     async (work: () => Promise<void>) => {
@@ -149,60 +188,210 @@ export default function Funilo() {
       }
     }
   }, [savedQuery.error, preferencesQuery.error, report]);
+
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-    (async () => {
+    let cancelled = false;
+
+    const initialize = async () => {
       try {
         await refreshCsrf();
-        const reset = new URLSearchParams(window.location.search).get(
-          "reset_password",
-        );
-        if (reset) {
-          setResetToken(reset);
-          setView("auth");
-          window.history.replaceState(null, "", "/");
-          return;
-        }
-        if (new URLSearchParams(window.location.search).has("verify_email"))
-          window.history.replaceState(null, "", "/");
-        let current;
-        try {
-          current = await client.getMe();
-        } catch (e) {
-          if (e instanceof ApiError && e.status === 401) return;
-          throw e;
-        }
+
+        const current = await client.getMe();
+
+        if (cancelled) return;
+
         dispatch(setUser(current));
+        setAuthState("authenticated");
 
         const active = await client.getActiveExperience();
 
-        const slateId = new URLSearchParams(window.location.search).get(
-          "slate",
-        );
+        if (cancelled) return;
 
-        if (active.experience) {
-          setExperience(active.experience);
-          setView("active");
+        setExperience(active.experience);
+      } catch (e) {
+        if (cancelled) return;
 
-          window.history.replaceState(
-            null,
-            "",
-            "/?experience=" + encodeURIComponent(active.experience.id),
-          );
-        } else if (slateId) {
-          setSlate(await client.getSession(slateId));
-          setView("results");
+        if (e instanceof ApiError && e.status === 401) {
+          dispatch(clearUser());
+          setAuthState("guest");
         } else {
-          setView("questions");
+          setAuthState("unavailable");
+          setError(
+            e instanceof Error ? e.message : "امکان بررسی نشست وجود ندارد.",
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setBoot(false);
+        }
+      }
+    };
+
+    void initialize();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [client, dispatch]);
+
+  // Load route-specific data on refresh,
+  // browser Back/Forward, and direct navigation.
+  useEffect(() => {
+    if (boot) return;
+
+    setRouteLoading(false);
+
+    if (authState === "unavailable") return;
+
+    if (!user) {
+      if (!isAuthPath(pathname)) {
+        const query = searchParams.toString();
+
+        const destination = pathname + (query ? `?${query}` : "");
+
+        router.replace(
+          `${paths.login}?next=${encodeURIComponent(destination)}`,
+        );
+      }
+
+      return;
+    }
+
+    if (isAuthPath(pathname) && pathname !== paths.reset) {
+      router.replace(safeNextPath(searchParams.get("next")) ?? paths.discover);
+      return;
+    }
+
+    if (pathname === paths.reset && !resetToken) {
+      router.replace(paths.login);
+      return;
+    }
+
+    if (view === "admin" && user.role === "user") {
+      router.replace(paths.discover);
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadRoute = async () => {
+      const needsLoading = [
+        "results",
+        "detail",
+        "active",
+        "journey",
+        "complete",
+      ].includes(view);
+
+      if (!needsLoading) return;
+
+      setRouteLoading(true);
+
+      try {
+        if (view === "results") {
+          const slateId = searchParams.get("slate");
+
+          if (!slateId) {
+            router.replace(paths.questions);
+            return;
+          }
+
+          const session = await client.getSession(slateId);
+
+          if (!cancelled) {
+            setSlate(session);
+          }
+        }
+
+        if (view === "detail") {
+          const revisionId = pathname.split("/")[2];
+
+          const revision = await client.getRevision(revisionId);
+
+          if (cancelled) return;
+
+          setDetail(revision);
+
+          if (searchParams.get("from") === "individual") {
+            const slateId = searchParams.get("slate");
+            const slotId = searchParams.get("slot");
+
+            if (slateId && slotId) {
+              const session = await client.getSession(slateId);
+
+              if (cancelled) return;
+
+              setSlate(session);
+
+              setSlot(
+                session.items.find(
+                  (item) =>
+                    item.slot_id === slotId && item.revision_id === revisionId,
+                ) ?? null,
+              );
+            } else {
+              setSlot(null);
+            }
+          } else {
+            setSlot(null);
+          }
+        }
+
+        if (view === "active") {
+          const active = await client.getActiveExperience();
+
+          if (!cancelled) {
+            setExperience(active.experience);
+          }
+        }
+
+        if (view === "journey") {
+          const [journeyData, historyData] = await Promise.all([
+            client.getJourney(),
+            client.getExperienceHistory(),
+          ]);
+
+          if (!cancelled) {
+            setJourney(journeyData);
+            setHistory(historyData.items);
+          }
+        }
+
+        if (view === "complete" && !award) {
+          // The existing API does not expose
+          // a completion-award recovery endpoint.
+          router.replace(paths.journey);
         }
       } catch (e) {
-        report(e);
+        if (!cancelled) {
+          report(e);
+        }
       } finally {
-        setBoot(false);
+        if (!cancelled) {
+          setRouteLoading(false);
+        }
       }
-    })();
-  }, [client, dispatch, report]);
+    };
+
+    void loadRoute();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    boot,
+    authState,
+    user,
+    pathname,
+    searchParams,
+    view,
+    client,
+    router,
+    report,
+    award,
+    resetToken,
+  ]);
+
   useEffect(() => {
     const heading = main.current?.querySelector("h1");
     if (heading) {
@@ -210,7 +399,7 @@ export default function Funilo() {
       heading.focus({ preventScroll: true });
     }
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, [view]);
+  }, [view, routeLoading, boot]);
 
   const finishLogin = async (email: string, password: string) => {
     const response = await client.login({
@@ -218,48 +407,31 @@ export default function Funilo() {
       password,
     });
 
-    // Clear cached data from any previous account.
+    // Prevent cross-account cached data.
     dispatch(apiSlice.util.resetApiState());
-
     clearPrivateState();
 
-    // Authentication succeeded.
     dispatch(setUser(response.user));
+    setAuthState("authenticated");
 
     try {
       const { experience: activeExperience } =
         await client.getActiveExperience();
 
       setExperience(activeExperience);
-
-      if (activeExperience) {
-        setView("active");
-
-        window.history.replaceState(
-          null,
-          "",
-          "/?experience=" + encodeURIComponent(activeExperience.id),
-        );
-      } else {
-        navigate(returnView.current);
-      }
-    } catch (error) {
-      // An invalid session must still be handled by report().
-      if (error instanceof ApiError && error.status === 401) {
-        throw error;
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 401) {
+        dispatch(clearUser());
+        setAuthState("guest");
+        throw e;
       }
 
-      // Login succeeded, but restoring the active
-      // experience failed.
-      setView("home");
-
-      window.history.replaceState(null, "", "/");
-
-      setError(
-        "ورود انجام شد، اما بررسی تجربهٔ فعال ناموفق بود؛ صفحه را دوباره بارگذاری کن.",
-      );
+      setError("ورود انجام شد، اما بررسی تجربهٔ فعال ناموفق بود.");
     }
+
+    router.replace(safeNextPath(searchParams.get("next")) ?? paths.discover);
   };
+
   const login = (email: string, password: string) =>
     run(() => finishLogin(email, password));
   const recommend = () =>
@@ -273,20 +445,35 @@ export default function Funilo() {
         check_in_id: checkIn.current.id,
       });
       setSlate(result);
-      setView("results");
-      window.history.replaceState(null, "", "/?slate=" + result.id);
+
+      router.push(`/individual/results?slate=${encodeURIComponent(result.id)}`);
     });
+
   const open = (item: Slot) =>
     run(async () => {
       if (!item.revision_id) {
         throw new Error("شناسهٔ نسخهٔ پیشنهاد موجود نیست.");
       }
 
+      if (!slate) {
+        throw new Error("جلسهٔ پیشنهاد معتبر پیدا نشد.");
+      }
+
       setDetail(await client.getRevision(item.revision_id));
 
       setSlot(item);
-      navigate("detail");
+
+      const params = new URLSearchParams({
+        from: "individual",
+        slate: slate.id,
+        slot: item.slot_id,
+      });
+
+      router.push(
+        `/activities/${encodeURIComponent(item.revision_id)}?${params.toString()}`,
+      );
     });
+
   const replace = (item: Slot) =>
     run(async () => {
       let result: ReplacementState & {
@@ -367,48 +554,67 @@ export default function Funilo() {
 
       setNotice(exists ? "از ذخیره‌ها برداشته شد." : "برای بعد نگهش داشتیم.");
     });
+
   const start = () =>
     run(async () => {
+      if (!slate || !slot || searchParams.get("from") !== "individual") {
+        throw new Error(
+          "این فعالیت ابتدا باید از یک پیشنهاد معتبر انتخاب شود.",
+        );
+      }
+
       const result = await client.startExperience({
-        recommendation_session_id: slate!.id,
-        slot_id: slot!.slot_id,
-        revision_id: slot!.revision_id,
+        recommendation_session_id: slate.id,
+        slot_id: slot.slot_id,
+        revision_id: slot.revision_id,
       });
+
       setExperience(result);
-      setView("active");
-      window.history.replaceState(null, "", "/?experience=" + result.id);
+
+      router.push(`/experiences/${encodeURIComponent(result.id)}`);
     });
+
   const complete = () =>
     run(async () => {
-      const result = await client.completeExperience(experience!.id);
+      if (!experience) {
+        throw new Error("تجربهٔ فعال پیدا نشد.");
+      }
+
+      const result = await client.completeExperience(experience.id);
+
       setExperience(result.experience);
       setAward(result.award);
       setFeedbackDone(false);
-      navigate("complete");
-    });
-  const showJourney = () =>
-    run(async () => {
-      const [j, h] = await Promise.all([
-        client.getJourney(),
-        client.getExperienceHistory(),
-      ]);
-      setJourney(j);
-      setHistory(h.items);
-      navigate("journey");
-    });
-  const route = (next: View) => {
-    if (!user) {
-      returnView.current = next === "home" ? "questions" : next;
 
-      return navigate("auth");
-    }
+      router.push(
+        `/experiences/${encodeURIComponent(result.experience.id)}/complete`,
+      );
+    });
 
-    if (next === "journey") {
-      showJourney();
-    } else {
-      navigate(next);
-    }
+  const showJourney = () => {
+    navigate("journey");
   };
+
+  const route = (next: AppView) => {
+    if (!user) {
+      const targets: Partial<Record<AppView, string>> = {
+        discover: paths.discover,
+        questions: paths.questions,
+        saved: paths.saved,
+        journey: paths.journey,
+        settings: paths.settings,
+        admin: paths.admin,
+      };
+
+      const target = targets[next] ?? paths.discover;
+
+      router.push(`${paths.login}?next=${encodeURIComponent(target)}`);
+      return;
+    }
+
+    navigate(next);
+  };
+
   const returnHome = () => {
     checkIn.current = null;
     route("questions");
@@ -426,24 +632,35 @@ export default function Funilo() {
         <span className="demo-detail">· تجربه‌های تألیفی برای امتحان‌کردن</span>
       </div>
       <header className="site-header">
-        <button
+        <Link
           className="wordmark"
-          onClick={() => navigate("home")}
-          aria-label="مودیگو، صفحهٔ اول"
+          href={user ? paths.discover : paths.landing}
+          aria-label="مودیگو، صفحهٔ اصلی"
         >
-          <span className="brand-symbol">
-            <Icon name="spark" size={25} />
-          </span>
-          مودیگو
-          <span className="brand-dot" aria-hidden="true">
-            .
-          </span>
-        </button>
+          <Image
+            src="/brand/moodigo-wordmark.png"
+            alt="مودیگو"
+            width={150}
+            height={36}
+            priority
+            className="brand-wordmark"
+          />
+        </Link>
+
         <div className="header-caption">یه کم وقت برای خودت.</div>
         <div className="header-actions">
           <Pwa />
           {experience?.status === "active" && (
-            <button className="active-link" onClick={() => navigate("active")}>
+            <button
+              className="active-link"
+              onClick={() => {
+                if (experience) {
+                  router.push(
+                    `/experiences/${encodeURIComponent(experience.id)}`,
+                  );
+                }
+              }}
+            >
               <span className="status-dot" />
               تجربهٔ بازت
             </button>
@@ -493,7 +710,26 @@ export default function Funilo() {
         <div className="status-region" role="status" aria-live="polite">
           {notice && <p className="notice-message">{notice}</p>}
         </div>
-        {boot ? (
+
+        {authState === "unavailable" && (
+          <div className="error-banner" role="alert">
+            <p>
+              بررسی نشست امکان‌پذیر نبود. اتصال سرور را بررسی کن و دوباره تلاش
+              کن.
+            </p>
+
+            <Button onClick={() => window.location.reload()}>
+              تلاش دوباره
+            </Button>
+          </div>
+        )}
+
+        {boot ||
+        routeLoading ||
+        (authState === "guest" && !isAuthPath(pathname)) ||
+        (authState === "authenticated" &&
+          isAuthPath(pathname) &&
+          pathname !== paths.reset) ? (
           <div className="loading-state" role="status">
             <span className="loading-flower" aria-hidden="true">
               <Icon name="spark" size={42} />
@@ -502,9 +738,61 @@ export default function Funilo() {
           </div>
         ) : (
           <>
-            {view === "home" && <Home start={() => route("questions")} />}
+            {view === "discover" && (
+              <section className="discover-intro">
+                <span className="eyebrow">خانهٔ کشف فعالیت‌ها</span>
+
+                <h1>دنیایی از تجربه‌های کوچیک در راهه.</h1>
+
+                <p className="intro">
+                  اینجا به‌زودی می‌تونی فعالیت‌های مختلف رو مرور کنی و چیزی که
+                  به سلیقه‌ات نزدیکه پیدا کنی.
+                </p>
+
+                {experience?.status === "active" && (
+                  <Button
+                    secondary
+                    onClick={() =>
+                      router.push(
+                        `/experiences/${encodeURIComponent(experience.id)}`,
+                      )
+                    }
+                  >
+                    ادامهٔ فعالیت قبلی
+                  </Button>
+                )}
+
+                <div className="inline-actions wrap">
+                  <Button onClick={() => route("questions")}>
+                    پیشنهاد برای همین الان
+                  </Button>
+
+                  <Button secondary onClick={() => route("saved")}>
+                    فعالیت‌های ذخیره‌شده
+                  </Button>
+                </div>
+              </section>
+            )}
+
             {view === "auth" && (
               <Auth
+                mode={authMode}
+                onModeChange={(mode) => {
+                  const destination =
+                    mode === "signup"
+                      ? paths.signup
+                      : mode === "forgot"
+                        ? paths.forgot
+                        : paths.login;
+
+                  const next = safeNextPath(searchParams.get("next"));
+
+                  router.push(
+                    next
+                      ? `${destination}?next=${encodeURIComponent(next)}`
+                      : destination,
+                  );
+                }}
                 busy={busy}
                 resetToken={!!resetToken}
                 login={login}
@@ -522,10 +810,14 @@ export default function Funilo() {
                       token: resetToken,
                       new_password: password,
                     });
-                    setResetToken(null);
+
                     dispatch(clearUser());
                     dispatch(apiSlice.util.resetApiState());
                     clearPrivateState();
+
+                    setAuthState("guest");
+                    router.replace(paths.login);
+
                     setNotice("رمزت عوض شد؛با رمز تازه وارد شو.");
                   })
                 }
@@ -624,20 +916,38 @@ export default function Funilo() {
               <section className="detail-column">
                 <button
                   className="text-button back-button"
-                  onClick={() => navigate(slate && slot ? "results" : "saved")}
+                  onClick={() => {
+                    const from = searchParams.get("from");
+                    const slateId = searchParams.get("slate");
+
+                    if (from === "individual" && slateId) {
+                      router.push(
+                        `/individual/results?slate=${encodeURIComponent(slateId)}`,
+                      );
+                    } else if (from === "saved") {
+                      router.push(paths.saved);
+                    } else {
+                      router.push(paths.discover);
+                    }
+                  }}
                 >
                   <span aria-hidden="true">→</span> برگشت به انتخاب‌ها
                 </button>
                 <ContentDetails content={detail.content} />
-                {slate && slot ? (
+
+                {searchParams.get("from") === "individual" &&
+                slate &&
+                slot &&
+                slot.revision_id === pathname.split("/")[2] ? (
                   <Button className="w-full" disabled={busy} onClick={start}>
                     {busy ? "یه لحظه…" : "همین رو شروع می‌کنم"}
                   </Button>
                 ) : (
                   <>
                     <Note>
-                      برای شروع،شرایط همین الانت رو بگو تا مناسب‌بودن پیشنهاد
-                      بررسی بشه.
+                      فعلاً شروع فعالیت تنها از مسیر Individual پشتیبانی می‌شه.
+                      شروع مستقیم از خانه و ذخیره‌ها به تغییر قرارداد Backend
+                      نیاز داره.
                     </Note>
                     <Button onClick={returnHome}>
                       برای الان پیشنهاد بگیرم
@@ -646,42 +956,57 @@ export default function Funilo() {
                 )}
               </section>
             )}
-            {view === "active" && experience && (
-              <section className="detail-column">
-                <span className="experience-label">
-                  <span aria-hidden="true">●</span> وقتِ خودته
-                </span>
-                {experience.unavailable || !experience.content_snapshot ? (
-                  <Empty title="دستور این تجربه دیگه در دسترس نیست.">
-                    <p>می‌تونی تجربهٔ بازت رو تموم یا لغو کنی.</p>
-                  </Empty>
-                ) : (
-                  <ContentDetails content={experience.content_snapshot} />
-                )}
-                <p className="hint">
-                  زمان‌سنج و عجله‌ای در کار نیست.هر وقت برات کافی بود،همین‌جا
-                  تمومش کن.
-                </p>
-                <div className="experience-actions">
-                  <Button onClick={complete} disabled={busy}>
-                    {busy ? "یه لحظه…" : "تمومش کردم"}
+
+            {view === "active" &&
+              (!experience ||
+                experience.id !== pathname.split("/")[2] ||
+                experience.status !== "active") && (
+                <Empty title="تجربهٔ فعالی در این مسیر پیدا نشد.">
+                  <Button onClick={() => navigate("discover")}>
+                    برگشت به خانه
                   </Button>
-                  <button
-                    className="text-button"
-                    disabled={busy}
-                    onClick={() =>
-                      run(async () => {
-                        await client.cancelExperience(experience.id);
-                        setExperience(null);
-                        returnHome();
-                      })
-                    }
-                  >
-                    این بار بی‌خیالش شدم
-                  </button>
-                </div>
-              </section>
-            )}
+                </Empty>
+              )}
+
+            {view === "active" &&
+              experience &&
+              experience.id === pathname.split("/")[2] &&
+              experience.status === "active" && (
+                <section className="detail-column">
+                  <span className="experience-label">
+                    <span aria-hidden="true">●</span> وقتِ خودته
+                  </span>
+                  {experience.unavailable || !experience.content_snapshot ? (
+                    <Empty title="دستور این تجربه دیگه در دسترس نیست.">
+                      <p>می‌تونی تجربهٔ بازت رو تموم یا لغو کنی.</p>
+                    </Empty>
+                  ) : (
+                    <ContentDetails content={experience.content_snapshot} />
+                  )}
+                  <p className="hint">
+                    زمان‌سنج و عجله‌ای در کار نیست.هر وقت برات کافی بود،همین‌جا
+                    تمومش کن.
+                  </p>
+                  <div className="experience-actions">
+                    <Button onClick={complete} disabled={busy}>
+                      {busy ? "یه لحظه…" : "تمومش کردم"}
+                    </Button>
+                    <button
+                      className="text-button"
+                      disabled={busy}
+                      onClick={() =>
+                        run(async () => {
+                          await client.cancelExperience(experience.id);
+                          setExperience(null);
+                          returnHome();
+                        })
+                      }
+                    >
+                      این بار بی‌خیالش شدم
+                    </button>
+                  </div>
+                </section>
+              )}
             {view === "complete" && experience && award && (
               <section className="completion-column">
                 <div className="completion-symbol" aria-hidden="true">
@@ -815,7 +1140,10 @@ export default function Funilo() {
                                 );
 
                                 setSlot(null);
-                                navigate("detail");
+
+                                router.push(
+                                  `/activities/${encodeURIComponent(s.revision_id)}?from=saved`,
+                                );
                               })
                             }
                           >
@@ -862,9 +1190,10 @@ export default function Funilo() {
                         </span>
                       ))}
                     </div>
+
                     <div className="dimension-list">
                       {journey.completed_dimensions.map((key) => (
-                        <span key={key}>{dimensionNames[key]}</span>
+                        <span key={key}>{dimensionNames[key] ?? key}</span>
                       ))}
                     </div>
                   </>
@@ -952,7 +1281,9 @@ export default function Funilo() {
                         dispatch(clearUser());
                         dispatch(apiSlice.util.resetApiState());
                         clearPrivateState();
-                        navigate("home");
+
+                        setAuthState("guest");
+                        router.replace(paths.landing);
                       })
                     }
                   >
@@ -965,8 +1296,17 @@ export default function Funilo() {
           </>
         )}
       </main>
+
       {user && (
         <nav className="bottom-nav" aria-label="صفحه‌های اصلی">
+          <button
+            aria-current={view === "discover" ? "page" : undefined}
+            onClick={() => route("discover")}
+          >
+            <Icon name="leaf" />
+            کشف
+          </button>
+
           <button
             aria-current={
               ["questions", "results", "detail", "active", "complete"].includes(
@@ -978,8 +1318,9 @@ export default function Funilo() {
             onClick={returnHome}
           >
             <Icon name="spark" />
-            امروز
+            Individual
           </button>
+
           <button
             aria-current={view === "saved" ? "page" : undefined}
             onClick={() => route("saved")}
@@ -987,6 +1328,7 @@ export default function Funilo() {
             <Icon name="bookmark" />
             ذخیره‌ها
           </button>
+
           <button
             aria-current={view === "journey" ? "page" : undefined}
             onClick={() => route("journey")}
@@ -996,9 +1338,9 @@ export default function Funilo() {
           </button>
         </nav>
       )}
+
       <footer className={`site-footer ${user ? "with-navigation" : ""}`}>
         <span className="footer-brand">
-          <Icon name="spark" size={17} />
           مودیگو <span>· با ریتم تو</span>
         </span>
         <span>یه کم وقت برای خودت، بدون باید.</span>

@@ -53,7 +53,7 @@ export default function Pwa() {
         .catch(() => {
           // Installation help still works when a browser disallows service workers.
           setMessage(
-            "مرورگرت فعلاً دسترسی آفلاین رو فعال نکرده؛ فانیلو با اینترنت در دسترسه.",
+            "مرورگرت فعلاً دسترسی آفلاین رو فعال نکرده؛ مودیگو با اینترنت در دسترسه.",
           );
         });
     }
@@ -129,27 +129,27 @@ export default function Pwa() {
           <Icon name="spark" size={38} />
         </span>
         <span className="eyebrow">همیشه دمِ دستت</span>
-        <h2 id="install-title">یه جا برای فانیلو، روی صفحه‌ات.</h2>
+        <h2 id="install-title">یه جا برای مودیگو، روی صفحه‌ات.</h2>
         <p id="install-description">
-          فانیلو رو به صفحهٔ اصلی اضافه کن تا با یه لمس برگردی به وقتِ خودت.
+          مودیگو رو به صفحهٔ اصلی اضافه کن تا با یه لمس برگردی به وقتِ خودت.
         </p>
         {prompt ? (
           <Button className="w-full" disabled={installing} onClick={install}>
             <Icon name="download" size={19} />
-            {installing ? "در حال نصب…" : "نصب فانیلو"}
+            {installing ? "در حال نصب…" : "نصب مودیگو"}
           </Button>
         ) : (
           <ol className="install-instructions">
             {(ios
               ? [
-                  "فانیلو رو در مرورگر Safari باز کن.",
+                  "مودیگو رو در مرورگر Safari باز کن.",
                   "دکمهٔ اشتراک‌گذاری (Share) رو بزن.",
                   "افزودن به صفحهٔ اصلی (Add to Home Screen) رو انتخاب کن.",
                 ]
               : [
                   "منوی مرورگرت رو باز کن.",
                   "نصب برنامه (Install app) یا افزودن به صفحهٔ اصلی رو انتخاب کن.",
-                  "اگه این گزینه رو ندیدی، فانیلو رو در Chrome یا Edge باز کن.",
+                  "اگه این گزینه رو ندیدی، مودیگو رو در Chrome یا Edge باز کن.",
                 ]
             ).map((text, i) => (
               <li key={text}>

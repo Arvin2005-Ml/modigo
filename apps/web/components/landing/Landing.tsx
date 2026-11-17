@@ -1,8 +1,8 @@
-import { Button } from "./ui";
-import Icon from "./Icon";
-import MomentArt from "./MomentArt";
+import { Button } from "../ui";
+import Icon from "../Icon";
+import MomentArt from "../MomentArt";
 
-export default function Home({ start }: { start: () => void }) {
+export default function Landing({ start }: { start: () => void }) {
   return (
     <>
       <section className="hero" aria-labelledby="hero-title">
@@ -28,7 +28,7 @@ export default function Home({ start }: { start: () => void }) {
               ببینیم چی می‌چسبه <Icon name="arrow" size={20} />
             </Button>
             <a className="how-link" href="#how-it-works">
-              فانیلو چطور کار می‌کنه؟ <span aria-hidden="true">↙</span>
+              مودیگو چطور کار می‌کنه؟ <span aria-hidden="true">↙</span>
             </a>
           </div>
           <div className="hero-reassurance">
@@ -94,7 +94,7 @@ export default function Home({ start }: { start: () => void }) {
             <Icon name="heart" size={17} /> قرار نیست کار بزرگی باشه
           </span>
           <p className="showcase-caption">
-            چند نمونه از حال‌وهوای فانیلو؛ انتخاب‌های تو با شرایطت جور می‌شن.
+            چند نمونه از حال‌وهوای مودیگو انتخاب‌های تو با شرایطت جور می‌شن.
           </p>
         </div>
       </section>

@@ -1,2 +1,5 @@
-import Funilo from '@/components/Funilo';
-export default function Page() { return <Funilo />; }
+import LandingEntry from "@/components/landing/LandingEntry";
+
+export default function Page() {
+  return <LandingEntry />;
+}
