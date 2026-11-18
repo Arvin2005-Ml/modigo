@@ -1,5 +1,4 @@
 """Isolated test double; never selectable by runtime configuration."""
-import builtins
 from collections.abc import Iterator
 from contextlib import contextmanager
 from copy import deepcopy
@@ -32,11 +31,11 @@ class MemoryTestStore:
         with self._lock:
             return deepcopy(self._collections.get(collection, {}).get(record_id))
 
-    def list(self, collection: str) -> builtins.list[Document]:
+    def list(self, collection: str) -> list[Document]:
         with self._lock:
             return deepcopy(list(self._collections.get(collection, {}).values()))
 
-    def published_catalog(self) -> builtins.list[Document]:
+    def published_catalog(self) -> list[Document]:
         with self._lock:
             revisions = self._collections.get('activity_revisions', {})
             rows = []
