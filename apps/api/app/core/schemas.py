@@ -13,12 +13,6 @@ Dimension = Literal['detachment', 'relaxation', 'autonomy', 'mastery', 'meaning'
 Integer = Annotated[int, Field(strict=True)]
 
 
-def normalize_city(value):
-    if value is None:
-        return None
-    return ' '.join(value.translate(str.maketrans({'ي': 'ی', 'ك': 'ک', '\u200c': ' '})).split()) or None
-
-
 class Input(BaseModel):
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=True, validate_default=True)
 
@@ -56,12 +50,6 @@ class Credentials(Input):
 class Signup(Credentials):
     display_name: str = Field(default='', max_length=60)
     adult_confirmed: Literal[True]
-    city: str | None = Field(default=None, min_length=2, max_length=60)
-
-    @field_validator('city', mode='before')
-    @classmethod
-    def city_name(cls, value):
-        return normalize_city(value) if isinstance(value, str) or value is None else value
 
     @field_validator('adult_confirmed', mode='before')
     @classmethod
@@ -132,21 +120,15 @@ class Context(Constraints):
     energy: Literal['low', 'medium', 'high', 'unknown']
     social_mode: Literal['solo', 'together', 'either']
     party_size: Integer = Field(ge=1, le=12)
-    venue: Literal['home', 'outdoor', 'indoor_public', 'any']
+    venue: Literal['home', 'away_from_home', 'any', 'outdoor', 'indoor_public']
     budget: Budget
-    mood: Literal['tired', 'restless', 'bored', 'low', 'okay', 'skip']
+    activity_intent: Goal | None = None
+    mood: Literal['tired', 'restless', 'bored', 'low', 'okay', 'skip'] = 'skip'
     goal: Goal = 'any'
     need_now: Goal = 'any'
     desired_outcome: Goal = 'any'
-    allow_venue_planning: bool = Field(default=False, strict=True)
-    city: str | None = Field(default=None, min_length=2, max_length=60)
     weather: Literal['fair', 'adverse', 'unknown'] = 'unknown'
     daylight: Literal['day', 'night', 'unknown'] = 'unknown'
-
-    @field_validator('city', mode='before')
-    @classmethod
-    def city_name(cls, value):
-        return normalize_city(value) if isinstance(value, str) or value is None else value
 
     @field_validator('available_minutes', 'party_size', mode='before')
     @classmethod

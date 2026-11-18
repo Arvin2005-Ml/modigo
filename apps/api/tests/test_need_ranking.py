@@ -55,6 +55,19 @@ class NeedRankingTests(unittest.TestCase):
         self.assertEqual(self.first({**self.context, 'goal': 'meaning'}), 'meaning')
         self.assertEqual(self.first(), self.first())
 
+    def test_one_intent_replaces_legacy_answers_and_mood(self):
+        legacy = {**self.context, 'need_now': 'unwind', 'desired_outcome': 'connect', 'mood': 'bored'}
+        history = [self.choice('relaxation', i) for i in range(10)]
+        for goal, dimension in GOALS.items():
+            with self.subTest(goal=goal):
+                self.assertEqual(self.first({**legacy, 'activity_intent': goal}, history), dimension)
+        neutral = {**legacy, 'activity_intent': 'any'}
+        self.assertEqual(current_needs(neutral), {})
+        self.assertEqual(self.first(neutral, history), 'relaxation')
+        self.assertEqual(self.first({**neutral, 'goal': 'meaning'}, history), 'meaning')
+        scored = rank(self.candidates, neutral, NOW, set(), 'fixed', [], [], [], count=6)
+        self.assertEqual(len({item['score'] for item in scored}), 1)
+
     def test_frequent_selections_go_first_when_current_need_is_unknown(self):
         history = [self.choice('autonomy', i) for i in range(4)] + [self.choice('mastery', 10)]
         self.assertEqual(self.first(history=history), 'autonomy')

@@ -49,7 +49,6 @@ class Experiences:
                 raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
             if activity['published_revision_id'] != data.revision_id:
                 conflict('نسخهٔ تازه‌ای آماده شده؛دوباره پیشنهاد بگیر.')
-            self.catalog.validated_content(revision, activity)
             context = merge_constraints(session['context_snapshot'], self.identity.preferences(user_id)['preferences'])
             candidate = dict(id=activity['id'], active=True, state=revision['state'], revision_id=revision['id'],
                              published_revision_id=activity['published_revision_id'], content=revision['content'])

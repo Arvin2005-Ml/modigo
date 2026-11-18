@@ -58,9 +58,9 @@ test('offline navigation returns the generic page without personal data', async 
 });
 
 test('activation removes only obsolete Funilo static caches', async () => {
-  const sw = worker({existingKeys: ['other-app', 'funilo-static-v0', 'funilo-static-v1', 'funilo-static-v2']});
+  const sw = worker({existingKeys: ['other-app', 'funilo-static-v0', 'funilo-static-v1']});
   await sw.lifecycle('activate');
-  assert.deepEqual(sw.operations.filter(op => op[0] === 'delete'), [['delete', 'funilo-static-v0'], ['delete', 'funilo-static-v1']]);
+  assert.deepEqual(sw.operations.filter(op => op[0] === 'delete'), [['delete', 'funilo-static-v0']]);
 });
 
 test('evicted offline cache still produces a valid generic response', async () => {

@@ -58,45 +58,6 @@ class ConfigurationTests(unittest.TestCase):
         with patch('app.core.config.load_environment', return_value=environment):
             self.assertEqual(Settings.load().app_origin, 'http://127.0.0.1:3000')
 
-    def test_trusted_origins_extend_the_exact_allowlist(self):
-        settings = self.settings(environment='production', app_origin='https://funilo.example.test',
-                                 csrf_trusted_origins=('https://moodigo.ir', 'https://www.moodigo.ir'))
-        settings.validate()
-        self.assertEqual(settings.allowed_origins,
-                         ['https://funilo.example.test', 'https://moodigo.ir', 'https://www.moodigo.ir'])
-
-    def test_trusted_origins_must_be_canonical_public_https_in_production(self):
-        for origins in (('https://moodigo.ir/',), ('http://moodigo.ir',), ('https://localhost',),
-                        ('https://127.0.0.1',), ('https://moodigo.ir/path',), ('https://moodigo.ir?x=1',)):
-            with self.subTest(origins=origins), self.assertRaises(ValueError):
-                self.settings(environment='production', app_origin='https://funilo.example.test',
-                              csrf_trusted_origins=origins).validate()
-
-    def test_environment_trusted_origins_are_canonicalized_and_deduplicated(self):
-        with patch('app.core.config.load_environment', return_value={
-                'APP_ENV': 'production', 'APP_ORIGIN': 'https://shadophena.liara.run',
-                'CSRF_TRUSTED_ORIGINS': ' https://moodigo.ir/ , https://www.moodigo.ir,https://shadophena.liara.run',
-                'MONGODB_URI': URI, 'CSRF_HMAC_SECRET': SECRET}):
-            settings = Settings.load()
-        self.assertEqual(settings.csrf_trusted_origins,
-                         ('https://moodigo.ir', 'https://www.moodigo.ir', 'https://shadophena.liara.run'))
-        self.assertEqual(settings.allowed_origins,
-                         ['https://shadophena.liara.run', 'https://moodigo.ir', 'https://www.moodigo.ir'])
-
-    def test_development_trusted_origins_also_accept_http_loopback(self):
-        settings = self.settings(csrf_trusted_origins=('http://localhost:3000',))
-        settings.validate()
-        self.assertIn('http://localhost:3000', settings.allowed_origins)
-
-    def test_invalid_trusted_origins_error_names_the_variable(self):
-        with patch('app.core.config.load_environment', return_value={
-                'APP_ENV': 'production', 'APP_ORIGIN': 'https://shadophena.liara.run',
-                'CSRF_TRUSTED_ORIGINS': 'https://moodigo.ir/path',
-                'MONGODB_URI': URI, 'CSRF_HMAC_SECRET': SECRET}):
-            with self.assertRaises(ValueError) as caught:
-                Settings.load()
-        self.assertIn('CSRF_TRUSTED_ORIGINS', str(caught.exception))
-
     def test_environment_origin_is_canonicalized_to_the_browser_origin(self):
         for value in ('https://shadophena.liara.run/', '  https://shadophena.liara.run  ',
                       'https://SHADOPHENA.liara.run:443/'):

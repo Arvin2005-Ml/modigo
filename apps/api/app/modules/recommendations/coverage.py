@@ -12,7 +12,7 @@ from app.modules.recommendations.eligibility import eligible
 MINUTES = (5, 15, 30, 60, 120, 480)
 PARTIES = (('solo', 1), ('together', 2), ('together', 3), ('together', 4),
            ('together', 8), ('together', 12), ('either', 1), ('either', 2), ('either', 12))
-VENUES = ('home', 'outdoor', 'indoor_public', 'any')
+VENUES = ('home', 'away_from_home', 'any', 'outdoor', 'indoor_public')
 BUDGETS = ({'mode': 'free'}, {'mode': 'cap', 'cap_toman': 1}, {'mode': 'flexible'})
 
 
@@ -31,8 +31,9 @@ def coverage(candidates, now):
 
 def markdown(candidates, now):
     rows = coverage(candidates, now)
-    labels = {'home': 'خانه', 'outdoor': 'هوای آزاد', 'indoor_public': 'سرپوشیده', 'any': 'هرجا'}
-    lines = ['# پوشش کاتالوگ قابل پیشنهاد', '', f'تاریخ تولید: {now:%Y-%m-%d}؛ {len(candidates)} تجربهٔ قابل پیشنهاد در دیتابیس پیکربندی‌شده.', '',
+    labels = {'home': 'خانه', 'away_from_home': 'بیرون از خانه', 'any': 'هرجا',
+              'outdoor': 'هوای آزاد (قرارداد قبلی)', 'indoor_public': 'سرپوشیده (قرارداد قبلی)'}
+    lines = ['# پوشش کاتالوگ نمایشی', '', f'تاریخ تولید: {now:%Y-%m-%d}؛ {len(candidates)} تجربهٔ فعالِ نمایشی.', '',
         f'{len(rows)} ترکیب زمان، همراه، محیط و بودجه با تابع واقعی فیلتر بررسی شد. '
         f'کمینهٔ گزینهٔ معتبر: {min(r["eligible_count"] for r in rows)}؛ '
         f'سلول‌های زیر شش گزینه: {sum(r["eligible_count"] < 6 for r in rows)}.', '',
@@ -56,7 +57,7 @@ def markdown(candidates, now):
         'فعالیت‌های بیرون و سرپوشیده فقط در محل امن، مجاز و از قبل در دسترس اجرا می‌شوند؛ '
         'این گزارش وجود مکان، بلیت، مسیر یا آب‌وهوای مناسب را تأیید نمی‌کند. '
         'نمونه‌های وابسته به هوای مناسب یا روز در شمارش پایه وارد نمی‌شوند.', '',
-        'این شمارش ارزیابی جذابیت توسط کاربر، در دسترس بودن مکان یا تأیید انتشار عمومی نیست.', '',
+        'منشأ محتوا `demo` و صرفاً محلی است. این شمارش ارزیابی جذابیت توسط کاربر یا تأیید انتشار عمومی نیست.', '',
         'بازتولید از ریشهٔ مخزن:', '', '```sh',
         'PYTHONPATH=apps/api .venv/bin/python -m app.modules.recommendations.coverage', '```', '']
     return '\n'.join(lines)

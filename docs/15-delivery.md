@@ -27,7 +27,6 @@ npm run dev
 ```dotenv
 APP_ENV=development
 APP_ORIGIN=http://127.0.0.1:3000
-CSRF_TRUSTED_ORIGINS=https://moodigo.ir,https://www.moodigo.ir
 DATA_BACKEND=mongo
 MONGODB_URI=mongodb://root:YOUR_PASSWORD@olympus.liara.cloud:34468/my-app?authSource=admin
 CSRF_HMAC_SECRET=REPLACE_WITH_A_STABLE_RANDOM_SECRET_AT_LEAST_32_CHARACTERS

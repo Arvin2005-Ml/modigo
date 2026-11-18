@@ -6,6 +6,13 @@ publication state and ownership are checked here only as candidate eligibility.
 from datetime import datetime
 
 MOBILITY = {'seated': 0, 'light': 1, 'active': 2}
+VENUE_MATCHES = {
+    'home': ('home',),
+    'away_from_home': ('outdoor', 'indoor_public'),
+    'any': ('home', 'outdoor', 'indoor_public'),
+    'outdoor': ('outdoor',),
+    'indoor_public': ('indoor_public',),
+}
 
 
 def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | None = None) -> tuple[str, int] | None:
@@ -22,14 +29,10 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
             or activity['id'] in (excluded or set())):
         return None
     content = activity['content']
-    if content.get('requires_venue_check') and not context.get('allow_venue_planning', False):
-        return None
-    if content.get('place') and context.get('city') != content['place']['city']:
-        return None
     duration = sum(content[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes'))
     if duration > context['available_minutes']:
         return None
-    if context['venue'] != 'any' and context['venue'] != content['venue']:
+    if content['venue'] not in VENUE_MATCHES.get(context['venue'], ()):
         return None
     requested = context['social_mode']
     size = context['party_size']

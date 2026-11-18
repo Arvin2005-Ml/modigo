@@ -7,16 +7,20 @@ from app.modules.recommendations.eligibility import eligible
 GOALS = {'unwind': 'relaxation', 'switch_off': 'detachment', 'learn': 'mastery',
          'connect': 'affiliation', 'meaning': 'meaning', 'choose': 'autonomy'}
 ENERGY = {'low': 0, 'medium': 1, 'high': 2}
-ALGORITHM_VERSION = 'needs_history_v2'
+ALGORITHM_VERSION = 'needs_history_v3'
 
 
 def current_needs(context):
     """Explicit situational answers take precedence over a profile default."""
+    intent = context.get('activity_intent')
+    fallback = GOALS.get(context.get('goal'))
+    if intent is not None:
+        target = GOALS.get(intent) or fallback
+        return {target: 1.} if target else {}
     answers = [(GOALS.get(context.get('need_now')), .6),
                (GOALS.get(context.get('desired_outcome')), .4)]
     answered = [(dimension, weight) for dimension, weight in answers if dimension]
     if not answered:
-        fallback = GOALS.get(context.get('goal'))
         return {fallback: 1.} if fallback else {}
     total = sum(weight for _, weight in answered)
     result = Counter()
@@ -48,6 +52,7 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
     selected = list(selected or [])
     scored = []
     needs = current_needs(context)
+    mood_answer = context.get('mood', 'skip') if context.get('activity_intent') is None else 'skip'
     preferences = dimension_preferences(history)
     completed = [e for e in history if e['status'] == 'completed']
     by_experience = {e['id']: e for e in completed}
@@ -70,13 +75,13 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
         ratio = sum(c[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes')) / context['available_minutes']
         time = .6 if ratio <= .2 else 1 if ratio <= .8 else .8
         mood = .5
-        if context['mood'] == 'tired' and (c['primary_dimension'] == 'relaxation' or c['energy_required'] == 'low'):
+        if mood_answer == 'tired' and (c['primary_dimension'] == 'relaxation' or c['energy_required'] == 'low'):
             mood = 1
-        elif context['mood'] == 'restless' and (c['primary_dimension'] == 'detachment' or c['mobility_required'] == 'light'):
+        elif mood_answer == 'restless' and (c['primary_dimension'] == 'detachment' or c['mobility_required'] == 'light'):
             mood = 1
-        elif context['mood'] == 'bored' and c['primary_dimension'] in ('mastery', 'autonomy'):
+        elif mood_answer == 'bored' and c['primary_dimension'] in ('mastery', 'autonomy'):
             mood = 1
-        elif context['mood'] == 'low' and c['primary_dimension'] in ('relaxation', 'meaning'):
+        elif mood_answer == 'low' and c['primary_dimension'] in ('relaxation', 'meaning'):
             mood = .8
         numerator, denominator = 2., 4.
         for f in recent_feedback:

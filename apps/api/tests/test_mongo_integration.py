@@ -28,7 +28,7 @@ def isolated_settings():
     parsed = urlsplit(uri)
     database_name = 'funilo_test_' + uuid4().hex
     uri = urlunsplit(parsed._replace(path='/' + database_name))
-    return replace(settings, mongodb_uri=uri, app_origin=api_fixture.ORIGIN, catalog_release='legacy'), database_name
+    return replace(settings, mongodb_uri=uri, app_origin=api_fixture.ORIGIN), database_name
 
 
 def drop_owned_database(store, database_name):
@@ -49,22 +49,6 @@ class MongoStorageIntegrationTests(unittest.TestCase):
 
     def tearDown(self):
         drop_owned_database(self.store, self.database_name)
-
-    def test_real700_import_commits_and_reimport_preserves_publication_and_ids(self):
-        from app.core.mongo import MongoDocumentStore
-        from app.modules.catalog.curated import import_catalog, counts
-        now=datetime.now(timezone.utc)
-        result=import_catalog(self.store,lambda:now)
-        self.assertEqual(result['curated_recommendable'],700)
-        identities={a['seed_key']:a['id'] for a in self.store.list('activities')}
-        other=MongoDocumentStore(self.settings.mongodb_uri)
-        try:
-            self.assertEqual(counts(other)['curated_recommendable'],700)
-            again=import_catalog(other,lambda:now)
-            self.assertEqual(again['inserted'],0)
-            self.assertEqual(identities,{a['seed_key']:a['id'] for a in other.list('activities')})
-            self.assertEqual(len(other.list('activity_revisions')),700)
-        finally:other.close()
 
     def test_rollback_unique_indexes_versions_bson_and_new_client_persistence(self):
         from app.core.mongo import MongoDocumentStore

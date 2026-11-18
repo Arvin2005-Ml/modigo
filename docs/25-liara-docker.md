@@ -23,7 +23,6 @@ python3 scripts/package-deploy.py
 | متغیر | مقدار |
 | --- | --- |
 | `APP_ORIGIN` | `https://shadophena.liara.run`؛ دامنهٔ فعلی مورد تأیید مالک |
-| `CSRF_TRUSTED_ORIGINS` | فهرست جداشده با ویرگول از originهای HTTPS اضافی؛ پیش‌فرض `https://moodigo.ir,https://www.moodigo.ir` |
 | `MONGODB_URI` | URI محرمانهٔ فعلی مالک؛ هاست عمومی `olympus.liara.cloud`، پورت `34468`، دیتابیس `my-app` و `authSource=admin` |
 | `CSRF_HMAC_SECRET` | کلید تصادفی ثابت حداقل ۳۲نویسه‌ای؛ با restart/deploy عوض نشود |
 
@@ -38,7 +37,6 @@ python3 -c 'import secrets; print(secrets.token_hex(32))'
 ```dotenv
 APP_ENV=production
 APP_ORIGIN=https://shadophena.liara.run
-CSRF_TRUSTED_ORIGINS=https://moodigo.ir,https://www.moodigo.ir
 PORT=3000
 DATA_BACKEND=mongo
 API_WORKERS=1
@@ -49,8 +47,6 @@ DEMO_CONTENT=true
 ```
 
 `APP_ORIGIN` در production الزاماً HTTPS است و نشست با `__Host-funilo_session`، Secure، HttpOnly، SameSite=Lax و Path=/ صادر می‌شود. TLS در ورودی لیارا خاتمه می‌یابد؛ ارتباط داخلی Next و API روی loopback است. کلید CSRF، URI و کلید مدل در build، liara.json، Dockerfile یا `NEXT_PUBLIC_*` قرار نگیرند؛ محیط process فرانت نیز آن‌ها را به ارث نمی‌برد.
-
-`CSRF_TRUSTED_ORIGINS` فقط allowlist دقیق `Origin` مرورگر را گسترش می‌دهد؛ wildcard، زیردامنهٔ خودکار و اعتماد به `Host`/`X-Forwarded-*` پذیرفته نمی‌شود. هر مقدار باید origin کامل و canonical باشد (بدون مسیر، query، fragment، credential یا اسلش انتهایی) و در production فقط HTTPS عمومی مجاز است. دامنهٔ اصلی `APP_ORIGIN` همچنان مرجع ساخت لینک ایمیل و بررسی کوکی امن است؛ اگر دامنهٔ اصلی محصول به `https://moodigo.ir` منتقل شد، `APP_ORIGIN` را هم همان مقدار کنید و moodigo.ir را از فهرست اضافی حذف کنید. نشست برای هر hostname جداست؛ ورود از `moodigo.ir` و `www.moodigo.ir` دو کوکی مستقل می‌سازد.
 
 کلید مدل لازم نیست. برای استفادهٔ اختیاری از provider واقعی، `LLM_PROVIDER=gapgpt` و `GAPGPT_API_KEY` را در محیط سرور تنظیم کنید؛ endpoint و مدل پیش‌فرض تنظیمات حفظ می‌شوند. demo صریحاً نمایشی است. `DEMO_CONTENT=true` کاتالوگ تألیفی موجود را idempotent وارد می‌کند و انتشار عمومی بانک ۴۵۰تایی محسوب نمی‌شود. `false` فقط import بعدی demo را متوقف می‌کند؛ محتوای قبلاً موجود را حذف یا غیرفعال نمی‌کند.
 

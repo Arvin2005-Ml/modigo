@@ -32,7 +32,7 @@ def create_app(settings=None, clock=utcnow, store_factory=None):
             app.state.services.store.close()
             app.state.services = None
 
-    app = FastAPI(title='Moodigo', version='0.2.0', lifespan=lifespan,
+    app = FastAPI(title='Funilo', version='0.2.0', lifespan=lifespan,
                   docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None)
     app.state.settings = settings
     app.add_middleware(CORSMiddleware, allow_origins=settings.allowed_origins, allow_credentials=True,

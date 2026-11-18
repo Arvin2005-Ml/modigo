@@ -1,7 +1,6 @@
 from app.core.errors import DomainError, conflict, missing
 from app.core.values import uid, replace
 from app.modules.catalog.schemas import Content
-from pydantic import ValidationError
 
 
 class Catalog:
@@ -41,31 +40,13 @@ class Catalog:
 
     def candidates(self):
         result = []
-        # The expanded catalog must not make one public Mongo round trip per
-        # activity (including raw seeds). Resolve published pointers in one read.
-        revisions = {revision['id']: revision for revision in self.store.list('activity_revisions')}
         for activity in self.store.list('activities'):
-            revision = revisions.get(activity.get('published_revision_id'))
+            revision = self.store.get('activity_revisions', activity.get('published_revision_id', ''))
             if not activity['active'] or not revision or revision['state'] != 'published':
-                continue
-            try:
-                self.validated_content(revision, activity)
-            except DomainError:
                 continue
             result.append(dict(id=activity['id'], active=True, published_revision_id=revision['id'],
                 revision_id=revision['id'], state=revision['state'], content=revision['content']))
         return result
-
-    def validated_content(self, revision, activity=None):
-        """Legacy content stays inspectable; a fresh execution requires alignment."""
-        activity = activity or self.activity(revision['activity_id'])
-        try:
-            content = Content.model_validate(revision.get('content'))
-        except ValidationError:
-            raise DomainError('VALIDATION_ERROR', 'هدف تجربه و قدم‌های مرتبط با آن را در محتوای کامل بررسی کن.', 422) from None
-        if content.primary_dimension != activity['primary_dimension']:
-            raise DomainError('VALIDATION_ERROR', 'بُعد اصلی نسخه با فعالیت سازگار نیست.', 422)
-        return content
 
     def detail(self, actor, activity_id):
         self.authorize(actor)
@@ -115,7 +96,7 @@ class Catalog:
             self.check_draft(revision, expected, ('draft', 'rejected'))
             if not revision.get('content'):
                 raise DomainError('VALIDATION_ERROR', 'اول محتوای کامل این پیش‌نویس رو آماده کن.', 422)
-            self.validated_content(revision)
+            Content.model_validate(revision['content'])
             revision.update(state='review', draft_version=revision['draft_version'] + 1)
             result = replace(self.store, 'activity_revisions', revision)
             self.audit(actor['id'], 'revision_submitted', revision_id)
@@ -126,7 +107,7 @@ class Catalog:
             self.authorize(actor, admin=True)
             revision = self.revision(revision_id)
             self.check_draft(revision, expected, ('review',))
-            content = self.validated_content(revision)
+            content = Content.model_validate(revision['content'])
             if content.cost.kind == 'estimated':
                 # Evidence editing is deferred; never accept an unsupported estimate in this slice.
                 raise DomainError('VALIDATION_ERROR', 'انتشار قیمت برآوردی به مسیر ثبت مدرک نیاز داره.', 422)
@@ -137,9 +118,6 @@ class Catalog:
                 replace(self.store, 'activity_revisions', old)
             revision.update(state='published', draft_version=revision['draft_version'] + 1,
                 reviewed_by=actor['id'], reviewed_at=self.clock(), published_at=self.clock())
-            revision['validation_report'] = {**revision.get('validation_report', {}),
-                'schema_valid': True, 'dramma_version': content.dramma.version,
-                'human_approval': True}
             saved = replace(self.store, 'activity_revisions', revision)
             activity.update(published_revision_id=revision_id, active=not activity.get('withdrawn', False))
             replace(self.store, 'activities', activity)

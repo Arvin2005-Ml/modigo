@@ -44,14 +44,6 @@ def validate_mongodb_uri(uri):
         raise ValueError('Use the public MongoDB endpoint, including in local development')
 
 
-def parse_trusted_origins(value):
-    """Extra browser origins accepted for CSRF and CORS, canonicalized exactly."""
-    try:
-        return tuple(normalize_app_origin(part) for part in value.split(',') if part.strip())
-    except ValueError:
-        raise ValueError('CSRF_TRUSTED_ORIGINS must contain comma-separated canonical http(s) origins') from None
-
-
 def load_environment(path=None, overrides=None):
     """Load the root server .env without shell execution or interpolation.
 
@@ -80,7 +72,6 @@ def load_environment(path=None, overrides=None):
 @dataclass(frozen=True)
 class Settings:
     app_origin: str = 'http://127.0.0.1:3000'
-    csrf_trusted_origins: tuple[str, ...] = ()
     environment: str = 'development'
     data_backend: str = 'mongo'
     mongodb_uri: str = field(default='', repr=False)
@@ -88,7 +79,6 @@ class Settings:
     api_workers: str = '1'
     job_runner_mode: str = 'in_process'
     demo_content: bool = True
-    catalog_release: str = 'real700'
     provider: str = 'demo'
     gapgpt_api_key: str = field(default='', repr=False)
     gapgpt_base_url: str = 'https://api.gapgpt.app/v1'
@@ -100,8 +90,6 @@ class Settings:
         environment = environ.get('APP_ENV', 'development')
         default_origin = PRODUCTION_ORIGIN if environment == 'production' else 'http://127.0.0.1:3000'
         settings = cls(app_origin=normalize_app_origin(environ.get('APP_ORIGIN', default_origin)),
-                       csrf_trusted_origins=parse_trusted_origins(
-                           environ.get('CSRF_TRUSTED_ORIGINS', '')),
                        environment=environment,
                        data_backend=environ.get('DATA_BACKEND', 'mongo').strip().lower(),
                        mongodb_uri=environ.get('MONGODB_URI', '').strip(),
@@ -109,7 +97,6 @@ class Settings:
                        api_workers=environ.get('API_WORKERS', environ.get('WEB_CONCURRENCY', '1')),
                        job_runner_mode=environ.get('JOB_RUNNER_MODE', 'in_process'),
                        demo_content=environ.get('DEMO_CONTENT', 'true').lower() == 'true',
-                       catalog_release=environ.get('CATALOG_RELEASE', 'real700'),
                        provider=environ.get('LLM_PROVIDER', environ.get('AI_PROVIDER', 'demo')),
                        gapgpt_api_key=environ.get('GAPGPT_API_KEY', ''),
                        gapgpt_base_url=environ.get('GAPGPT_BASE_URL', 'https://api.gapgpt.app/v1'),
@@ -118,8 +105,6 @@ class Settings:
         return settings
 
     def validate(self):
-        if self.catalog_release not in ('real700', 'legacy'):
-            raise ValueError('CATALOG_RELEASE must be real700 or legacy')
         if self.data_backend != 'mongo':
             raise ValueError('Only DATA_BACKEND=mongo is enabled; memory fallback is disabled')
         validate_mongodb_uri(self.mongodb_uri)
@@ -137,13 +122,6 @@ class Settings:
         if self.environment == 'production' and (parsed.scheme != 'https' or
                 parsed.hostname in ('localhost', '127.0.0.1', '::1')):
             raise ValueError('Production APP_ORIGIN must use the public HTTPS origin')
-        for origin in self.csrf_trusted_origins:
-            if normalize_app_origin(origin) != origin:
-                raise ValueError('CSRF_TRUSTED_ORIGINS must contain canonical origins; use Settings.load for environment configuration')
-            trusted = urlsplit(origin)
-            if self.environment == 'production' and (trusted.scheme != 'https' or
-                    trusted.hostname in ('localhost', '127.0.0.1', '::1')):
-                raise ValueError('Production CSRF_TRUSTED_ORIGINS must use public HTTPS origins')
         if self.provider not in ('demo', 'gapgpt'):
             raise ValueError('Unsupported LLM provider')
         if self.provider == 'gapgpt' and (not self.gapgpt_api_key or
@@ -152,12 +130,9 @@ class Settings:
 
     @property
     def allowed_origins(self):
-        # Extra trusted origins are explicit; both localhost names are development-only aliases.
+        # Both names are local development aliases. All other origins stay exact.
         parsed = urlsplit(self.app_origin)
         origins = [self.app_origin]
-        for origin in self.csrf_trusted_origins:
-            if origin not in origins:
-                origins.append(origin)
         if (self.environment == 'development' and parsed.scheme == 'http'
                 and parsed.hostname in ('localhost', '127.0.0.1')):
             alternate = '127.0.0.1' if parsed.hostname == 'localhost' else 'localhost'

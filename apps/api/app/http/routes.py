@@ -38,7 +38,7 @@ def idem(request, actor, scope, payload, action, status=200):
 def ready(request: Request):
     s = services(request)
     s.store.ping()
-    return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider, 'local_demo_content': s.settings.demo_content, 'catalog_release': s.settings.catalog_release}
+    return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider, 'local_demo_content': s.settings.demo_content}
 
 
 @router.get('/health/live')

@@ -14,11 +14,9 @@ class Recommendations:
 
     def check_in(self, user_id, data):
         with self.store.atomic():
-            user = self.identity.user(user_id)
+            self.identity.user(user_id)
             preferences = self.identity.preferences(user_id)['preferences']
             context = merge_constraints(data.model_dump(), preferences, data.model_fields_set)
-            if 'city' not in data.model_fields_set:
-                context['city'] = user.get('city')
             record = self.store.insert('check_ins', dict(id=uid(), user_id=user_id, context=context,
                 created_slate_count=0, recommendation_session_id=None, shown_activity_ids=[],
                 created_at=self.clock(), expires_at=self.clock() + timedelta(days=90)))
@@ -103,8 +101,7 @@ class Recommendations:
         return {**{k: v for k, v in item.items() if k != 'score_internal'},
             'title': c['title'], 'teaser': c['teaser'],
             'total_minutes': sum(c[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes')),
-            'cost_label': 'رایگان' if c['cost']['kind'] == 'free' else 'هزینهٔ متغیر',
-            'requires_venue_check': c.get('requires_venue_check', False), 'unavailable': False}
+            'cost_label': 'رایگان' if c['cost']['kind'] == 'free' else 'هزینهٔ متغیر', 'unavailable': False}
 
     def present(self, session):
         items = [self.present_item(item) for item in session['items']]

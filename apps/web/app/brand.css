@@ -1,0 +1,657 @@
+/* =========================================
+   MOODIGO BRAND TOKENS
+========================================= */
+
+:root {
+  --moodigo-purple: #68558f;
+  --moodigo-coral: #f18f7c;
+  --moodigo-yellow: #f3d58a;
+  --moodigo-sage: #91a99a;
+  --moodigo-cream: #f8f5ef;
+
+  --moodigo-purple-hover: #554374;
+  --moodigo-purple-light: #f0ebf5;
+  --moodigo-purple-border: #dcd3e8;
+
+  --moodigo-text: #30293e;
+  --moodigo-muted: #625c69;
+  --moodigo-border: #ded7e5;
+
+  /* Aliases used by existing globals.css */
+
+  --bg: var(--moodigo-cream);
+  --surface: #ffffff;
+  --ink: var(--moodigo-text);
+  --muted: var(--moodigo-muted);
+
+  --green: var(--moodigo-purple);
+  --green-hover: var(--moodigo-purple-hover);
+
+  --soft: var(--moodigo-purple-light);
+  --border: var(--moodigo-border);
+  --focus: var(--moodigo-purple-hover);
+
+  --glass: rgba(248, 245, 239, 0.94);
+
+  --shadow: 0 8px 32px rgba(58, 44, 84, 0.06), 0 1px 3px rgba(58, 44, 84, 0.04);
+}
+
+/* =========================================
+   GLOBAL
+========================================= */
+
+html,
+body {
+  background: var(--moodigo-cream);
+  color: var(--moodigo-text);
+}
+
+::selection {
+  background: #e6dcef;
+  color: var(--moodigo-text);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.button-primary {
+  color: #ffffff;
+  background: var(--moodigo-purple);
+  border-color: var(--moodigo-purple);
+  box-shadow: 0 4px 12px rgba(104, 85, 143, 0.13);
+}
+
+.button-primary:hover:not(:disabled) {
+  background: var(--moodigo-purple-hover);
+  border-color: var(--moodigo-purple-hover);
+  box-shadow: 0 6px 18px rgba(104, 85, 143, 0.2);
+}
+
+.button-secondary {
+  background: #ffffff;
+  color: var(--moodigo-purple);
+  border-color: var(--moodigo-purple-border);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple);
+}
+
+.text-button {
+  color: var(--moodigo-purple);
+}
+
+/* =========================================
+   HEADER AND LOGO
+========================================= */
+
+.site-header {
+  background: rgba(248, 245, 239, 0.94);
+  border-color: var(--moodigo-border);
+  box-shadow: var(--shadow);
+}
+
+.site-header .wordmark {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+}
+
+.brand-wordmark {
+  display: block;
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+}
+
+.site-header .brand-wordmark {
+  width: 135px;
+}
+
+.header-caption {
+  color: var(--moodigo-muted);
+}
+
+.header-login,
+.account-button {
+  background: #ffffff;
+  border-color: var(--moodigo-border);
+  color: var(--moodigo-text);
+}
+
+.header-login:hover,
+.account-button:hover {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+}
+
+.active-link {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+  color: var(--moodigo-purple);
+}
+
+.install-button:hover {
+  color: var(--moodigo-purple);
+}
+
+/* =========================================
+   PUBLIC LANDING
+========================================= */
+
+.landing-shell {
+  min-height: 100dvh;
+}
+
+.landing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 82px;
+  padding: 16px clamp(16px, 4vw, 56px);
+  border-bottom: 1px solid var(--moodigo-border);
+  background: var(--moodigo-cream);
+}
+
+.landing-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.landing-nav a {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.landing-nav a:not(.landing-signup) {
+  color: var(--moodigo-purple);
+}
+
+.landing-signup {
+  padding: 9px 18px;
+  background: var(--moodigo-purple);
+  color: #ffffff;
+  border-radius: 50px;
+}
+
+.landing-signup:hover {
+  background: var(--moodigo-purple-hover);
+}
+
+.landing-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+}
+
+/* Existing Landing components */
+
+.hero-badge {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+  color: var(--moodigo-purple);
+}
+
+.hero h1 em {
+  color: var(--moodigo-purple);
+}
+
+.showcase-orbit {
+  background: radial-gradient(
+    ellipse,
+    rgba(220, 210, 236, 0.62) 0%,
+    rgba(248, 245, 239, 0.45) 46%,
+    transparent 72%
+  );
+}
+
+.preview-card {
+  border-color: var(--moodigo-border);
+  box-shadow: var(--shadow);
+}
+
+.preview-arrow {
+  color: var(--moodigo-purple);
+  background: var(--moodigo-purple-light);
+}
+
+.preview-category {
+  color: var(--moodigo-purple);
+}
+
+.preview-card-bottom {
+  border-color: var(--moodigo-border);
+}
+
+.floating-note {
+  color: var(--moodigo-text);
+  border-color: var(--moodigo-border);
+}
+
+.how-number {
+  background: var(--moodigo-purple-light);
+  color: var(--moodigo-purple);
+}
+
+.home-invitation {
+  background: #fbf0d5;
+  border-color: var(--moodigo-yellow);
+}
+
+.home-invitation > div > .icon {
+  color: var(--moodigo-purple);
+}
+
+/* =========================================
+   FORMS AND INDIVIDUAL
+========================================= */
+
+.eyebrow,
+.step-heading > span:first-child {
+  color: var(--moodigo-purple);
+}
+
+.question-column,
+.auth-column,
+.auth-layout {
+  border-color: var(--moodigo-border);
+}
+
+.flow-steps li[aria-current] {
+  color: var(--moodigo-purple);
+}
+
+.flow-steps li[aria-current] > span {
+  color: #ffffff;
+  background: var(--moodigo-purple);
+  border-color: var(--moodigo-purple);
+  box-shadow: 0 0 0 4px var(--moodigo-purple-light);
+}
+
+.flow-steps li.is-done > span {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+  color: var(--moodigo-purple);
+}
+
+.step-progress {
+  background: var(--moodigo-purple-light);
+}
+
+.step-progress span {
+  background: var(--moodigo-purple);
+}
+
+.choice span {
+  color: var(--moodigo-text);
+  border-color: var(--moodigo-border);
+  background: #fdfcfe;
+}
+
+.choice input:checked + span {
+  color: var(--moodigo-purple);
+  border-color: var(--moodigo-purple);
+  background: var(--moodigo-purple-light);
+  box-shadow: none;
+}
+
+.choice input:checked + span::after {
+  border-color: var(--moodigo-purple);
+}
+
+.choice input:hover + span {
+  border-color: var(--moodigo-purple);
+}
+
+.input {
+  color: var(--moodigo-text);
+  border-color: var(--moodigo-border);
+  background: #fdfcfe;
+}
+
+.input:focus {
+  background: #ffffff;
+  border-color: var(--moodigo-purple);
+}
+
+.check-label input {
+  accent-color: var(--moodigo-purple);
+}
+
+.soft-note {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+  color: var(--moodigo-text);
+}
+
+.auth-welcome {
+  background: #eee8f5;
+}
+
+.auth-welcome::after {
+  border-color: #d6cbe4;
+  box-shadow:
+    0 0 0 35px rgba(220, 210, 236, 0.4),
+    0 0 0 70px rgba(220, 210, 236, 0.2);
+}
+
+.welcome-symbol {
+  color: var(--moodigo-purple);
+}
+
+.auth-welcome p,
+.welcome-footnote {
+  color: var(--moodigo-muted);
+}
+
+.auth-segments {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+}
+
+.auth-segments button[aria-pressed="true"] {
+  color: var(--moodigo-purple);
+}
+
+/* =========================================
+   ACTIVITIES AND DETAILS
+========================================= */
+
+.activity-card {
+  background: #ffffff;
+  border-color: var(--moodigo-border);
+}
+
+.activity-card:first-child {
+  background: #ffffff;
+  border-color: var(--moodigo-purple-border);
+}
+
+.activity-card:hover {
+  border-color: var(--moodigo-purple);
+  box-shadow: 0 12px 30px rgba(104, 85, 143, 0.1);
+}
+
+.card-symbol {
+  background: var(--moodigo-purple-light);
+  color: var(--moodigo-purple);
+}
+
+.symbol-1 {
+  background: #fcf1d7;
+  color: #73551e;
+}
+
+.symbol-2 {
+  background: #f1eaf8;
+  color: var(--moodigo-purple);
+}
+
+.symbol-3 {
+  background: #fcece7;
+  color: #9a5147;
+}
+
+.symbol-4 {
+  background: #fae5df;
+  color: #9a5147;
+}
+
+.symbol-5 {
+  background: #e8f0eb;
+  color: #456d59;
+}
+
+.title-button:hover {
+  color: var(--moodigo-purple);
+}
+
+.explanation {
+  color: var(--moodigo-muted);
+}
+
+.explanation::before {
+  background: var(--moodigo-coral);
+}
+
+.icon-button {
+  color: var(--moodigo-purple);
+}
+
+.icon-button:hover,
+.icon-button[aria-pressed="true"] {
+  background: var(--moodigo-purple-light);
+  color: var(--moodigo-purple);
+}
+
+.constraint-summary span,
+.detail-meta span {
+  color: var(--moodigo-purple);
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+}
+
+.first-step {
+  background: #fbf1dd;
+  border-color: var(--moodigo-yellow);
+}
+
+.steps li > span {
+  color: var(--moodigo-purple);
+  background: var(--moodigo-purple-light);
+}
+
+.lighter {
+  border-color: var(--moodigo-sage);
+}
+
+.practical summary {
+  color: var(--moodigo-purple);
+}
+
+/* =========================================
+   EXPERIENCE AND DASHBOARD ELEMENTS
+========================================= */
+
+.experience-label,
+.completion-symbol,
+.award-card strong,
+.journey-stats strong {
+  color: var(--moodigo-purple);
+}
+
+.completion-symbol {
+  background: var(--moodigo-purple-light);
+}
+
+.award-card {
+  background: #fcf3df;
+  border-color: var(--moodigo-yellow);
+}
+
+.earned-badge {
+  background: #fff4dd;
+  border-color: var(--moodigo-yellow);
+  color: #705625;
+}
+
+.saved-card,
+.journey-stats,
+.history-list,
+.admin-editor,
+.admin-items {
+  border-color: var(--moodigo-border);
+}
+
+.dimension-list span {
+  background: var(--moodigo-purple-light);
+}
+
+.admin-row[aria-pressed="true"] {
+  background: var(--moodigo-purple-light);
+  box-shadow: inset -3px 0 0 var(--moodigo-purple);
+}
+
+.admin-preview {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+}
+
+/* =========================================
+   NAVIGATION AND STATUS
+========================================= */
+
+.bottom-nav {
+  background: rgba(248, 245, 239, 0.96);
+  border-color: var(--moodigo-border);
+  box-shadow: var(--shadow);
+}
+
+.bottom-nav button[aria-current] {
+  background: var(--moodigo-purple-light);
+  border-color: var(--moodigo-purple-border);
+  color: var(--moodigo-purple);
+}
+
+.bottom-nav button:hover {
+  background: var(--moodigo-purple-light);
+}
+
+.status-dot {
+  background: var(--moodigo-coral);
+}
+
+.demo-bar {
+  background: #f0ebf5;
+  border-color: var(--moodigo-purple-border);
+  color: var(--moodigo-purple);
+}
+
+.notice-message {
+  background: #eaf2ec;
+  border-color: var(--moodigo-sage);
+  color: #365b49;
+}
+
+.loading-flower {
+  background: var(--moodigo-purple-light);
+  color: var(--moodigo-purple);
+}
+
+.install-logo {
+  background: var(--moodigo-purple);
+  color: #ffffff;
+}
+
+.install-dialog {
+  border-color: var(--moodigo-border);
+}
+
+.site-footer {
+  border-color: var(--moodigo-border);
+}
+
+.footer-brand {
+  color: var(--moodigo-purple);
+}
+
+/* =========================================
+   DISCOVER PLACEHOLDER / LOADING
+========================================= */
+
+.route-loading {
+  min-height: 35vh;
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.discover-intro {
+  max-width: 760px;
+  margin: 48px auto;
+  text-align: center;
+}
+
+.discover-intro h1 {
+  color: var(--moodigo-purple);
+  margin: 12px 0;
+}
+
+.discover-intro .inline-actions {
+  margin-top: 24px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 767px) {
+  .brand-wordmark {
+    width: 118px;
+  }
+
+  .site-header .brand-wordmark {
+    width: 108px;
+  }
+
+  .landing-header {
+    padding: 12px 16px;
+    min-height: 70px;
+  }
+
+  .landing-footer {
+    flex-direction: column;
+  }
+
+  .bottom-nav {
+    width: calc(100% - 32px);
+    max-width: 440px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .bottom-nav button {
+    min-width: 0;
+    padding: 7px 5px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --moodigo-muted: #4f465d;
+    --moodigo-border: #786b89;
+  }
+
+  .site-header,
+  .bottom-nav {
+    background: #ffffff;
+  }
+}
+
+@media (forced-colors: active) {
+  .choice input:checked + span,
+  .bottom-nav button[aria-current],
+  .flow-steps li[aria-current] > span {
+    outline: 2px solid Highlight;
+  }
+}

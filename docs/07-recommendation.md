@@ -1,18 +1,13 @@
 # پیشنهاددهی بدون دادهٔ آموزش
 
-**افزودهٔ ۱۴ نوامبر۲۰۲۶:** برای Content.place، تطابق شهر نوبت یک فیلتر سخت پیش از رتبه‌بندی است؛ شهرِ نامعلوم یا متفاوت حذف می‌شود. قیمت unknown فقط با budget flexible مجاز می‌ماند. نبود شهر/ابزار با شل‌کردن محدودیت جبران نمی‌شود. [release هفتصد مورد](28-real-catalog-700.md).
-
-
-نسخهٔ الگوریتم `needs_history_v2` طبق [23](23-single-suggestion.md). cold start با محتوای برچسب‌خورده حل می‌شود. نتیجه احتمالی و قابل توضیح است؛ برچسب علمی یا ادعای شناخت شخصیت ندارد. فقط یک پیشنهاد هم‌زمان و حداکثر شش جایگزین تازه، همراه مرور رایگان دیده‌شده‌ها. هر گزینه مستقل با وقت و شرایط کاربر سنجیده می‌شود.
+نسخهٔ الگوریتم `needs_history_v3`، با پاسخ واحد [35](35-individual-questionnaire.md) و پشتیبانی از ورودی قدیمی [23](23-single-suggestion.md). cold start با محتوای برچسب‌خورده حل می‌شود. نتیجه احتمالی و قابل توضیح است؛ برچسب علمی یا ادعای شناخت شخصیت ندارد. فقط یک پیشنهاد هم‌زمان و حداکثر شش جایگزین تازه، همراه مرور رایگان دیده‌شده‌ها. هر گزینه مستقل با وقت و شرایط کاربر سنجیده می‌شود.
 
 ## مرحله۱: snapshot و فیلتر سخت
-
-برای محتوای مشروط شهری طبق [26](26-iran-paid-catalog.md)، `requires_venue_check=true` نیازمند `allow_venue_planning=true` در context است؛ نبود فیلد یعنی عدم رضایت. این شرط در تولید، تعویض و شروع اجرا می‌شود. قیمت unknown همچنان با بودجهٔ free/cap رد می‌شود و وزن‌های رتبه‌بندی تغییر نکرده‌اند.
 
 از آخرین revision منتشرشدهٔ هر activity فعال استفاده شود. context نرمال و constraints ماندگار merge شوند. فقط موارد زیر eligible هستند:
 
 ۱. total_minutes<=available_minutes؛ رفت‌وآمد و setup شمرده شوند. برای جایی که زمان رفت‌وآمد ناشناخته است سفر صفر حدس نزن؛ محتوا باید شرط «در دسترس در زمان مشخص» معتبر داشته باشد یا نیاز سفر را روشن کند.
-۲. تطابق venue؛ any همهٔ سه محیط. social solo فقط solo، together فقط together و min/max گروه سازگار، either طبق party_size سند05. تعداد اجرا برای candidate تک‌نفره همیشه۱است و برای گروهی همان party_size؛ هزینه و حدود گروه بر اساس آن‌اند. candidate با هر دو social mode ابتدا mode سازگار انتخاب کند،برای either نسخهٔ solo اولویت دارد تا نیاز به جمع اضافه ایجاد نکند؛ mode انتخاب‌شده در item با `execution_social_mode` و `execution_people` ثبت و در start حفظ شود.
+۲. تطابق venue: `any` هر سه محیط، `away_from_home` فضای باز و سرپوشیدهٔ عمومی، و سایر مقدارها فقط همان محیط را می‌پذیرند. social solo فقط solo، together فقط together و min/max گروه سازگار، either طبق party_size سند05. تعداد اجرا برای candidate تک‌نفره همیشه۱است و برای گروهی همان party_size؛ هزینه و حدود گروه بر اساس آن‌اند. candidate با هر دو social mode ابتدا mode سازگار انتخاب کند،برای either نسخهٔ solo اولویت دارد تا نیاز به جمع اضافه ایجاد نکند؛ mode انتخاب‌شده در item با `execution_social_mode` و `execution_people` ثبت و در start حفظ شود.
 ۳. هزینهٔ کل گروه: free فقط free؛ cap فقط free یا estimated تأییدشده و منقضی‌نشده با max_total<=cap؛ unknown فقط flexible. اعدادِ تولیدشده توسط مدل معتبر نیستند.
 ۴. required_items زیرمجموعهٔ owned_items. فهرست خالی یعنی هیچ وسیله‌ای لازم نیست؛ phone و internet خودکار فرض نشوند.
 ۵. mobility_required<=max_mobility؛ requires_step_free→step_free=true و requires_quiet→quiet_compatible=true. null سازگار محسوب نمی‌شود.
@@ -43,7 +38,7 @@ base = clamp(base - recent_penalty, 0, 1)
 
 ## مرحله۳: نیاز جاری، ترجیح تدریجی و انتخاب
 
-گزینهٔ مجاز با کلید `(need_fit, dimension_preference, base, stable_hash)` انتخاب می‌شود. پاسخ need_now وزن ۰٫۶ و desired_outcome وزن ۰٫۴ دارد؛ any کنار گذاشته و وزن باقی‌مانده نرمال می‌شود. نگاشت به primary dimension همان goal است. اگر هر دو any باشند، goal صریح یا پیش‌فرض حساب fallback است.
+گزینهٔ مجاز با کلید `(need_fit, dimension_preference, base, stable_hash)` انتخاب می‌شود. با `activity_intent` صریح، بُعد همان پاسخ وزن ۱ می‌گیرد و مؤلفهٔ mood خنثی (۰٫۵) است. اگر پاسخ `any` است، goal صریح یا پیش‌فرض حساب fallback است. برای درخواست/نوبت قدیمی که `activity_intent` ندارد یا مقدارش `null` است، `need_now` وزن ۰٫۶ و `desired_outcome` وزن ۰٫۴ دارد؛ `any` کنار گذاشته و وزن باقی‌مانده نرمال می‌شود. اگر هیچ پاسخ قدیمی مشخصی نباشد، همان fallback اعمال می‌شود. نگاشت هر دو روش به primary dimension همان Goal است.
 
 ترجیح بُعد از اولین شروع موفق هر recommendation session همان کاربر به دست می‌آید: `count_dimension/(total_selections+6)`. snapshot بُعد تجربه منبع است؛ لغو بعدی رأی را حذف یا اضافه نمی‌کند. مرور، بازکردن جزئیات، ذخیره، تعویض و پایان رأی تازه نیستند. نیاز اعلام‌شده مقدم بر سابقه است؛ در نیاز یکسان بُعد پرتکرارتر زودتر می‌آید و سپس base فعالیت ملاک است. بدون سابقه همهٔ ترجیح‌ها صفرند.
 

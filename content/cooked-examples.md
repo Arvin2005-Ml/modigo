@@ -19,23 +19,14 @@
   "accessibility_note": "می‌تونی نشسته و بدون جابه‌جایی انجامش بدی؛ این نسخه به دیدن محیط وابسته‌ست.",
   "conditions_note": "در فضای آشنای خانه و از جای راحت و امن انجامش بده.",
   "primary_dimension": "detachment",
-  "secondary_dimensions": [
-    "autonomy"
-  ],
-  "tags": [
-    "observation",
-    "imagination",
-    "play",
-    "no_screen"
-  ],
+  "secondary_dimensions": ["autonomy"],
+  "tags": ["observation", "imagination", "play", "no_screen"],
   "active_minutes": 10,
   "setup_minutes": 0,
   "travel_minutes": 0,
   "energy_required": "low",
   "mobility_required": "seated",
-  "supported_social_modes": [
-    "solo"
-  ],
+  "supported_social_modes": ["solo"],
   "min_people": 1,
   "max_people": 1,
   "venue": "home",
@@ -45,35 +36,8 @@
   "quiet_compatible": true,
   "weather_requirement": "any",
   "daylight_requirement": "any",
-  "cost": {
-    "kind": "free",
-    "min_toman": 0,
-    "max_toman": 0,
-    "basis": "per_person",
-    "verified_at": null,
-    "valid_until": null,
-    "note": "با فضای موجود؛ خرید یا رفت‌وآمد لازم نیست."
-  },
-  "safety_notes": [],
-  "dramma": {
-    "version": "dramma_v1",
-    "mechanisms": [
-      {
-        "dimension": "detachment",
-        "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: سه وسیله رو فقط با نگاه انتخاب کن؛ لازم نیست چیزی جابه‌جا کنی.",
-        "step_indexes": [
-          1
-        ]
-      },
-      {
-        "dimension": "autonomy",
-        "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: به یکی‌شون اسم بده و توی ذهنت یه ماجرای کوتاه براش بساز.",
-        "step_indexes": [
-          3
-        ]
-      }
-    ]
-  }
+  "cost": {"kind":"free","min_toman":0,"max_toman":0,"basis":"per_person","verified_at":null,"valid_until":null,"note":"با فضای موجود؛ خرید یا رفت‌وآمد لازم نیست."},
+  "safety_notes": []
 }
 ```
 
@@ -94,23 +58,14 @@
   "accessibility_note": "نشسته و بدون حرکت انجام می‌شه؛ این نسخه به شنیدن صدا وابسته‌ست.",
   "conditions_note": "از جای امن و آشنای خانه انجام بده؛ به صداهای ناخوشایند اصرار نکن.",
   "primary_dimension": "relaxation",
-  "secondary_dimensions": [
-    "detachment"
-  ],
-  "tags": [
-    "listening",
-    "sensory",
-    "rest",
-    "no_screen"
-  ],
+  "secondary_dimensions": ["detachment"],
+  "tags": ["listening", "sensory", "rest", "no_screen"],
   "active_minutes": 5,
   "setup_minutes": 0,
   "travel_minutes": 0,
   "energy_required": "low",
   "mobility_required": "seated",
-  "supported_social_modes": [
-    "solo"
-  ],
+  "supported_social_modes": ["solo"],
   "min_people": 1,
   "max_people": 1,
   "venue": "home",
@@ -120,35 +75,8 @@
   "quiet_compatible": true,
   "weather_requirement": "any",
   "daylight_requirement": "any",
-  "cost": {
-    "kind": "free",
-    "min_toman": 0,
-    "max_toman": 0,
-    "basis": "per_person",
-    "verified_at": null,
-    "valid_until": null,
-    "note": "بدون وسیله و خرید تازه."
-  },
-  "safety_notes": [],
-  "dramma": {
-    "version": "dramma_v1",
-    "mechanisms": [
-      {
-        "dimension": "relaxation",
-        "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: گوشی رو لازم نیست برداری؛ فقط دنبال یه صدای نزدیک بگرد.",
-        "step_indexes": [
-          1
-        ]
-      },
-      {
-        "dimension": "detachment",
-        "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: گوشی رو لازم نیست برداری؛ فقط دنبال یه صدای نزدیک بگرد.",
-        "step_indexes": [
-          1
-        ]
-      }
-    ]
-  }
+  "cost": {"kind":"free","min_toman":0,"max_toman":0,"basis":"per_person","verified_at":null,"valid_until":null,"note":"بدون وسیله و خرید تازه."},
+  "safety_notes": []
 }
 ```
 
@@ -169,23 +97,14 @@
   "accessibility_note": "می‌تونی نشسته بمونی؛ اگر تماشا مناسب تو نیست،قصه یا جای خیالی رو انتخاب کن.",
   "conditions_note": "در جای آشنا و راحت خانه؛ این تجربه آزمون تصمیم‌گیری نیست.",
   "primary_dimension": "autonomy",
-  "secondary_dimensions": [
-    "detachment"
-  ],
-  "tags": [
-    "choice",
-    "imagination",
-    "creativity",
-    "no_screen"
-  ],
+  "secondary_dimensions": ["detachment"],
+  "tags": ["choice", "imagination", "creativity", "no_screen"],
   "active_minutes": 10,
   "setup_minutes": 0,
   "travel_minutes": 0,
   "energy_required": "low",
   "mobility_required": "seated",
-  "supported_social_modes": [
-    "solo"
-  ],
+  "supported_social_modes": ["solo"],
   "min_people": 1,
   "max_people": 1,
   "venue": "home",
@@ -195,35 +114,8 @@
   "quiet_compatible": true,
   "weather_requirement": "any",
   "daylight_requirement": "any",
-  "cost": {
-    "kind": "free",
-    "min_toman": 0,
-    "max_toman": 0,
-    "basis": "per_person",
-    "verified_at": null,
-    "valid_until": null,
-    "note": "هیچ خرید،اشتراک یا وسیله‌ای نیاز نیست."
-  },
-  "safety_notes": [],
-  "dramma": {
-    "version": "dramma_v1",
-    "mechanisms": [
-      {
-        "dimension": "autonomy",
-        "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: اگه خواستی مسیرش رو عوض کن؛ وقتی برات کافیه،پایانش هم انتخاب خودته.",
-        "step_indexes": [
-          3
-        ]
-      },
-      {
-        "dimension": "detachment",
-        "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: از بین سه گزینه یکی رو بدون دلیل‌آوردن انتخاب کن؛ هر سه می‌تونن بی‌وسیله باشن.",
-        "step_indexes": [
-          1
-        ]
-      }
-    ]
-  }
+  "cost": {"kind":"free","min_toman":0,"max_toman":0,"basis":"per_person","verified_at":null,"valid_until":null,"note":"هیچ خرید،اشتراک یا وسیله‌ای نیاز نیست."},
+  "safety_notes": []
 }
 ```
 
@@ -244,72 +136,25 @@
   "accessibility_note": "نشسته قابل انجامه؛ این نسخه به کنترل قلم و دیدن شیء نیاز داره.",
   "conditions_note": "فضای روشن و راحت برای دیدن کاغذ و شیء؛ آماده‌سازی توی زمان حساب شده.",
   "primary_dimension": "mastery",
-  "secondary_dimensions": [
-    "autonomy",
-    "detachment"
-  ],
-  "tags": [
-    "drawing",
-    "observation",
-    "creativity",
-    "no_screen"
-  ],
+  "secondary_dimensions": ["autonomy", "detachment"],
+  "tags": ["drawing", "observation", "creativity", "no_screen"],
   "active_minutes": 13,
   "setup_minutes": 2,
   "travel_minutes": 0,
   "energy_required": "medium",
   "mobility_required": "seated",
-  "supported_social_modes": [
-    "solo"
-  ],
+  "supported_social_modes": ["solo"],
   "min_people": 1,
   "max_people": 1,
   "venue": "home",
-  "required_items": [
-    "paper",
-    "pen"
-  ],
+  "required_items": ["paper", "pen"],
   "requires_async_contact": false,
   "step_free": true,
   "quiet_compatible": true,
   "weather_requirement": "any",
   "daylight_requirement": "any",
-  "cost": {
-    "kind": "free",
-    "min_toman": 0,
-    "max_toman": 0,
-    "basis": "per_person",
-    "verified_at": null,
-    "valid_until": null,
-    "note": "فقط با قلم و کاغذی که از قبل داری؛ خرید لازم نیست."
-  },
-  "safety_notes": [],
-  "dramma": {
-    "version": "dramma_v1",
-    "mechanisms": [
-      {
-        "dimension": "mastery",
-        "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: قلم رو روی کاغذ بذار و بدون برداشتنش دور شکل شیء حرکت کن؛ شبیه‌شدن کامل لازم نیست.",
-        "step_indexes": [
-          1
-        ]
-      },
-      {
-        "dimension": "autonomy",
-        "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: دو طرح رو کنار هم نگاه کن و فقط یه تفاوت جالب پیدا کن؛ لازم نیست بهتر و بدترشون کنی.",
-        "step_indexes": [
-          3
-        ]
-      },
-      {
-        "dimension": "detachment",
-        "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: قلم رو روی کاغذ بذار و بدون برداشتنش دور شکل شیء حرکت کن؛ شبیه‌شدن کامل لازم نیست.",
-        "step_indexes": [
-          1
-        ]
-      }
-    ]
-  }
+  "cost": {"kind":"free","min_toman":0,"max_toman":0,"basis":"per_person","verified_at":null,"valid_until":null,"note":"فقط با قلم و کاغذی که از قبل داری؛ خرید لازم نیست."},
+  "safety_notes": []
 }
 ```
 
@@ -323,30 +168,21 @@
   "steps": [
     "یکی از جزئیات اون لحظه رو توی ذهنت ببین؛مثلاً نور،یه جمله یا صدای آشنا.",
     "اگه دوست داشتی دو لحظهٔ دیگه هم اضافه کن؛پیدانشدنشون اشکالی نداره.",
-    "برای یکی‌شون یه اسم کوتاه بساز؛فقط برای خودت،بدون نیاز به نوشتن یا فرستادن. این انتخاب می‌تونه نشانهٔ یک علاقه یا ارزش خوشایند برای خودت باشه؛ خاطرهٔ خصوصی لازم نیست."
+    "برای یکی‌شون یه اسم کوتاه بساز؛فقط برای خودت،بدون نیاز به نوشتن یا فرستادن."
   ],
   "lighter_version": "فقط به یک چیز ساده که همین الان برات خوشاینده توجه کن؛مرور گذشته لازم نیست.",
   "materials_note": "کاغذ،گوشی یا اشتراک‌گذاری لازم نیست؛می‌تونه فقط ذهنی باشه.",
   "accessibility_note": "نشسته و بدون وسیله انجام می‌شه؛مرور خاطره کاملاً اختیاریه.",
   "conditions_note": "موضوع‌های سبک و راحت انتخاب کن؛اگر دوستش نداشتی می‌تونی تجربهٔ دیگه‌ای برداری.",
   "primary_dimension": "meaning",
-  "secondary_dimensions": [
-    "relaxation"
-  ],
-  "tags": [
-    "reflection",
-    "memory",
-    "gratitude",
-    "no_screen"
-  ],
+  "secondary_dimensions": ["relaxation"],
+  "tags": ["reflection", "memory", "gratitude", "no_screen"],
   "active_minutes": 10,
   "setup_minutes": 0,
   "travel_minutes": 0,
   "energy_required": "low",
   "mobility_required": "seated",
-  "supported_social_modes": [
-    "solo"
-  ],
+  "supported_social_modes": ["solo"],
   "min_people": 1,
   "max_people": 1,
   "venue": "home",
@@ -356,35 +192,8 @@
   "quiet_compatible": true,
   "weather_requirement": "any",
   "daylight_requirement": "any",
-  "cost": {
-    "kind": "free",
-    "min_toman": 0,
-    "max_toman": 0,
-    "basis": "per_person",
-    "verified_at": null,
-    "valid_until": null,
-    "note": "هیچ ابزار یا خریدی نیاز نیست."
-  },
-  "safety_notes": [],
-  "dramma": {
-    "version": "dramma_v1",
-    "mechanisms": [
-      {
-        "dimension": "meaning",
-        "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: برای یکی‌شون یه اسم کوتاه بساز؛فقط برای خودت،بدون نیاز به نوشتن یا فرستادن. این انتخاب می‌تونه نشانهٔ یک علاقه یا ارزش خوشایند برای خودت باشه؛ خاطرهٔ خصوصی لازم نیست.",
-        "step_indexes": [
-          3
-        ]
-      },
-      {
-        "dimension": "relaxation",
-        "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: یکی از جزئیات اون لحظه رو توی ذهنت ببین؛مثلاً نور،یه جمله یا صدای آشنا.",
-        "step_indexes": [
-          1
-        ]
-      }
-    ]
-  }
+  "cost": {"kind":"free","min_toman":0,"max_toman":0,"basis":"per_person","verified_at":null,"valid_until":null,"note":"هیچ ابزار یا خریدی نیاز نیست."},
+  "safety_notes": []
 }
 ```
 
@@ -405,24 +214,14 @@
   "accessibility_note": "نشسته انجام می‌شه؛این نسخه بر گفت‌وگوی شنیداری تکیه داره و فضای کاملاً ساکت نمی‌خواد.",
   "conditions_note": "دو تا چهار نفرِ آشنا و مایل،از قبل در خانه کنار هم باشین؛زمان جمع‌شدن کوتاه حساب شده.",
   "primary_dimension": "affiliation",
-  "secondary_dimensions": [
-    "autonomy",
-    "detachment"
-  ],
-  "tags": [
-    "storytelling",
-    "conversation",
-    "cooperation",
-    "play"
-  ],
+  "secondary_dimensions": ["autonomy", "detachment"],
+  "tags": ["storytelling", "conversation", "cooperation", "play"],
   "active_minutes": 10,
   "setup_minutes": 2,
   "travel_minutes": 0,
   "energy_required": "low",
   "mobility_required": "seated",
-  "supported_social_modes": [
-    "together"
-  ],
+  "supported_social_modes": ["together"],
   "min_people": 2,
   "max_people": 4,
   "venue": "home",
@@ -432,44 +231,8 @@
   "quiet_compatible": false,
   "weather_requirement": "any",
   "daylight_requirement": "any",
-  "cost": {
-    "kind": "free",
-    "min_toman": 0,
-    "max_toman": 0,
-    "basis": "per_group",
-    "verified_at": null,
-    "valid_until": null,
-    "note": "برای همراه‌های حاضر و بدون خرید یا رفت‌وآمد."
-  },
-  "safety_notes": [
-    "از خاطرهٔ خصوصی یا مسخره‌کردن آدم‌های واقعی برای قصه استفاده نکنین."
-  ],
-  "dramma": {
-    "version": "dramma_v1",
-    "mechanisms": [
-      {
-        "dimension": "affiliation",
-        "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: یکی با یه جملهٔ ساده شروع کنه؛مثلاً یه روز یه ابر کوچیک راهش رو گم کرد.",
-        "step_indexes": [
-          1
-        ]
-      },
-      {
-        "dimension": "autonomy",
-        "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: بعد از چند دور،با هم یه پایان کوتاه براش پیدا کنین؛هر نفر می‌تونه نوبتش رو رد کنه.",
-        "step_indexes": [
-          3
-        ]
-      },
-      {
-        "dimension": "detachment",
-        "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یکی با یه جملهٔ ساده شروع کنه؛مثلاً یه روز یه ابر کوچیک راهش رو گم کرد.",
-        "step_indexes": [
-          1
-        ]
-      }
-    ]
-  }
+  "cost": {"kind":"free","min_toman":0,"max_toman":0,"basis":"per_group","verified_at":null,"valid_until":null,"note":"برای همراه‌های حاضر و بدون خرید یا رفت‌وآمد."},
+  "safety_notes": ["از خاطرهٔ خصوصی یا مسخره‌کردن آدم‌های واقعی برای قصه استفاده نکنین."]
 }
 ```
 

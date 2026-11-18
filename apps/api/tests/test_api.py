@@ -14,6 +14,7 @@ from app.core.schemas import Context, PreferencesUpdate, StartInput, TAGS
 from app.core.values import replace
 from app.modules.catalog.schemas import ReviewInput, DraftUpdate
 from app.modules.catalog.bootstrap import seed_bank, seed_demo
+from app.modules.recommendations.eligibility import eligible
 
 ORIGIN = 'http://localhost:3000'
 CONTEXT = dict(available_minutes=30, energy='low', social_mode='solo', party_size=1,
@@ -30,9 +31,8 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
                 await asyncio.sleep(.01)
         self.ticker = asyncio.create_task(tick())
         self.now = datetime(2026, 11, 7, 9, 0, tzinfo=timezone.utc)
-        self.app = create_app(Settings(app_origin=ORIGIN, catalog_release='legacy', mongodb_uri='mongodb://public.example.test/test',
-            csrf_hmac_secret='test-only-stable-csrf-secret-32-characters',
-            csrf_trusted_origins=('https://moodigo.ir',)), clock=lambda: self.now,
+        self.app = create_app(Settings(app_origin=ORIGIN, mongodb_uri='mongodb://public.example.test/test',
+            csrf_hmac_secret='test-only-stable-csrf-secret-32-characters'), clock=lambda: self.now,
             store_factory=lambda _: MemoryTestStore())
         self.life = self.app.router.lifespan_context(self.app)
         await self.life.__aenter__()
@@ -68,17 +68,6 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
 
     async def post(self, client, path, data=None, key=None):
         return await client.post('/api/v1' + path, json=data or {}, headers={'Idempotency-Key': key or str(uuid4())})
-
-    async def test_start_revalidates_dramma_even_for_an_existing_suggestion(self):
-        slate = await self.slate()
-        item = slate['items'][0]
-        revision = self.s.catalog.revision(item['revision_id'])
-        revision['content'].pop('dramma')
-        replace(self.s.store, 'activity_revisions', revision)
-        response = await self.post(self.a, '/experiences', dict(recommendation_session_id=slate['id'],
-            slot_id=item['slot_id'], revision_id=item['revision_id']))
-        self.assertEqual(response.status_code, 422, response.text)
-        self.assertEqual(self.s.store.list('experiences'), [])
 
     async def slate(self, client=None, context=None):
         client = client or self.a
@@ -125,65 +114,6 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(feedback.status_code, 200, feedback.text)
         self.assertEqual((await self.a.get('/api/v1/me/journey')).json()['total_points'], 10)
         self.assertIsNone((await self.a.get('/api/v1/experiences/active')).json()['experience'])
-
-    async def test_signup_city_defaults_check_in_and_can_be_overridden(self):
-        client = await self.new_client()
-        response = await client.post('/api/v1/auth/signup', json={'email': 'city@example.test',
-            'password': PASSWORD, 'adult_confirmed': True, 'city': '  كيش  '})
-        self.assertEqual(response.status_code, 202, response.text)
-        login = await client.post('/api/v1/auth/login', json={'email': 'city@example.test', 'password': PASSWORD})
-        self.assertEqual(login.json()['user']['city'], 'کیش')
-        client.headers['X-CSRF-Token'] = login.json()['csrf_token']
-        self.assertEqual((await client.get('/api/v1/me')).json()['city'], 'کیش')
-        check = await self.post(client, '/check-ins', CONTEXT)
-        self.assertEqual(check.json()['context']['city'], 'کیش')
-        check = await self.post(client, '/check-ins', {**CONTEXT, 'city': 'رشت'})
-        self.assertEqual(check.json()['context']['city'], 'رشت')
-        check = await self.post(client, '/check-ins', {**CONTEXT, 'city': None})
-        self.assertIsNone(check.json()['context']['city'])
-        self.assertIsNone((await self.a.get('/api/v1/me')).json()['city'])
-
-    async def test_paid_iran_plan_can_be_recommended_started_completed_and_reviewed(self):
-        # Isolate the new catalog through normal publication state, not a fake ranker.
-        for activity in self.s.store.list('activities'):
-            if activity['published_revision_id'] and not activity['seed_key'].startswith('demo:iran-'):
-                activity['active'] = False
-                replace(self.s.store, 'activities', activity)
-        context = {**CONTEXT, 'venue': 'indoor_public', 'available_minutes': 300,
-            'budget': {'mode': 'flexible'}, 'allow_venue_planning': True}
-        denied = await self.slate(context={**context, 'allow_venue_planning': False})
-        self.assertEqual(denied['result_count'], 0)
-        for budget in ({'mode': 'free'}, {'mode': 'cap', 'cap_toman': 10000000}):
-            denied = await self.slate(context={**context, 'budget': budget})
-            self.assertEqual(denied['result_count'], 0)
-        slate = await self.slate(context=context)
-        item = slate['items'][0]
-        self.assertTrue(item['requires_venue_check'])
-        self.assertEqual(item['cost_label'], 'هزینهٔ متغیر')
-        detail = (await self.a.get('/api/v1/activity-revisions/' + item['revision_id'])).json()
-        self.assertTrue(detail['content']['requires_venue_check'])
-        self.assertEqual(detail['origin'], 'demo')
-        e = await self.start(slate=slate)
-        self.assertEqual((await self.post(self.a, f'/experiences/{e["id"]}/complete')).status_code, 200)
-        feedback = await self.a.put(f'/api/v1/experiences/{e["id"]}/feedback', json={'rating': 'liked', 'reason': None})
-        self.assertEqual(feedback.status_code, 200)
-
-    async def test_venue_planning_opt_in_is_rechecked_at_start(self):
-        context = {**CONTEXT, 'venue': 'indoor_public', 'available_minutes': 300,
-            'budget': {'mode': 'flexible'}, 'allow_venue_planning': True, 'liked_tags': ['food']}
-        for activity in self.s.store.list('activities'):
-            if activity['published_revision_id'] and activity['seed_key'] != 'demo:iran-dining-01':
-                activity['active'] = False
-                replace(self.s.store, 'activities', activity)
-        slate = await self.slate(context=context)
-        record = self.s.store.get('recommendation_sessions', slate['id'])
-        record['context_snapshot']['allow_venue_planning'] = False
-        replace(self.s.store, 'recommendation_sessions', record)
-        item = slate['items'][0]
-        result = await self.post(self.a, '/experiences', dict(recommendation_session_id=slate['id'],
-            slot_id=item['slot_id'], revision_id=item['revision_id']))
-        self.assertEqual(result.status_code, 409)
-        self.assertEqual(result.json()['error']['code'], 'INVALID_STATE')
 
     async def test_readiness_checks_storage_and_liveness_survives_outage(self):
         from unittest.mock import patch
@@ -242,20 +172,6 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         r = await other.post('/api/v1/auth/login', json={'email': self.ua['email'], 'password': PASSWORD},
                              headers={'X-CSRF-Token': self.a.headers['X-CSRF-Token']})
         self.assertEqual(r.status_code, 403)
-
-    async def test_configured_trusted_origin_passes_csrf_but_others_do_not(self):
-        accepted = await self.a.post('/api/v1/auth/signup', json={
-            'email': 'trusted-origin@example.test', 'password': PASSWORD, 'adult_confirmed': True},
-            headers={'Origin': 'https://moodigo.ir'})
-        self.assertEqual(accepted.status_code, 202, accepted.text)
-        for origin in ('https://www.moodigo.ir', 'http://moodigo.ir', 'https://moodigo.ir.evil.test',
-                       'https://attacker.test'):
-            with self.subTest(origin=origin):
-                denied = await self.a.post('/api/v1/auth/signup', json={
-                    'email': 'denied-origin@example.test', 'password': PASSWORD, 'adult_confirmed': True},
-                    headers={'Origin': origin})
-                self.assertEqual(denied.status_code, 403)
-                self.assertEqual(denied.json()['error']['code'], 'CSRF_FAILED')
 
     async def test_localhost_and_loopback_aliases_both_work_with_own_cookie(self):
         # Browsers scope cookies to each hostname, so obtain a token separately.
@@ -377,6 +293,36 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(slate['result_count'], 0)
         self.assertEqual(slate['empty_reason'], 'NO_MATCHES')
 
+    async def test_short_check_in_can_offer_and_start_either_non_home_venue(self):
+        body = dict(available_minutes=30, energy='low', social_mode='solo', party_size=1,
+                    venue='away_from_home', budget={'mode': 'free'}, activity_intent='learn')
+        # The chosen intent should win among eligible offers, even with a home match.
+        unrestricted = Context.model_validate({**body, 'venue': 'any'}).model_dump()
+        candidates = [a for a in self.s.catalog.candidates() if eligible(unrestricted, a, self.now)]
+        picks = [next(a for a in candidates if a['content']['venue'] == venue
+                      and a['content']['primary_dimension'] == dimension)
+                 for venue, dimension in (('home', 'mastery'), ('outdoor', 'detachment'), ('indoor_public', 'mastery'))]
+        keep = {a['id'] for a in picks}
+        with self.s.store.atomic():
+            for activity in self.s.store.list('activities'):
+                if activity['active'] and activity['id'] not in keep:
+                    activity['active'] = False
+                    replace(self.s.store, 'activities', activity)
+        check = await self.post(self.a, '/check-ins', body)
+        self.assertEqual(check.status_code, 201, check.text)
+        self.assertEqual(check.json()['context']['activity_intent'], 'learn')
+        created = await self.post(self.a, '/recommendation-sessions', {'check_in_id': check.json()['id']})
+        self.assertEqual(created.status_code, 201, created.text)
+        slate = created.json()
+        self.assertEqual(slate['context_summary']['venue'], 'away_from_home')
+        self.assertEqual(slate['items'][0]['activity_id'], picks[2]['id'])
+        fresh = await self.next_suggestion(slate)
+        self.assertEqual(fresh['items'][0]['activity_id'], picks[1]['id'])
+        self.assertFalse(fresh['replacement_available'])
+        e = await self.start(slate=fresh)
+        self.assertEqual(e['content_snapshot']['venue'], 'outdoor')
+        self.assertEqual((await self.post(self.a, f'/experiences/{e["id"]}/complete')).status_code, 200)
+
     async def test_previously_empty_onboarding_choices_can_start_and_finish(self):
         for venue, size in (('outdoor', 1), ('outdoor', 12), ('indoor_public', 1), ('indoor_public', 12)):
             context = {**CONTEXT, 'venue': venue, 'available_minutes': 5, 'party_size': size,
@@ -438,7 +384,7 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
     async def test_import_idempotent_raw_never_visible(self):
         seed_bank(self.s.store, self.s.clock)
         seed_demo(self.s.store, self.s.clock)
-        self.assertEqual(len(self.s.store.list('activities')), 881)
+        self.assertEqual(len(self.s.store.list('activities')), 581)
         raw = [r for r in self.s.store.list('activity_revisions') if r['state'] == 'draft']
         self.assertEqual(len(raw), 450)
         self.assertEqual((await self.a.get('/api/v1/activity-revisions/' + raw[0]['id'])).status_code, 404)
@@ -812,6 +758,12 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             for value in ('not-a-need', True, None):
                 result = await self.post(self.a, '/check-ins', {**CONTEXT, field: value})
                 self.assertEqual(result.status_code, 422)
+
+    async def test_short_check_in_rejects_invalid_intent_or_venue(self):
+        for changes in ({'activity_intent': 'unrecognized'}, {'activity_intent': True},
+                        {'venue': ['outdoor', 'indoor_public']}):
+            result = await self.post(self.a, '/check-ins', {**CONTEXT, **changes})
+            self.assertEqual(result.status_code, 422, result.text)
 
     async def test_rolling_reward_cap_across_local_midnight(self):
         self.now = self.now.replace(hour=20)  # 23:30 in Tehran

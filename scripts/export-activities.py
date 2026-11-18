@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'apps/api'))
 
-from app.modules.catalog.bootstrap import MAPPING, RETIRED_DEMO_KEYS, demo_examples, iran_catalog
+from app.modules.catalog.bootstrap import MAPPING, RETIRED_DEMO_KEYS, demo_examples
 from app.modules.catalog.schemas import Content
 
 
@@ -42,9 +42,6 @@ def build_export():
     fixtures = load_json('content/demo-cook-fixtures.json')
     rows, cooked, prepared_fixtures = [], [], []
     source_keys = set()
-    iran = iran_catalog()
-    iran_metadata = {'demo:' + item['key']: {k: v for k, v in item.items() if k != 'content'}
-                     for item in iran['entries']}
     dimensions = Counter()
     for category in bank['categories']:
         if len(category['activities']) != 75:
@@ -77,8 +74,6 @@ def build_export():
             source_file = 'content/cooked-examples.md'
         elif retired:
             source_file = 'content/demo-extra.json'
-        elif key in iran_metadata:
-            source_file = 'content/iran-catalog.json'
         else:
             source_file = 'content/demo-catalog.json'
         entry = {
@@ -94,15 +89,13 @@ def build_export():
             'has_prepared_fixture': False,
             'cooked_at': None,
             'origin': 'demo',
-            'catalog_version': 'iran_catalog_v1' if key in iran_metadata else 'demo_catalog_v2',
+            'catalog_version': 'demo_catalog_v2',
             'human_approval': False,
             'local_demo_only': True,
             'revision_number': 1,
             'total_minutes': sum(content[field] for field in ('active_minutes', 'setup_minutes', 'travel_minutes')),
             'content': content,
         }
-        if key in iran_metadata:
-            entry['source_metadata'] = iran_metadata[key]
         rows.append(entry)
         cooked.append(entry)
     for source_key, raw in fixtures.items():
@@ -144,7 +137,6 @@ def build_export():
             'زمان واقعی پخت در فایل‌های منبع ثبت نشده و cooked_at برابر null است؛ exported_at زمان خروجی‌گرفتن است.',
         ],
         'raw_bank_metadata': {key: value for key, value in bank.items() if key != 'categories'},
-        'iran_sources': iran['sources'],
         'activities': cooked,
         'prepared_fixtures': prepared_fixtures,
     }
@@ -156,17 +148,13 @@ def main():
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'exports')
     args = parser.parse_args()
     rows, payload = build_export()
+    flattened = [flatten_fields(row) for row in rows]
+    fieldnames = list(dict.fromkeys(key for row in flattened for key in row))
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    for name, subset in (
-        ('activities.csv', rows),
-        ('iran-activities.csv', [row for row in rows if row['source_file'] == 'content/iran-catalog.json']),
-    ):
-        flattened = [flatten_fields(row) for row in subset]
-        fieldnames = list(dict.fromkeys(key for row in flattened for key in row))
-        with (args.output_dir / name).open('w', encoding='utf-8-sig', newline='') as output:
-            writer = csv.DictWriter(output, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows({key: csv_value(value) for key, value in row.items()} for row in flattened)
+    with (args.output_dir / 'activities.csv').open('w', encoding='utf-8-sig', newline='') as output:
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows({key: csv_value(value) for key, value in row.items()} for row in flattened)
     (args.output_dir / 'cooked-activities.json').write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(payload['counts'], ensure_ascii=False))
