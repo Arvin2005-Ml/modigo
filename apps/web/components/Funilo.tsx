@@ -12,13 +12,9 @@ import {
 } from "@/lib/navigation";
 
 import { useAuth } from "@/lib/hooks/useAuth";
-
 import { ApiError, badgeNames, number, refreshCsrf } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  apiSlice,
-  useGetPreferencesQuery,
-} from "@/lib/store/api/apiSlice";
+import { apiSlice, useGetPreferencesQuery } from "@/lib/store/api/apiSlice";
 import { createApiClient } from "@/lib/store/api/apiClient";
 import { toApiError } from "@/lib/store/api/baseQuery";
 import { setUser, clearUser } from "@/lib/store/slices/authSlice";
@@ -335,6 +331,7 @@ export default function Funilo() {
     view === "journey" ||
     view === "settings" ||
     view === "questions" ||
+    view === "discover" ||
     view === "results"
   ) {
     return null;
@@ -376,42 +373,6 @@ export default function Funilo() {
         </div>
       ) : (
         <>
-          {view === "discover" && (
-            <section className="discover-intro">
-              <span className="eyebrow">خانهٔ کشف فعالیت‌ها</span>
-
-              <h1>دنیایی از تجربه‌های کوچیک در راهه.</h1>
-
-              <p className="intro">
-                اینجا به‌زودی می‌تونی فعالیت‌های مختلف رو مرور کنی و چیزی که به
-                سلیقه‌ات نزدیکه پیدا کنی.
-              </p>
-
-              {activeExperience?.status === "active" && (
-                <Button
-                  secondary
-                  onClick={() =>
-                    router.push(
-                      `/experiences/${encodeURIComponent(activeExperience.id)}`,
-                    )
-                  }
-                >
-                  ادامهٔ فعالیت قبلی
-                </Button>
-              )}
-
-              <div className="inline-actions wrap">
-                <Button onClick={() => route("questions")}>
-                  پیشنهاد برای همین الان
-                </Button>
-
-                <Button secondary onClick={() => route("saved")}>
-                  فعالیت‌های ذخیره‌شده
-                </Button>
-              </div>
-            </section>
-          )}
-
           {view === "detail" && detail && (
             <section className="detail-column">
               <button
@@ -427,7 +388,11 @@ export default function Funilo() {
                   } else if (from === "saved") {
                     router.push(paths.saved);
                   } else {
-                    router.push(paths.discover);
+                    const filters =
+                      from === "discover" ? searchParams.get("filters") : null;
+                    router.push(
+                      filters ? `${paths.discover}?${filters}` : paths.discover,
+                    );
                   }
                 }}
               >

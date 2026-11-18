@@ -144,3 +144,13 @@ export type Preferences = {
     analytics_policy_version: null;
   };
 };
+export type DiscoverItem = {
+  activity_id: string;
+  revision_id: string;
+  title: string;
+  teaser: string;
+  tags: string[];
+  city: string | null;
+  total_minutes: number;
+  free: boolean;
+};

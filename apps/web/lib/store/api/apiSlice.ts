@@ -33,6 +33,7 @@ import type {
   CookActivityRequest,
   WithdrawActivityRequest,
   CreateRevisionRequest,
+  DiscoverItem,
 } from "@/types";
 
 export const apiSlice = createApi({
@@ -127,7 +128,9 @@ export const apiSlice = createApi({
     // -----------------------------
     // Saved Activities
     // -----------------------------
-
+    getDiscover: builder.query<ItemsResponse<DiscoverItem>, void>({
+      query: () => ({ url: "/discover" }),
+    }),
     getSaved: builder.query<ItemsResponse<Saved>, void>({
       query: () => ({
         url: "/saved",
