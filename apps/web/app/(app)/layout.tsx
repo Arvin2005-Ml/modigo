@@ -1,24 +1,29 @@
 import type { ReactNode } from "react";
 import { Suspense } from "react";
 
+import AppShell from "@/components/layout/AppShell";
+import AuthRouteGuard from "@/components/auth/AuthRouteGuard";
 import Funilo from "@/components/Funilo";
 
-export default function ApplicationLayout({
-  children,
-}: {
+type Props = {
   children: ReactNode;
-}) {
+};
+
+export default function ApplicationLayout({ children }: Props) {
   return (
-    <>
+    <AppShell>
       <Suspense
         fallback={
-          <main className="route-loading">در حال آماده‌سازی مودیگو…</main>
+          <main id="main" className="route-loading" role="status">
+            در حال آماده‌سازی مودیگو…
+          </main>
         }
       >
-        <Funilo />
+        <AuthRouteGuard>
+          <Funilo />
+          {children}
+        </AuthRouteGuard>
       </Suspense>
-
-      {children}
-    </>
+    </AppShell>
   );
 }

@@ -6,18 +6,18 @@ import Icon from "./Icon";
 import Personalization from "./Personalization";
 import { needNowOptions, outcomeOptions } from "@/lib/personalization";
 
-export const initialContext: Context = {
-  available_minutes: 30,
-  energy: "low",
-  social_mode: "solo",
-  party_size: 1,
-  venue: "home",
-  budget: { mode: "free", cap_toman: null },
-  mood: "skip",
-  need_now: "any",
-  desired_outcome: "any",
-};
-
+// export const initialContext: Context = {
+//   available_minutes: 30,
+//   energy: "low",
+//   social_mode: "solo",
+//   party_size: 1,
+//   venue: "home",
+//   budget: { mode: "free", cap_toman: null },
+//   mood: "skip",
+//   need_now: "any",
+//   desired_outcome: "any",
+// };
+export { initialContext } from "@/lib/individual/initialContext";
 const stepLabels = [
   "وقت و انرژی",
   "همراه و محیط",

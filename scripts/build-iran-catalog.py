@@ -195,5 +195,5 @@ if __name__ == '__main__':
         index.append(f"| {entry['key']} | {entry['content']['title']} | {dimension} | {total} |")
         if position + 1 == len(payload['entries']) or payload['entries'][position + 1]['category'] != current:
             index.append('')
-    (ROOT / 'content/iran-catalog-index.md').write_text('\n'.join(index) + '\n', encoding='utf-8')
+    (ROOT / 'content/iran-catalog-index.md').write_text('\n'.join(index).rstrip() + '\n', encoding='utf-8')
     print(json.dumps(dict(entries=len(payload['entries']), groups=Counter(e['category'] for e in payload['entries'])), ensure_ascii=False))

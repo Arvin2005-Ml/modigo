@@ -49,7 +49,7 @@ PYTHONPATH=apps/api .venv/bin/python -m app.modules.catalog.curated --apply
 
 فرمان بدون `--apply` فقط فایل را اعتبارسنجی و `files_only_no_database_write` گزارش می‌کند؛ preview دیتابیس نیست. فرمان `--apply` به Mongo عمومی `.env` وصل می‌شود، آمادگی واقعی store و ایندکس/transaction را بررسی می‌کند، شمار پیش/پس و نتیجهٔ ورود را می‌دهد و runner یا API دوم راه نمی‌اندازد. URI و رمز چاپ نمی‌شوند و fallback حافظه‌ای وجود ندارد.
 
-startup پیش‌فرض با `DEMO_CONTENT=true` و `CATALOG_RELEASE=real700` همین release را وارد می‌کند. نام قدیمی `DEMO_CONTENT` برای سازگاری تنظیمات باقی مانده است. `CATALOG_RELEASE=legacy` فقط برای داده‌های نمایشی پیشین و fixtureهای آزمون است؛ `DEMO_CONTENT=false` ورود خودکار محتوای پخته را خاموش می‌کند. تغییر پرچم به legacy، بایگانی‌های قبلی را خودکار فعال نمی‌کند. Docker، مرز ZIP و منبع شهرهای وب به‌روز شده‌اند؛ اجرای عادی طبق README و سند24، همچنان یک API process و runner داخلی است.
+startup پیش‌فرض با `DEMO_CONTENT=true` و `CATALOG_RELEASE=real700` همین release را وارد می‌کند. نام قدیمی `DEMO_CONTENT` برای سازگاری تنظیمات باقی مانده است. `CATALOG_RELEASE=legacy` فقط برای داده‌های نمایشی پیشین و fixtureهای آزمون است؛ `DEMO_CONTENT=false` ورود خودکار محتوای پخته را خاموش می‌کند. تغییر پرچم به legacy، بایگانی‌های قبلی را خودکار فعال نمی‌کند. Docker و مرز ZIP به‌روز شده‌اند. ابزار بازسازی فایل فرانت تولید نمی‌کند؛ فهرست شهرهای کاتالوگ از `GET /api/v1/activity-cities` خوانده می‌شود. اجرای عادی طبق README و سند24، همچنان یک API process و runner داخلی است.
 
 ## نتیجهٔ اجرا
 

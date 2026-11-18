@@ -189,7 +189,6 @@ def main():
         for e in catalog['entries']:
             c=e['content'];p=c['place'] or {};writer.writerow([e['key'],c['title'],p.get('city',''),p.get('source_url',''),c['primary_dimension'],'\n'.join(c['steps']),c['materials_note'],c['cost']['kind']])
     cities=sorted({e['content']['place']['city'] for e in catalog['entries'] if e['content']['place']})
-    (ROOT/'apps/web/lib/activity-cities.json').write_text(json.dumps(cities,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'entries':len(catalog['entries']),'venue_entries':400,'home_entries':300,'cities':len(cities),
         'sources':len(catalog['sources']),'dimensions':Counter(e['content']['primary_dimension'] for e in catalog['entries'])},ensure_ascii=False))
 

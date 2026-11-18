@@ -1,7 +1,6 @@
 """Create a small, sourced cinema batch without changing the existing 700 release."""
 from app.modules.catalog.unified import release, write_release
 import importlib.util
-import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,7 +48,6 @@ def main():
     (ROOT / 'content/cinema-expansion-index.md').write_text('\n'.join(rows) + '\n')
     cities = sorted({e['content']['place']['city'] for e in original['entries'] if e['content']['place']} |
                     {e['content']['place']['city'] for e in entries})
-    (ROOT / 'apps/web/lib/activity-cities.json').write_text(json.dumps(cities, ensure_ascii=False, indent=2) + '\n')
     print(f'Validated {len(entries)} cinema records; {len(cities)} cities across both releases.')
 
 

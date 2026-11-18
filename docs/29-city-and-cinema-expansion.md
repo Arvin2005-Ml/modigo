@@ -21,4 +21,4 @@ PYTHONPATH=apps/api .venv/bin/python -m app.modules.catalog.cinema_expansion
 PYTHONPATH=apps/api .venv/bin/python -m app.modules.catalog.cinema_expansion --apply
 ```
 
-پیش‌نمایش بدون `--apply` فایل را می‌خواند و دیتابیس را تغییر نمی‌دهد. ورود خودکار در startup و فرمان صریح هر دو از store واقعی و کنترل تراکنش استفاده می‌کنند و fallback حافظه‌ای ندارند. در محیط حاضر PyMongo نسخهٔ قفل‌شده نصب نیست و اتصال/درج واقعی تأیید نشده است. برای حفظ این گسترش در فهرست شهرها، پس از بازسازی `build-real-catalog.py` باید `build-cinema-expansion.py` نیز اجرا شود.
+پیش‌نمایش بدون `--apply` فایل را می‌خواند و دیتابیس را تغییر نمی‌دهد. ورود خودکار در startup و فرمان صریح هر دو از store واقعی و کنترل تراکنش استفاده می‌کنند و fallback حافظه‌ای ندارند. در محیط حاضر PyMongo نسخهٔ قفل‌شده نصب نیست و اتصال/درج واقعی تأیید نشده است. ابزار بازسازی فایل فرانت تولید نمی‌کند؛ فهرست شهرهای کاتالوگ از `GET /api/v1/activity-cities` خوانده می‌شود.
