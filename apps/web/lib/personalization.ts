@@ -10,6 +10,7 @@ export const interestOptions = [
   ['games','بازی'], ['puzzles','معما'], ['drawing','نقاشی'], ['music','موسیقی'],
   ['storytelling','قصه و نمایش'], ['photography','عکاسی'], ['reading','کتاب'],
   ['craft','ساختنی'], ['nature','طبیعت'], ['humor','طنز'], ['dance','رقص و حرکت'],
+  ['walking','قدم‌زدن'], ['food','خوراکی و آشپزی'], ['culture','گشت فرهنگی'],
 ] as const;
 
 export const goalOptions = [
@@ -18,16 +19,9 @@ export const goalOptions = [
   ['choose','یه کار به سلیقهٔ خودم'],
 ] as const;
 
-export const needNowOptions = [
-  ['switch_off','فاصله از فکر کار و روزمرگی'], ['unwind','استراحت و آرامش'],
-  ['choose','وقت و آزادی برای خودم'], ['learn','چالش و کشف چیز تازه'],
-  ['meaning','یه وقت باارزش و به‌یادموندنی'], ['connect','همراهی و هم‌صحبتی'],
-  ['any','مطمئن نیستم'],
-] as const;
-
-export const outcomeOptions = [
-  ['switch_off','ذهنم از کارهای روزمره فاصله بگیره'], ['unwind','یه مکث آروم داشته باشم'],
-  ['choose','یه کار کاملاً به سلیقهٔ خودم کرده باشم'], ['learn','یه چیز تازه کشف کرده باشم'],
-  ['meaning','یه چیز کوچیک و موندنی بسازم'], ['connect','یه لحظهٔ خوب با همراه‌هام بسازم'],
-  ['any','فرقی نداره؛ غافلگیرم کن'],
+export const activityIntentOptions = [
+  ['unwind','یه مکث آروم'], ['switch_off','یه فاصله از روزمرگی'],
+  ['learn','یه چالش یا کشف تازه'], ['connect','یه وقت خوب با همراه'],
+  ['meaning','یه تجربهٔ موندنی'], ['choose','یه کار به سلیقهٔ خودم'],
+  ['any','فرقی نداره'],
 ] as const;

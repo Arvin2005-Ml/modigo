@@ -44,6 +44,10 @@ export function ActivityCard({
       </h2>
 
       <p className="teaser">{item.teaser}</p>
+      {item.place && <p>{item.place.name} · {item.place.city}</p>}
+      {item.venue_check_message && (
+        <p className="hint">{item.venue_check_message}</p>
+      )}
       <p className="explanation">{item.explanation}</p>
 
       <div className="card-actions">
@@ -101,9 +105,22 @@ export function ContentDetails({
       <h1>{content.title}</h1>
       <p className="intro">{content.teaser}</p>
       <div className="detail-meta">
-        <span>{number(total)} دقیقه با آماده‌سازی</span>
+        <span>{number(total)} دقیقه{content.travel_minutes > 0 ? " با رفت‌وآمد و آماده‌سازی" : " با آماده‌سازی"}</span>
         <span>{content.cost.kind === "free" ? "رایگان" : "هزینهٔ متغیر"}</span>
       </div>
+      {content.place && (
+        <p>
+          {content.place.name} · {content.place.city} ·{" "}
+          <a href={content.place.source_url} target="_blank" rel="noopener noreferrer">
+            منبع: {content.place.source_name}
+          </a>
+        </p>
+      )}
+      {content.requires_venue_check && (
+        <p className="hint">
+          قبل از رفتن، باز بودن، هزینه، رزرو و شرایط دسترسی رو با خود محل بررسی کن.
+        </p>
+      )}
       <div className="first-step">
         <span className="eyebrow">از اینجا شروع کن</span>
         <p>{content.first_step}</p>

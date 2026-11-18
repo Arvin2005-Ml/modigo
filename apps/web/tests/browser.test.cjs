@@ -176,12 +176,61 @@ async function catalogFlow(browser) {
   console.log('PASS catalog flow: discovery, conditions, start, resume, complete, feedback, and saved.');
 }
 
+async function questionnaireFromDiscover(browser) {
+  const app = await setup(browser);
+  const {page} = app;
+  await page.goto(origin + '/discover');
+  await page.getByRole('link', {name:'پیشنهاد برای همین الان'}).click();
+  await page.waitForURL('**/individual');
+  await page.getByRole('radio', {name:'چهار ساعت'}).check();
+  const next = page.getByRole('button', {name:'بریم بعدی'});
+  await next.click();
+
+  const venue = page.getByRole('group', {name:'کجا می‌خوای باشی؟'});
+  assert.equal(await venue.getByRole('radio').count(), 3);
+  const outside = venue.getByRole('radio', {name:'بیرون از خونه'});
+  await outside.check();
+  await page.getByRole('checkbox', {name:'آره، پیشنهاد جا هم می‌خوام'}).check();
+  await next.click();
+  await page.getByRole('alert').filter({hasText:'اسم شهرت رو وارد کن'}).waitFor();
+  await page.getByRole('textbox', {name:'شهر برای همین نوبت'}).fill('تهران');
+  await page.getByRole('checkbox', {name:'هوا روشنه و برای قدم‌زدن مناسبه'}).check();
+  await screen(page,'questionnaire-outing');
+  await next.click();
+  await page.getByRole('radio', {name:'منعطفم'}).check();
+  await page.getByRole('button', {name:'قدم قبلی'}).click();
+  assert.equal(await outside.isChecked(), true);
+  assert.equal(await page.getByRole('textbox', {name:'شهر برای همین نوبت'}).inputValue(), 'تهران');
+  await next.click();
+  assert.equal(await page.getByRole('radio', {name:'منعطفم'}).isChecked(), true);
+  await next.click();
+  await page.getByRole('radio', {name:'یه چالش یا کشف تازه'}).check();
+  await page.getByRole('button', {name:'پیشنهادم رو ببینم'}).click();
+  await visible(page,'.single-suggestion');
+  assert.deepEqual(app.state.checkin, {
+    available_minutes:240, energy:'low', social_mode:'solo', party_size:1,
+    venue:'away_from_home', budget:{mode:'flexible',cap_toman:null}, activity_intent:'learn',
+    allow_venue_planning:true, city:'تهران', weather:'fair', daylight:'day',
+  });
+  const summary = page.locator('.constraint-summary');
+  await summary.getByText('بیرون از خونه', {exact:true}).waitFor();
+  await summary.getByText('تهران', {exact:true}).waitFor();
+  await page.getByText('بعد از این پیشنهاد، ۲۳۰ دقیقه از وقتت می‌مونه.', {exact:true}).waitFor();
+  await app.finish();
+  console.log('PASS questionnaire from Discover: four steps, location opt-in, conditions, intent, and result summary.');
+}
+
 async function main() {
   const browserType=process.env.WEB_TEST_BROWSER === 'firefox' ? firefox : chromium;
   const browser=await browserType.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
   try {
+    if (process.argv.includes('--questionnaire')) {
+      await questionnaireFromDiscover(browser);
+      return;
+    }
     await catalogFlow(browser);
     if (process.argv.includes('--discover')) return;
+    await questionnaireFromDiscover(browser);
     {
       const app=await setup(browser,{authenticated:false});
       const {page}=app;
@@ -201,10 +250,12 @@ async function main() {
       await page.getByRole('button',{name:'بریم بعدی'}).click();
       await page.getByRole('alert').filter({hasText:'بین ۵ تا ۴۸۰'}).waitFor();
       await page.locator('.number-input').fill('۳۰');
-      for(let i=0;i<5;i++) await page.getByRole('button',{name:'بریم بعدی'}).click();
+      for(let i=0;i<3;i++) await page.getByRole('button',{name:'بریم بعدی'}).click();
       await page.getByRole('button',{name:'پیشنهادم رو ببینم'}).click();
       await visible(page,'.single-suggestion');
       assert.equal(app.state.checkin.available_minutes,30);
+      assert.equal(app.state.checkin.activity_intent,'any');
+      assert.equal('mood' in app.state.checkin,false);
       await screen(page,'suggestion');
       await page.getByRole('button',{name:'ذخیره برای بعد: '+content.title,exact:true}).click();
       await page.getByRole('button',{name:'حذف از ذخیره‌ها: '+content.title,exact:true}).waitFor();

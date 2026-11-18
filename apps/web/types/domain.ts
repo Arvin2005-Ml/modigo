@@ -16,9 +16,9 @@ export type Context = {
   energy: "low" | "medium" | "high" | "unknown";
   social_mode: "solo" | "together" | "either";
   party_size: number;
-  venue: "home" | "outdoor" | "indoor_public" | "any";
+  venue: "home" | "away_from_home" | "outdoor" | "indoor_public" | "any";
   budget: Budget;
-  mood: "tired" | "restless" | "bored" | "low" | "okay" | "skip";
+  activity_intent: NonNullable<Context["goal"]>;
   owned_items?: string[];
   liked_tags?: string[];
   goal?:
@@ -29,11 +29,13 @@ export type Context = {
     | "meaning"
     | "choose"
     | "any";
-  need_now?: NonNullable<Context["goal"]>;
-  desired_outcome?: NonNullable<Context["goal"]>;
+  allow_venue_planning?: boolean;
+  city?: string | null;
   weather?: "fair" | "adverse" | "unknown";
   daylight?: "day" | "night" | "unknown";
 };
+
+export type Place = { name: string; city: string; source_url: string; source_name: string };
 
 export type Slot = {
   slot_id: string;
@@ -43,7 +45,10 @@ export type Slot = {
   teaser?: string;
   total_minutes?: number;
   cost_label?: string;
+  cost_range_toman?: { min: number; max: number } | null;
   explanation?: string;
+  place?: Place | null;
+  venue_check_message?: string | null;
   unavailable: boolean;
 };
 
@@ -63,10 +68,12 @@ export type Slate = ReplacementState & {
   items: Slot[];
   result_count: number;
   partial: boolean;
+  venue_alternative?: { title: string; venue: "home" | "outdoor" | "indoor_public"; total_minutes: number } | null;
+  budget_alternative?: { title: string; total_minutes: number } | null;
   context_summary: Pick<
     Context,
     "available_minutes" | "social_mode" | "party_size" | "venue" | "budget"
-  >;
+  > & Pick<Context, "city" | "allow_venue_planning">;
 };
 
 export type Content = {
@@ -87,7 +94,8 @@ export type Content = {
     kind: string;
     note: string;
   };
-  place?: { name: string; city: string } | null;
+  place?: Place | null;
+  requires_venue_check?: boolean;
   [key: string]: unknown;
 };
 

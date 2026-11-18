@@ -10,7 +10,5 @@ export const initialContext: Context = {
     mode: "free",
     cap_toman: null,
   },
-  mood: "skip",
-  need_now: "any",
-  desired_outcome: "any",
+  activity_intent: "any",
 };

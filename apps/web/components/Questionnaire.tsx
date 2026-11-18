@@ -4,42 +4,24 @@ import { digits, number } from "@/lib/api";
 import { Button, Choices } from "./ui";
 import Icon from "./Icon";
 import Personalization from "./Personalization";
-import { needNowOptions, outcomeOptions } from "@/lib/personalization";
+import { activityIntentOptions } from "@/lib/personalization";
 
-// export const initialContext: Context = {
-//   available_minutes: 30,
-//   energy: "low",
-//   social_mode: "solo",
-//   party_size: 1,
-//   venue: "home",
-//   budget: { mode: "free", cap_toman: null },
-//   mood: "skip",
-//   need_now: "any",
-//   desired_outcome: "any",
-// };
-export { initialContext } from "@/lib/individual/initialContext";
 const stepLabels = [
   "وقت و انرژی",
   "همراه و محیط",
   "هزینهٔ دلخواه",
-  "حال‌وهوای الان",
-  "نیاز همین لحظه",
-  "از این وقت چی می‌خوای",
+  "تفریح دلخواه",
 ];
 const stepTitles = [
   "الان چقدر وقت و انرژی داری؟",
   "چه‌جوری بهت می‌چسبه؟",
   "چقدر دوست داری خرج کنی؟",
-  "الان حالت چطوره؟",
-  "الان بیشتر چی کم داری؟",
-  "دوست داری از این وقت چی با خودت ببری؟",
+  "الان چه جور تفریحی بهت می‌چسبه؟",
 ];
 const stepIntros = [
   "همون‌قدر که هست؛لازم نیست بیشترش کنی.",
   "شرایط واقعی الانت رو بگو تا انتخاب به کارت بیاد.",
   "بی‌خرج‌بودن هم یه انتخاب خوبه.",
-  "جواب درست و غلطی نداره؛ردکردنش هم آزاده.",
-  "هر کدوم به همین لحظه نزدیک‌تره؛ مطمئن‌نبودن هم یه جوابه.",
   "با این جواب، اولین پیشنهاد رو به خواستهٔ الانت نزدیک‌تر می‌کنیم.",
 ];
 
@@ -100,6 +82,10 @@ export default function Questionnaire({
         +digits(cap) > 100000000)
     ) {
       setError("یه سقف هزینهٔ معتبر به تومان بنویس.");
+      return;
+    }
+    if (step === 1 && value.venue !== "home" && value.allow_venue_planning && !value.city?.trim()) {
+      setError("برای پیشنهاد جای مشخص، اسم شهرت رو وارد کن.");
       return;
     }
     setError("");
@@ -178,6 +164,7 @@ export default function Questionnaire({
                 [30, "نیم ساعت"],
                 [60, "یه ساعت"],
                 [120, "دو ساعت"],
+                [240, "چهار ساعت"],
               ]}
               onChange={(v) => {
                 set("available_minutes", v);
@@ -185,7 +172,7 @@ export default function Questionnaire({
               }}
             />
             <label className="label">
-              یا خودت بنویس،به دقیقه
+              یا به دقیقه بنویس
               <input
                 inputMode="numeric"
                 className="input number-input"
@@ -261,17 +248,69 @@ export default function Questionnaire({
               value={value.venue}
               options={[
                 ["home", "توی خونه"],
-                ["outdoor", "هوای آزاد"],
-                ["indoor_public", "یه جای سرپوشیده"],
+                ["away_from_home", "بیرون از خونه"],
                 ["any", "هر جا شد"],
               ]}
-              onChange={(v) => set("venue", v)}
+              onChange={(venue) => {
+                setError("");
+                change(venue === "home"
+                  ? { ...value, venue, allow_venue_planning: false, city: null, weather: "unknown", daylight: "unknown" }
+                  : { ...value, venue });
+              }}
             />
             {value.venue !== "home" && (
-              <p className="hint">
-                پیشنهادهای بیرون برای جایی‌ان که همین حالا بهش دسترسی امن و مجاز
-                داری؛ مسیر، بلیت یا محل تازه‌ای رو حدس نمی‌زنیم.
-              </p>
+              <fieldset className="field">
+                <legend>دوست داری یه جای مشخص هم پیشنهاد بدیم؟</legend>
+                <label className="choice">
+                  <input
+                    type="checkbox"
+                    checked={value.allow_venue_planning ?? false}
+                    onChange={(e) => {
+                      setError("");
+                      change({
+                        ...value,
+                        allow_venue_planning: e.target.checked,
+                        city: e.target.checked ? value.city : null,
+                      });
+                    }}
+                  />
+                  <span>آره، پیشنهاد جا هم می‌خوام</span>
+                </label>
+                {value.allow_venue_planning && (
+                  <label className="label">
+                    شهر برای همین نوبت
+                    <input
+                      className="input"
+                      maxLength={100}
+                      value={value.city ?? ""}
+                      placeholder="مثلاً تهران"
+                      onChange={(e) => {
+                        setError("");
+                        set("city", e.target.value);
+                      }}
+                    />
+                  </label>
+                )}
+                <p className="hint">
+                  {value.allow_venue_planning
+                    ? "قبل از رفتن، باز بودن و هزینه رو با خود محل چک کن."
+                    : "پیشنهاد برای جاییه که همین حالا امن و در دسترسته."}
+                </p>
+              </fieldset>
+            )}
+            {value.venue !== "home" && (
+              <label className="choice">
+                <input
+                  type="checkbox"
+                  checked={value.weather === "fair" && value.daylight === "day"}
+                  onChange={(e) => change({
+                    ...value,
+                    weather: e.target.checked ? "fair" : "unknown",
+                    daylight: e.target.checked ? "day" : "unknown",
+                  })}
+                />
+                <span>هوا روشنه و برای قدم‌زدن مناسبه</span>
+              </label>
             )}
           </>
         )}
@@ -292,9 +331,14 @@ export default function Questionnaire({
                 })
               }
             />
+            {value.allow_venue_planning && value.budget.mode !== "flexible" && (
+              <p className="hint">
+                جاهایی که هزینه‌شون مشخص نیست فقط با بودجهٔ منعطف پیشنهاد می‌شن.
+              </p>
+            )}
             {value.budget.mode === "cap" && (
               <label className="label">
-                سقف هزینه برای همه،تومان
+                سقف هزینه برای همه، به تومان
                 <input
                   className="input number-input"
                   inputMode="numeric"
@@ -307,6 +351,7 @@ export default function Questionnaire({
                     });
                   }}
                 />
+                <span className="hint">تا جای ممکن گزینه‌ای نزدیک به این مبلغ پیشنهاد می‌دیم.</span>
               </label>
             )}
             <p className="hint">
@@ -317,39 +362,10 @@ export default function Questionnaire({
         {step === 3 && (
           <>
             <Choices
-              legend="کدوم به حالت نزدیک‌تره؟"
-              value={value.mood}
-              options={[
-                ["tired", "خسته‌ام"],
-                ["restless", "ذهنم شلوغه"],
-                ["bored", "حوصله‌ام سر رفته"],
-                ["low", "یه کم بی‌حالم"],
-                ["okay", "خوبم"],
-                ["skip", "نمی‌خوام بگم"],
-              ]}
-              onChange={(v) => set("mood", v)}
-            />
-            <p className="soft-note">
-              یه پیشنهاد کوچیک برای همین حال‌وهوا پیدا می‌کنیم؛هر وقت
-              نچسبید،انتخابش با توئه.
-            </p>
-          </>
-        )}
-        {step === 4 && (
-          <Choices
-            legend="کدوم به نیاز الانت نزدیک‌تره؟"
-            value={value.need_now ?? "any"}
-            options={needNowOptions}
-            onChange={(v) => set("need_now", v)}
-          />
-        )}
-        {step === 5 && (
-          <>
-            <Choices
-              legend="دوست داری آخرش چی بهت چسبیده باشه؟"
-              value={value.desired_outcome ?? "any"}
-              options={outcomeOptions}
-              onChange={(v) => set("desired_outcome", v)}
+              legend="یه گزینه رو انتخاب کن"
+              value={value.activity_intent}
+              options={activityIntentOptions}
+              onChange={(v) => set("activity_intent", v)}
             />
             <details className="personalization">
               <summary>اگه دوست داری، سلیقه و وسایل رو هم بگو</summary>
@@ -363,30 +379,6 @@ export default function Questionnaire({
                 changeItems={(v) => set("owned_items", v)}
                 changeInterests={(v) => set("liked_tags", v)}
               />
-              {value.venue !== "home" && (
-                <>
-                  <Choices
-                    legend="هوای جایی که هستی مناسبه؟"
-                    value={value.weather ?? "unknown"}
-                    options={[
-                      ["unknown", "مطمئن نیستم"],
-                      ["fair", "برای بیرون مناسبه"],
-                      ["adverse", "نامساعده"],
-                    ]}
-                    onChange={(v) => set("weather", v)}
-                  />
-                  <Choices
-                    legend="الان روشنایی روز داری؟"
-                    value={value.daylight ?? "unknown"}
-                    options={[
-                      ["unknown", "مطمئن نیستم"],
-                      ["day", "روزه"],
-                      ["night", "شبه"],
-                    ]}
-                    onChange={(v) => set("daylight", v)}
-                  />
-                </>
-              )}
             </details>
           </>
         )}
