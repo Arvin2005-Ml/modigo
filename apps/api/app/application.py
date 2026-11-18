@@ -42,7 +42,14 @@ class Services:
         logger.info('API startup: importing owner seeds without overwriting existing content')
         seed_bank(self.store, clock)
         if settings.demo_content:
-            logger.info('API startup: importing the authored demo catalog')
-            seed_demo(self.store, clock)
+            logger.info('API startup: loading the configured authored catalog')
+            if settings.catalog_release == 'legacy':
+                seed_demo(self.store, clock)
+            elif settings.catalog_release == 'real700':
+                from app.modules.catalog.curated import import_catalog
+                import_catalog(self.store, clock)
+            else:
+                from app.modules.catalog.import_unified import import_unified
+                import_unified(self.store, clock)
         logger.info('API startup: preparing the in-process content runner')
         self.jobs = ContentJobs(self.store, self.catalog, settings, clock)

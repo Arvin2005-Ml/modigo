@@ -9,6 +9,7 @@ from app.core.errors import DomainError, missing
 from app.core.storage import StorageUnavailable
 from app.core.values import uid, replace
 from app.modules.catalog.schemas import Content
+from app.modules.catalog.bootstrap import align_demo_content
 from app.core.schemas import TAGS, ITEMS
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -21,7 +22,8 @@ class ProviderFailure(Exception):
 
 class DemoProvider:
     def __init__(self):
-        self.fixtures = json.loads((ROOT / 'content/demo-cook-fixtures.json').read_text())
+        fixtures = json.loads((ROOT / 'content/demo-cook-fixtures.json').read_text())
+        self.fixtures = {key: align_demo_content(content) for key, content in fixtures.items()}
 
     def generate(self, activity, constraints, previous=None):
         result = self.fixtures.get(activity.get('source_key'))

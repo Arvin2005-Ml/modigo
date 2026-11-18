@@ -32,7 +32,7 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.ticker = asyncio.create_task(tick())
         self.now = datetime(2026, 11, 7, 9, 0, tzinfo=timezone.utc)
         self.app = create_app(Settings(app_origin=ORIGIN, mongodb_uri='mongodb://public.example.test/test',
-            csrf_hmac_secret='test-only-stable-csrf-secret-32-characters'), clock=lambda: self.now,
+            csrf_hmac_secret='test-only-stable-csrf-secret-32-characters', catalog_release='legacy'), clock=lambda: self.now,
             store_factory=lambda _: MemoryTestStore())
         self.life = self.app.router.lifespan_context(self.app)
         await self.life.__aenter__()

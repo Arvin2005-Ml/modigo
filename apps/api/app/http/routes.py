@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from app.core.schemas import AccountEmail, ResetPassword, PasswordConfirm, ChangePassword, Signup, Credentials, Empty, Context, SlateInput, ReplaceInput, NavigateInput, StartInput, Feedback, PreferencesUpdate
 from app.core.errors import DomainError
 from app.modules.catalog.schemas import DraftUpdate, ReviewInput, WithdrawInput, CloneInput, CookInput
+from app.modules.catalog.activation import ActivationStatus, activation_queue
 from app.http.presentation import public_response
 
 router = APIRouter()
@@ -38,7 +39,9 @@ def idem(request, actor, scope, payload, action, status=200):
 def ready(request: Request):
     s = services(request)
     s.store.ping()
-    return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider, 'local_demo_content': s.settings.demo_content}
+    return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider,
+            'local_demo_content': s.settings.demo_content and s.settings.catalog_release == 'legacy',
+            'catalog_release': s.settings.catalog_release if s.settings.demo_content else None}
 
 
 @router.get('/health/live')
@@ -133,6 +136,11 @@ def revision(revision_id: str, actor: User, request: Request):
     return services(request).catalog.visible_revision(revision_id)
 
 
+@router.get('/activity-cities')
+def activity_cities(actor: User, request: Request):
+    return {'cities': services(request).catalog.cities()}
+
+
 @router.post('/experiences', status_code=201)
 def start(data: StartInput, actor: User, request: Request):
     s = services(request)
@@ -207,6 +215,13 @@ def admin_list(actor: User, request: Request, limit: int = Query(default=20, ge=
         items = [a for a in items if a['id'] in ids]
     items.sort(key=lambda a: a['seed_key'])
     return {'items': items[offset:offset + limit], 'total': len(items), 'next_offset': offset + limit if len(items) > offset + limit else None}
+
+
+@router.get('/admin/catalog/activation')
+def admin_activation(actor: User, request: Request, status: ActivationStatus | None = None,
+                     limit: int = Query(default=20, ge=1, le=100),
+                     offset: int = Query(default=0, ge=0)):
+    return activation_queue(services(request).catalog, actor, status, offset, limit)
 
 
 @router.get('/admin/activities/{activity_id}')

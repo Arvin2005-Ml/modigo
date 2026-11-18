@@ -25,8 +25,8 @@ class ShortActivitiesTests(unittest.TestCase):
 
     def test_real_release_coverage_and_accessibility(self):
         before, after = coverage(self.before, NOW), coverage(self.after, NOW)
-        self.assertEqual(sum(r['eligible_count'] == 0 for r in before), 648)
-        self.assertEqual(len(after), 648)
+        self.assertEqual(sum(r['eligible_count'] == 0 for r in before), 810)
+        self.assertEqual(len(after), 810)
         for row in after:
             with self.subTest(row=row):
                 self.assertGreaterEqual(row['eligible_count'], 1)

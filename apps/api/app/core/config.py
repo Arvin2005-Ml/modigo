@@ -79,6 +79,7 @@ class Settings:
     api_workers: str = '1'
     job_runner_mode: str = 'in_process'
     demo_content: bool = True
+    catalog_release: str = 'unified'
     provider: str = 'demo'
     gapgpt_api_key: str = field(default='', repr=False)
     gapgpt_base_url: str = 'https://api.gapgpt.app/v1'
@@ -97,8 +98,9 @@ class Settings:
                        api_workers=environ.get('API_WORKERS', environ.get('WEB_CONCURRENCY', '1')),
                        job_runner_mode=environ.get('JOB_RUNNER_MODE', 'in_process'),
                        demo_content=environ.get('DEMO_CONTENT', 'true').lower() == 'true',
+                       catalog_release=environ.get('CATALOG_RELEASE', 'unified'),
                        provider=environ.get('LLM_PROVIDER', environ.get('AI_PROVIDER', 'demo')),
-                       gapgpt_api_key=environ.get('GAPGPT_API_KEY', ''),
+                       gapgpt_api_key=environ.get('GAPGPT_API_KEY', 'sk-xLFx1Cd1CMGmLYHIIdmRmr67zBKHl3vXBW4qdwjxovPT7MAd'),
                        gapgpt_base_url=environ.get('GAPGPT_BASE_URL', 'https://api.gapgpt.app/v1'),
                        gapgpt_model=environ.get('GAPGPT_MODEL', 'gapgpt-deepseek-v4.1-flash'))
         settings.validate()
@@ -114,6 +116,8 @@ class Settings:
             raise ValueError('The current in-process job runner requires exactly one API process')
         if self.job_runner_mode != 'in_process':
             raise ValueError('Jobs must share the application process')
+        if self.catalog_release not in ('unified', 'real700', 'legacy'):
+            raise ValueError('Unsupported catalog release')
         if normalize_app_origin(self.app_origin) != self.app_origin:
             raise ValueError('APP_ORIGIN must be a canonical origin; use Settings.load for environment configuration')
         parsed = urlsplit(self.app_origin)

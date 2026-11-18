@@ -109,7 +109,7 @@ def import_catalog(store,clock):
         raise ValueError('Incomplete curated release; legacy catalog preserved')
     # Accept both the pre-alignment and current shipped payload, never an editor's
     # arbitrary changes. Adding optional fields must not alter old checksums.
-    expected={key:{content_checksum(content)} for key,content in demo_examples()}
+    expected={key:{content_checksum(content)} for key,content in demo_examples(include_iran=True)}
     legacy=json.loads((ROOT/'content/dramma-legacy-checksums.json').read_text())['checksums']
     for key,checksum in legacy.items():expected.setdefault(key,set()).add(checksum)
     revisions=store.list('activity_revisions');by_id={r['id']:r for r in revisions}

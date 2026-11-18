@@ -25,7 +25,7 @@ class IranCatalogTests(unittest.TestCase):
         cls.payload = iran_catalog()
         cls.entries = cls.payload['entries']
         cls.store = MemoryTestStore()
-        seed_demo(cls.store, lambda: NOW)
+        seed_demo(cls.store, lambda: NOW, include_iran=True)
         cls.activities = {a['seed_key'].removeprefix('demo:'): a for a in cls.store.list('activities')}
         cls.candidates = [a for a in Catalog(cls.store, lambda: NOW).candidates()
                           if a['id'] in {cls.activities[e['key']]['id'] for e in cls.entries}]
@@ -115,12 +115,12 @@ class IranCatalogTests(unittest.TestCase):
         self.assertTrue(first['source_metadata']['sources'])
         ids = {a['id'] for a in self.store.list('activities')}
         store = MemoryTestStore()
-        seed_demo(store, lambda: NOW)
+        seed_demo(store, lambda: NOW, include_iran=True)
         withdrawn = next(a for a in store.list('activities') if a['seed_key'] == first['seed_key'])
         withdrawn.update(active=False)
         replace(store, 'activities', withdrawn)
         before_ids = {a['id'] for a in store.list('activities')}
-        seed_demo(store, lambda: NOW)
+        seed_demo(store, lambda: NOW, include_iran=True)
         self.assertEqual(before_ids, {a['id'] for a in store.list('activities')})
         self.assertFalse(store.get('activities', withdrawn['id'])['active'])
         self.assertEqual(len(ids), 431)

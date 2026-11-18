@@ -71,3 +71,13 @@
 - در عرض ۳۶۰ پیکسل، RTL، فوکوس عنوان، خطای ورودی و لودینگ ارسال را بررسی کن.
 
 برای اجرای واقعی، API و فرانت را طبق [README](../README.md#اجرای-محلی-نسخهٔ-در-حال-ساخت) با MongoDB عمومی بالا بیاور. پس از پیاده‌سازی فرانت، در `apps/web` فرمان‌های `npm run typecheck`، `npm test` و، با تنظیم `WEB_TEST_ORIGIN` روی آدرس همان فرانت در حال اجرا، `npm run test:browser` را اجرا کن.
+
+## نتیجهٔ بررسی بک‌اند
+
+نمونهٔ درخواست با OpenAPI تولیدشده تطبیق داده شد و ۷۲ تست API، فیلتر، رتبه‌بندی و پوشش کاتالوگ موفق شدند:
+
+```sh
+PYTHONPATH=apps/api:apps/api/tests .venv/bin/python -m unittest -q test_api test_eligibility test_need_ranking test_catalog_coverage
+```
+
+در اجرای کل مجموعه، ۱۲۶ تست موفق شدند، ۷ تست MongoDB زنده به‌دلیل فعال نبودن opt-in اجرا نشدند و ۱۰ تست قدیمی کاتالوگ خطای import دادند؛ این تست‌ها هنوز به `content_checksum` یا `iran_catalog` که در تغییرات قبلی حذف شده‌اند ارجاع می‌دهند. اجرای زندهٔ MongoDB و مرورگر برای این برش تأیید نشده‌اند.

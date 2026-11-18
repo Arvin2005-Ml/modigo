@@ -50,9 +50,11 @@ class Experiences:
             if activity['published_revision_id'] != data.revision_id:
                 conflict('نسخهٔ تازه‌ای آماده شده؛دوباره پیشنهاد بگیر.')
             context = merge_constraints(session['context_snapshot'], self.identity.preferences(user_id)['preferences'])
-            candidate = dict(id=activity['id'], active=True, state=revision['state'], revision_id=revision['id'],
-                             published_revision_id=activity['published_revision_id'], content=revision['content'])
-            execution = eligible(context, candidate, self.clock())
+            parsed = self.catalog.checked_content(revision.get('content'), activity['primary_dimension'])
+            execution = (eligible(context, dict(id=activity['id'], active=True, state=revision['state'],
+                         revision_id=revision['id'], published_revision_id=activity['published_revision_id'],
+                         content=parsed.model_dump()), self.clock())
+                         if parsed is not None and revision['activity_id'] == activity['id'] else None)
             if not execution:
                 raise DomainError('INVALID_STATE', 'این پیشنهاد با شرایط الانت جور نیست؛یه پیشنهاد تازه بگیر.')
             active = self._active(user_id)

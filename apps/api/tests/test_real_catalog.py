@@ -14,6 +14,7 @@ from pydantic import ValidationError
 from app.core.config import Settings
 from app.core.schemas import Context, ITEMS
 from app.core.values import replace, uid
+from app.http.presentation import public_response
 from app.main import create_app
 from app.modules.catalog.bootstrap import seed_bank, seed_demo
 from app.modules.catalog.curated import real_catalog, import_catalog, counts
@@ -94,7 +95,7 @@ class RealCatalogTests(unittest.TestCase):
         self.assertIsNone(self.context(city='  ')['city'])
 
     def test_import_archives_only_exact_legacy_preserves_identity_history_and_raw_bank(self):
-        store=MemoryTestStore();seed_bank(store,lambda:NOW);seed_demo(store,lambda:NOW)
+        store=MemoryTestStore();seed_bank(store,lambda:NOW);seed_demo(store,lambda:NOW,include_iran=True)
         before={a['id']:copy.deepcopy(a) for a in store.list('activities')}
         revisions={r['id']:copy.deepcopy(r) for r in store.list('activity_revisions')}
         result=import_catalog(store,lambda:NOW)
@@ -132,7 +133,7 @@ class RealCatalogTests(unittest.TestCase):
         self.assertEqual(report['curated_recommendable'],699)
 
     def test_human_edits_reviews_drafts_and_withdrawn_records_are_preserved(self):
-        store=MemoryTestStore();seed_demo(store,lambda:NOW)
+        store=MemoryTestStore();seed_demo(store,lambda:NOW,include_iran=True)
         candidates=[a for a in store.list('activities') if a['active']][:6]
         for index,a in enumerate(candidates):
             revision=store.get('activity_revisions',a['published_revision_id'])
@@ -158,7 +159,7 @@ class RealCatalogTests(unittest.TestCase):
         self.assertEqual(store.get('activity_revisions',revision['id'])['content']['title'],'نسخه اصلاح‌شده تفریح واقعی')
 
     def test_failed_batch_can_resume_without_retiring_old_catalog_or_duplicate_keys(self):
-        store=MemoryTestStore();seed_demo(store,lambda:NOW)
+        store=MemoryTestStore();seed_demo(store,lambda:NOW,include_iran=True)
         original_insert=store.insert
         def fail(collection,document):
             if collection=='activities' and document.get('seed_key')==self.catalog['entries'][30]['key']:
@@ -184,7 +185,9 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
             store_factory=lambda _:MemoryTestStore())
         try:
             async with app.router.lifespan_context(app):
-                self.assertEqual(counts(app.state.services.store)['curated_recommendable'],700)
+                catalog_counts = counts(app.state.services.store)
+                self.assertEqual(catalog_counts['curated_recommendable'],700)
+                self.assertEqual(catalog_counts['recommendable'],1003)
                 async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app),base_url=origin,
                         headers={'Origin':origin}) as client:
                     csrf=(await client.get('/api/v1/auth/csrf')).json()['csrf_token'];client.headers['X-CSRF-Token']=csrf
@@ -200,8 +203,19 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                     blocked=await client.post('/api/v1/check-ins',json=payload,headers={'X-CSRF-Token':'wrong'})
                     self.assertEqual(blocked.status_code,403)
                     check=await post('/check-ins',payload);self.assertEqual(check.status_code,201,check.text)
-                    response=await post('/recommendation-sessions',{'check_in_id':check.json()['id']})
+                    store = app.state.services.store
+                    with patch.object(store, 'published_catalog', wraps=store.published_catalog) as fetch:
+                        response=await post('/recommendation-sessions',{'check_in_id':check.json()['id']})
+                        self.assertEqual(fetch.call_count, 1)
                     self.assertEqual(response.status_code,201,response.text);slate=response.json();item=slate['items'][0]
+                    self.assertTrue(item['requires_venue_check'])
+                    self.assertEqual(item['place']['city'], 'تهران')
+                    self.assertIn('رزرو', item['venue_check_message'])
+                    legacy_card = {k: v for k, v in item.items() if k != 'requires_venue_check'}
+                    self.assertEqual(public_response(legacy_card, store),
+                                     {'slot_id': item['slot_id'], 'unavailable': True})
+                    cities = await client.get('/api/v1/activity-cities')
+                    self.assertIn('تهران', cities.json()['cities'])
                     detail=await client.get('/api/v1/activity-revisions/'+item['revision_id'])
                     self.assertEqual(detail.status_code,200,detail.text)
                     self.assertEqual(detail.json()['content']['place']['city'],'تهران')
@@ -214,4 +228,75 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(completed.status_code,200,completed.text)
                     feedback=await client.put('/api/v1/experiences/'+experience['id']+'/feedback',json={'rating':'liked'})
                     self.assertEqual(feedback.status_code,200,feedback.text)
+                    current = (await client.get('/api/v1/recommendation-sessions/' + slate['id'])).json()
+                    with patch.object(store, 'published_catalog', wraps=store.published_catalog) as fetch:
+                        replacement=await post(f'/recommendation-sessions/{slate["id"]}/slots/{item["slot_id"]}/replace',
+                                               {'expected_version': current['version']})
+                        self.assertEqual(replacement.status_code, 200, replacement.text)
+                        self.assertTrue(replacement.json()['replaced'])
+                        self.assertEqual(fetch.call_count, 1)
+                    for overrides in ({'city': None}, {'city': 'کیش'}, {'allow_venue_planning': False}):
+                        opt = await post('/check-ins', payload | overrides)
+                        result = await post('/recommendation-sessions', {'check_in_id': opt.json()['id']})
+                        self.assertEqual(result.status_code, 201, result.text)
+                        for card in result.json()['items']:
+                            if card['place']:
+                                self.assertEqual(card['place']['city'], overrides.get('city', 'تهران'))
+                                self.assertIs(overrides.get('allow_venue_planning', True), True)
+
+                    # Use an actual named activity from the shipped release. Exercise the
+                    # same HTTP patch/submit/publish path an editor and admin use.
+                    aid, old_id = item['activity_id'], item['revision_id']
+                    no_access = await client.get('/api/v1/admin/catalog/activation')
+                    self.assertEqual(no_access.status_code, 403)
+                    actor = store.list('users')[0]
+                    replace(store, 'users', {**actor, 'role': 'admin'})
+                    cloned = await post(f'/admin/activities/{aid}/revisions', {'source_revision_id': old_id})
+                    self.assertEqual(cloned.status_code, 201, cloned.text)
+                    draft = cloned.json()
+                    original = draft['content']
+                    edited = {**original, 'lighter_version': 'فقط یکی از جزئیات همین تجربه را بررسی کن.'}
+                    updated = await client.patch('/api/v1/admin/revisions/' + draft['id'], json={
+                        'expected_draft_version': draft['draft_version'], 'content': edited})
+                    self.assertEqual(updated.status_code, 200, updated.text)
+                    submitted = await post(f'/admin/revisions/{draft["id"]}/submit',
+                                           {'expected_draft_version': updated.json()['draft_version']})
+                    self.assertEqual(submitted.status_code, 200, submitted.text)
+                    published = await post(f'/admin/revisions/{draft["id"]}/publish',
+                                           {'expected_draft_version': submitted.json()['draft_version']})
+                    self.assertEqual(published.status_code, 200, published.text)
+                    for field in ('place', 'requires_venue_check', 'dramma'):
+                        self.assertEqual(published.json()['content'][field], original[field])
+                    self.assertEqual(published.json()['reviewed_by'], actor['id'])
+                    self.assertIs(published.json()['validation_report']['human_approval'], True)
+                    old = store.get('activity_revisions', old_id)
+                    self.assertEqual(old['state'], 'superseded')
+                    self.assertEqual(old['content'], original)
+                    self.assertEqual(store.get('activities', aid)['published_revision_id'], draft['id'])
+                    queue = await client.get('/api/v1/admin/catalog/activation?status=raw_seed&limit=3')
+                    self.assertEqual(queue.status_code, 200, queue.text)
+                    self.assertEqual(queue.json()['total'], 450)
+                    self.assertEqual(len(queue.json()['items']), 3)
+                    self.assertEqual(queue.json()['counts']['active'], 1003)
+
+                    # At the five-minute floor, the initial home card and all six
+                    # replacements must be distinct and stay free and equipment-free.
+                    check = await post('/check-ins', payload | {'available_minutes': 5, 'venue': 'home',
+                                       'budget': {'mode': 'free'}, 'city': None, 'allow_venue_planning': False})
+                    home = (await post('/recommendation-sessions', {'check_in_id': check.json()['id']})).json()
+                    seen = {home['items'][0]['activity_id']}
+                    version = home['version']
+                    slot = home['items'][0]['slot_id']
+                    for _ in range(6):
+                        response = await post(f'/recommendation-sessions/{home["id"]}/slots/{slot}/replace',
+                                              {'expected_version': version})
+                        self.assertEqual(response.status_code, 200, response.text)
+                        result = response.json()
+                        self.assertTrue(result['replaced'])
+                        self.assertFalse(result['item']['requires_venue_check'])
+                        self.assertEqual(result['item']['cost_label'], 'رایگان')
+                        self.assertEqual(result['item']['total_minutes'], 5)
+                        seen.add(result['item']['activity_id'])
+                        version = result['session_version']
+                    self.assertEqual(len(seen), 7)
         finally:ticker.cancel()

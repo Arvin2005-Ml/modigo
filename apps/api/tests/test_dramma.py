@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[3]
 
 class DrammaTests(unittest.TestCase):
     def setUp(self):
-        self.examples = dict(demo_examples())
+        self.examples = dict(demo_examples(include_iran=True))
         self.content = copy.deepcopy(self.examples['demo:001'])
 
     def test_all_cooked_content_and_cook_fixtures_have_execution_evidence(self):
@@ -101,7 +101,7 @@ class DrammaTests(unittest.TestCase):
     def test_upgrade_is_versioned_idempotent_and_preserves_editorial_and_withdrawn_content(self):
         store = MemoryTestStore()
         seed_bank(store, lambda: NOW)
-        seed_demo(store, lambda: NOW)
+        seed_demo(store, lambda: NOW, include_iran=True)
         activities = {a['seed_key']:a for a in store.list('activities')}
         legacy = json.loads((ROOT/'content/dramma-legacy-checksums.json').read_text())['checksums']
         keys = ['demo:001','demo:iran-cinema-01','demo:iran-cinema-02','demo:iran-cinema-03','demo:iran-cinema-04','demo:iran-cinema-05']
@@ -118,7 +118,7 @@ class DrammaTests(unittest.TestCase):
             if index==5: revision['reviewed_by']=uid()
             revision=replace(store,'activity_revisions',revision);replace(store,'activities',activity)
             saved[key]=copy.deepcopy(revision)
-        seed_demo(store, lambda: NOW)
+        seed_demo(store, lambda: NOW, include_iran=True)
         target=store.get('activities',activities[keys[0]]['id'])
         fresh=store.get('activity_revisions',target['published_revision_id'])
         self.assertNotEqual(fresh['id'],saved[keys[0]]['id'])
@@ -131,7 +131,7 @@ class DrammaTests(unittest.TestCase):
             self.assertEqual(store.get('activities',activities[key]['id'])['published_revision_id'],saved[key]['id'])
             self.assertEqual(store.get('activity_revisions',saved[key]['id']),saved[key])
         count=len(store.list('activity_revisions'))
-        seed_demo(store,lambda:NOW)
+        seed_demo(store,lambda:NOW,include_iran=True)
         self.assertEqual(count,len(store.list('activity_revisions')))
         self.assertEqual(len([a for a in store.list('admin_audit') if a['action']=='demo_dramma_aligned']),1)
         self.assertTrue(all(not a['active'] and a['published_revision_id'] is None

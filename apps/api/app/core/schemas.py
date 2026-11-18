@@ -13,6 +13,14 @@ Dimension = Literal['detachment', 'relaxation', 'autonomy', 'mastery', 'meaning'
 Integer = Annotated[int, Field(strict=True)]
 
 
+def normalize_city(value: str) -> str:
+    return ' '.join(unicodedata.normalize('NFC', value).translate(str.maketrans('كيى\u200c', 'کیی ')).split())
+
+
+def city_key(value: str) -> str:
+    return normalize_city(value).replace(' ', '').replace('\u200c', '').casefold()
+
+
 class Input(BaseModel):
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=True, validate_default=True)
 
@@ -122,6 +130,8 @@ class Context(Constraints):
     party_size: Integer = Field(ge=1, le=12)
     venue: Literal['home', 'away_from_home', 'any', 'outdoor', 'indoor_public']
     budget: Budget
+    city: str | None = Field(default=None, max_length=100, strict=True)
+    allow_venue_planning: bool = Field(default=False, strict=True)
     activity_intent: Goal | None = None
     mood: Literal['tired', 'restless', 'bored', 'low', 'okay', 'skip'] = 'skip'
     goal: Goal = 'any'
@@ -129,6 +139,11 @@ class Context(Constraints):
     desired_outcome: Goal = 'any'
     weather: Literal['fair', 'adverse', 'unknown'] = 'unknown'
     daylight: Literal['day', 'night', 'unknown'] = 'unknown'
+
+    @field_validator('city', mode='before')
+    @classmethod
+    def clean_city(cls, value):
+        return normalize_city(value) or None if isinstance(value, str) else value
 
     @field_validator('available_minutes', 'party_size', mode='before')
     @classmethod
