@@ -5,23 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { apiSlice } from "@/lib/store/api/apiSlice";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { setUser } from "@/lib/store/slices/authSlice";
+import { useAuth } from "@/lib/hooks/useAuth";
+import { paths } from "@/lib/navigation";
 
 import Landing from "./Landing";
 
 export default function LandingEntry() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { status } = useAuth();
 
   const [legacyChecked, setLegacyChecked] = useState(false);
-
-  const {
-    data: user,
-    isLoading,
-
-  } = apiSlice.endpoints.getMe.useQuery();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,7 +24,7 @@ export default function LandingEntry() {
     const experience = params.get("experience");
 
     if (reset) {
-      router.replace(`/reset-password?token=${encodeURIComponent(reset)}`);
+      router.replace(`${paths.reset}?token=${encodeURIComponent(reset)}`);
       return;
     }
 
@@ -41,12 +34,12 @@ export default function LandingEntry() {
     }
 
     if (slate) {
-      router.replace(`/individual/results?slate=${encodeURIComponent(slate)}`);
+      router.replace(`${paths.results}?slate=${encodeURIComponent(slate)}`);
       return;
     }
 
     if (params.has("verify_email")) {
-      router.replace("/login");
+      router.replace(paths.login);
       return;
     }
 
@@ -54,21 +47,18 @@ export default function LandingEntry() {
   }, [router]);
 
   useEffect(() => {
-    if (user && legacyChecked) {
-      dispatch(setUser(user));
-      router.replace("/discover");
+    if (legacyChecked && status === "authenticated") {
+      router.replace(paths.discover);
     }
-  }, [user, legacyChecked, dispatch, router]);
+  }, [legacyChecked, status, router]);
 
-  if (!legacyChecked || isLoading || user) {
+  if (!legacyChecked || status !== "guest") {
     return (
-      <main className="route-loading" role="status">
+      <main id="main" className="route-loading" role="status">
         در حال آماده‌سازی مودیگو…
       </main>
     );
   }
-
- 
 
   return (
     <div className="landing-shell">
@@ -89,20 +79,27 @@ export default function LandingEntry() {
         </Link>
 
         <nav className="landing-nav" aria-label="ورود و ثبت‌نام">
-          <Link href="/login">ورود</Link>
+          <Link href={paths.login}>ورود</Link>
 
-          <Link href="/signup" className="landing-signup">
+          <Link href={paths.signup} className="landing-signup">
             ثبت‌نام
           </Link>
         </nav>
       </header>
 
       <main id="main" className="page-shell">
-        <Landing start={() => router.push("/login?next=%2Findividual")} />
+        <Landing
+          start={() =>
+            router.push(
+              `${paths.login}?next=${encodeURIComponent(paths.questions)}`,
+            )
+          }
+        />
       </main>
 
       <footer className="site-footer landing-footer">
         <span>مودیگو · با ریتم تو</span>
+
         <span>یه کم وقت برای خودت، بدون باید.</span>
       </footer>
     </div>
