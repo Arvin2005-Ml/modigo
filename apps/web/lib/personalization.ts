@@ -10,7 +10,6 @@ export const interestOptions = [
   ['games','بازی'], ['puzzles','معما'], ['drawing','نقاشی'], ['music','موسیقی'],
   ['storytelling','قصه و نمایش'], ['photography','عکاسی'], ['reading','کتاب'],
   ['craft','ساختنی'], ['nature','طبیعت'], ['humor','طنز'], ['dance','رقص و حرکت'],
-  ['walking','قدم‌زدن'], ['food','خوراکی و آشپزی'], ['culture','گشت فرهنگی'],
 ] as const;
 
 export const goalOptions = [

@@ -50,13 +50,6 @@ test('the result page renders exactly one activity even for an outdated multi-it
   assert.doesNotMatch(html, /<button[^>]*disabled=""[^>]*>یه پیشنهاد دیگه/);
 });
 
-test('a named outing shows its city and the venue check before opening the activity', () => {
-  const html = render({items:[{...item, place:{name:'پردیس تماشا', city:'تهران'},
-    venue_check_message:'پیش از رفتن، باز بودن و رزرو را بررسی کن.'}]});
-  assert.match(html, /پردیس تماشا.*تهران/);
-  assert.match(html, /پیش از رفتن، باز بودن و رزرو را بررسی کن/);
-});
-
 test('after six changes the replace action is disabled while the current card remains usable', () => {
   const html = render({replacement_count:6,replacements_remaining:0,replacement_available:false});
   assert.match(html, /<button[^>]*disabled=""[^>]*>یه پیشنهاد دیگه/);

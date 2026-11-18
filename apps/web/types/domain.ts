@@ -16,7 +16,7 @@ export type Context = {
   energy: "low" | "medium" | "high" | "unknown";
   social_mode: "solo" | "together" | "either";
   party_size: number;
-  venue: "home" | "away_from_home" | "outdoor" | "indoor_public" | "any";
+  venue: "home" | "outdoor" | "indoor_public" | "any";
   budget: Budget;
   mood: "tired" | "restless" | "bored" | "low" | "okay" | "skip";
   owned_items?: string[];
@@ -31,17 +31,8 @@ export type Context = {
     | "any";
   need_now?: NonNullable<Context["goal"]>;
   desired_outcome?: NonNullable<Context["goal"]>;
-  allow_venue_planning?: boolean;
-  city?: string | null;
   weather?: "fair" | "adverse" | "unknown";
   daylight?: "day" | "night" | "unknown";
-};
-
-export type Place = {
-  name: string;
-  city: string;
-  source_url: string;
-  source_name: string;
 };
 
 export type Slot = {
@@ -52,10 +43,7 @@ export type Slot = {
   teaser?: string;
   total_minutes?: number;
   cost_label?: string;
-  cost_range_toman?: { min: number; max: number } | null;
   explanation?: string;
-  place?: Place | null;
-  venue_check_message?: string | null;
   unavailable: boolean;
 };
 
@@ -75,12 +63,6 @@ export type Slate = ReplacementState & {
   items: Slot[];
   result_count: number;
   partial: boolean;
-  venue_alternative?: {
-    title: string;
-    venue: "home" | "outdoor" | "indoor_public";
-    total_minutes: number;
-  } | null;
-  budget_alternative?: { title: string; total_minutes: number } | null;
   context_summary: Pick<
     Context,
     "available_minutes" | "social_mode" | "party_size" | "venue" | "budget"
@@ -101,8 +83,6 @@ export type Content = {
   travel_minutes: number;
   safety_notes: string[];
   primary_dimension: string;
-  place?: Place | null;
-  requires_venue_check?: boolean;
   cost: {
     kind: string;
     note: string;
@@ -163,4 +143,14 @@ export type Preferences = {
     analytics_opt_in: false;
     analytics_policy_version: null;
   };
+};
+export type DiscoverItem = {
+  activity_id: string;
+  revision_id: string;
+  title: string;
+  teaser: string;
+  tags: string[];
+  city: string | null;
+  total_minutes: number;
+  free: boolean;
 };

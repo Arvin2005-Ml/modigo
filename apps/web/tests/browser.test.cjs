@@ -1,4 +1,4 @@
-const {chromium, firefox} = require('playwright');
+const {chromium} = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -15,7 +15,6 @@ const content = {
   active_minutes: 10, setup_minutes: 0, travel_minutes: 0, safety_notes: [],
   primary_dimension: 'relaxation', cost: {kind: 'free', note: 'رایگان'},
 };
-const place = {name:'پردیس تماشا', city:'تهران', source_url:'https://example.com/cinema', source_name:'صفحهٔ سینما'};
 const basePreferences = {
   version: 1, preferences: {
     liked_tags: [], blocked_tags: [], owned_items: [], max_mobility: 'active',
@@ -52,7 +51,6 @@ async function setup(browser, options = {}) {
     slot_id:'slot-1', activity_id:'activity-' + state.index, revision_id:'revision-' + state.index,
     title:state.index === 0 ? content.title : 'پیشنهاد تازه ' + state.index,
     teaser:content.teaser,total_minutes:10,cost_label:'رایگان',explanation:'متناسب با وقتت',unavailable:false,
-    ...(options.outing ? {place, venue_check_message:'پیش از رفتن، باز بودن و هزینه را بررسی کن.'} : {}),
   });
   const replacement = () => ({
     replacement_count:state.replacements,replacement_limit:6,replacements_remaining:6-state.replacements,
@@ -89,8 +87,7 @@ async function setup(browser, options = {}) {
     }
     if (endpoint.endsWith('/navigate')) {state.index+=body.direction==='previous' ? -1:1;state.version++;return send(slate());}
     if (endpoint.startsWith('/recommendation-sessions')) return send(slate(),method==='POST'?201:200);
-    if (endpoint.startsWith('/activity-revisions/')) return send({id:'revision-0',activity_id:'activity-0',
-      content:options.outing ? {...content, place, requires_venue_check:true} : content,origin:'human'});
+    if (endpoint.startsWith('/activity-revisions/')) return send({id:'revision-0',activity_id:'activity-0',content,origin:'human'});
     if (endpoint === '/experiences/active') return send({experience:state.active});
     if (endpoint === '/experiences' && method === 'POST') {
       state.active={id:'experience-1',activity_id:'activity-0',revision_id:body.revision_id,status:'active',started_at:'2026-11-17T09:00:00Z',content_snapshot:content,unavailable:false};
@@ -131,54 +128,9 @@ async function screen(page,name) {
     if(width===390) await page.screenshot({path:path.join(artifacts,name+'.png'),fullPage:true});
   }
 }
-async function checkOutingFlow(browser) {
-  const app=await setup(browser,{outing:true});
-  const {page}=app;
-  await page.goto(origin+'/individual');
-  await visible(page,'.question-layout');
-  const next = page.getByRole('button',{name:'بریم بعدی'});
-  await page.getByRole('radio',{name:'چهار ساعت'}).check();
-  await next.click();
-  await page.getByRole('radio',{name:'بیرون از خونه؛ فرقی نداره کجا'}).check();
-  const optIn = page.getByRole('checkbox',{name:'آره، پیشنهاد جا هم می‌خوام'});
-  const city = page.getByLabel('شهر برای همین نوبت');
-  await optIn.check();
-  await next.click();
-  await page.getByRole('alert').filter({hasText:'اسم شهرت رو وارد کن'}).waitFor();
-  await city.fill('تهران');
-  await optIn.uncheck();
-  await city.waitFor({state:'hidden'});
-  await optIn.check();
-  assert.equal(await city.inputValue(), '');
-  await city.fill('تهران');
-  await page.getByRole('checkbox',{name:'هوا روشنه و برای قدم‌زدن مناسبه'}).check();
-  await screen(page,'outing-questions');
-  await next.click();
-  await page.getByRole('radio',{name:'منعطفم'}).check();
-  for(let i=0;i<3;i++) await next.click();
-  await page.getByRole('button',{name:'پیشنهادم رو ببینم'}).click();
-  await visible(page,'.single-suggestion');
-  const {available_minutes, venue, city: submittedCity, allow_venue_planning, weather, daylight, budget} = app.state.checkin;
-  assert.deepEqual({available_minutes, venue, submittedCity, allow_venue_planning, weather, daylight, budget:budget.mode},
-    {available_minutes:240, venue:'away_from_home', submittedCity:'تهران', allow_venue_planning:true, weather:'fair',
-      daylight:'day', budget:'flexible'});
-  await page.getByText('پردیس تماشا · تهران',{exact:true}).waitFor();
-  await page.getByText('پیش از رفتن، باز بودن و هزینه را بررسی کن.',{exact:true}).waitFor();
-  await screen(page,'outing-suggestion');
-  await page.getByRole('button',{name:'ببینمش',exact:true}).click();
-  const source = page.getByRole('link',{name:'منبع: صفحهٔ سینما'});
-  await source.waitFor();
-  assert.equal(await source.getAttribute('href'), place.source_url);
-  await screen(page,'outing-detail');
-  await app.finish();
-  console.log('PASS outing flow: city opt-in, Tehran, outdoor conditions, flexible budget, venue check and source.');
-}
 async function main() {
-  const engine=process.env.BROWSER_ENGINE === 'firefox' ? firefox : chromium;
-  const browser=await engine.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
+  const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
   try {
-    await checkOutingFlow(browser);
-    if (process.argv.includes('--outings-only')) return;
     {
       const app=await setup(browser,{authenticated:false});
       const {page}=app;

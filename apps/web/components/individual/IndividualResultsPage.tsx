@@ -262,11 +262,7 @@ export default function IndividualResultsPage() {
   }
 
   const summary = slate.context_summary ?? context;
-  const item = slate.items[0];
-  const remainingMinutes = item?.unavailable || item?.total_minutes == null
-    ? 0 : summary.available_minutes - item.total_minutes;
-  const alternative = slate.venue_alternative;
-  const budgetAlternative = slate.budget_alternative;
+
   const savedItems = savedQuery.data?.items ?? [];
 
   return (
@@ -328,7 +324,6 @@ export default function IndividualResultsPage() {
                 home: "خونه",
                 outdoor: "هوای آزاد",
                 indoor_public: "سرپوشیده",
-                away_from_home: "بیرون از خونه",
                 any: "هر جا شد",
               }[summary.venue]
             }
@@ -355,35 +350,6 @@ export default function IndividualResultsPage() {
           browse={handleBrowse}
           changeConditions={changeConditions}
         />
-        {remainingMinutes > 0 && (
-          <p className="hint">
-            بعد از این پیشنهاد، {number(remainingMinutes)} دقیقه از وقتت می‌مونه.
-          </p>
-        )}
-        {summary.budget.mode === "cap" && item?.cost_range_toman?.max === 0 && !item.unavailable && (
-          <p className="hint">این پیشنهاد رایگانه و از بودجه‌ات خرج نمی‌شه.</p>
-        )}
-        {alternative && (
-          <div className="notice-message">
-            <p>
-              اگه محیط رو به «{{
-                home: "خونه", outdoor: "هوای آزاد", indoor_public: "جای سرپوشیده",
-              }[alternative.venue]}» تغییر بدی، گزینهٔ طولانی‌تری هست:
-              {" "}{alternative.title} ({number(alternative.total_minutes)} دقیقه).
-            </p>
-            <Button secondary disabled={busy} onClick={changeConditions}>تغییر محیط در سؤال‌ها</Button>
-          </div>
-        )}
-        {budgetAlternative && (
-          <div className="notice-message">
-            <p>
-              یه گزینه با قیمت نامعلوم هم هست: {budgetAlternative.title}
-              {" "}({number(budgetAlternative.total_minutes)} دقیقه).
-              برای دیدنش می‌تونی بودجهٔ منعطف رو انتخاب کنی. قبل از رفتن قیمت رو از محل بپرس.
-            </p>
-            <Button secondary disabled={busy} onClick={changeConditions}>تغییر بودجه در سؤال‌ها</Button>
-          </div>
-        )}
       </section>
     </main>
   );
