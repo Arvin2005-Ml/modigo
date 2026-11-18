@@ -6,6 +6,7 @@ from app.core.rate_limit import RateLimiter
 from app.modules.identity.service import Identity
 from app.modules.catalog.service import Catalog
 from app.modules.catalog.bootstrap import seed_bank, seed_demo
+from app.modules.catalog.import_unified import import_unified
 from app.modules.recommendations.service import Recommendations
 from app.modules.experiences.service import Experiences
 from app.modules.content_jobs import ContentJobs
@@ -42,7 +43,11 @@ class Services:
         logger.info('API startup: importing owner seeds without overwriting existing content')
         seed_bank(self.store, clock)
         if settings.demo_content:
-            logger.info('API startup: importing the authored demo catalog')
-            seed_demo(self.store, clock)
+            if settings.catalog_release == 'real700':
+                logger.info('API startup: importing owner-authorized real700 catalog; preserving editorial history')
+                import_unified(self.store, clock)
+            else:
+                logger.info('API startup: importing the authored legacy demo catalog')
+                seed_demo(self.store, clock)
         logger.info('API startup: preparing the in-process content runner')
         self.jobs = ContentJobs(self.store, self.catalog, settings, clock)

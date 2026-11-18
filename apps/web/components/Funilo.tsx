@@ -69,6 +69,7 @@ export default function Funilo() {
         let current: User;
         try {current=await api<User>('/me');} catch(e) {if(e instanceof ApiError && e.status === 401) return;throw e;}
         setUser(current);
+        setContext(previous => ({...previous, city: current.city ?? null}));
         const [active,prefs,saves] = await Promise.all([api<{experience: Experience|null}>('/experiences/active'),api<PreferencesType>('/me/preferences'),api<{items: Saved[]}>('/saved')]);
         setPreferences(prefs);setSaved(saves.items);
         const slateId = new URLSearchParams(window.location.search).get('slate');
@@ -88,6 +89,7 @@ export default function Funilo() {
   const finishLogin = async (email: string,password: string) => {
     const response = await api<{user: User}>('/auth/login','POST',{email,password});
     setUser(response.user);
+    setContext(previous => ({...previous, city: response.user.city ?? null}));
     const [active,prefs] = await Promise.all([api<{experience: Experience|null}>('/experiences/active'),api<PreferencesType>('/me/preferences')]);
     setExperience(active.experience);setPreferences(prefs);await loadSaved();
     navigate(active.experience ? 'active' : returnView.current);
@@ -165,7 +167,7 @@ export default function Funilo() {
   return <>
     <a className="skip-link" href="#main">رفتن به محتوای اصلی</a>
     <div className="demo-bar"><span className="status-dot"/>نسخهٔ آزمایشی محلی <span className="demo-detail">· تجربه‌های تألیفی برای امتحان‌کردن</span></div>
-    <header className="site-header"><button className="wordmark" onClick={() => navigate('home')} aria-label="فانیلو، صفحهٔ اول"><span className="brand-symbol"><Icon name="spark" size={25}/></span>فانیلو<span className="brand-dot" aria-hidden="true">.</span></button>
+    <header className="site-header"><button className="wordmark" onClick={() => navigate('home')} aria-label="مودیگو، صفحهٔ اول"><span className="brand-symbol"><Icon name="spark" size={25}/></span>مودیگو<span className="brand-dot" aria-hidden="true">.</span></button>
       <div className="header-caption">یه کم وقت برای خودت.</div>
       <div className="header-actions"><Pwa/>{experience?.status === 'active' && <button className="active-link" onClick={() => navigate('active')}><span className="status-dot"/>تجربهٔ بازت</button>}
         {user ? <><button className="account-button" onClick={() => route('settings')} aria-label="تنظیمات حساب"><Icon name="user" size={19}/><span>{user.display_name || 'حساب من'}</span></button>{user.role !== 'user' && <button className="text-button" onClick={() => route('admin')}>کارگاه محتوا</button>}</> : <button className="header-login" onClick={() => route('questions')}><Icon name="user" size={17}/>ورود <span className="login-extra">/ ساخت حساب</span></button>}</div>
@@ -177,7 +179,7 @@ export default function Funilo() {
         {view === 'home' && <Home start={() => route('questions')}/>}
         {view === 'auth' && <Auth busy={busy} resetToken={!!resetToken} login={login}
           forgot={async email => {let ok=false;await run(async () => {await api('/auth/forgot-password','POST',{email});ok=true;});return ok;}}
-          reset={password => run(async () => {await api('/auth/reset-password','POST',{token:resetToken,new_password:password});setResetToken(null);setUser(null);setNotice('رمزت عوض شد؛با رمز تازه وارد شو.');})} signup={(email,password,name) => run(async () => {await api('/auth/signup','POST',{email,password,display_name:name,adult_confirmed:true});await finishLogin(email,password);})} />}
+          reset={password => run(async () => {await api('/auth/reset-password','POST',{token:resetToken,new_password:password});setResetToken(null);setUser(null);setNotice('رمزت عوض شد؛با رمز تازه وارد شو.');})} signup={(email,password,name,city) => run(async () => {await api('/auth/signup','POST',{email,password,display_name:name,city,adult_confirmed:true});await finishLogin(email,password);})} />}
         {view === 'questions' && <Questionnaire value={context} defaults={preferences?.preferences} change={v => {setContext(v);checkIn.current=null;}} submit={recommend} busy={busy} />}
         {view === 'results' && slate && <section><div className="section-heading"><div><span className="eyebrow">برای همین حال و همین وقت</span><h1>این یکی شاید الان بهت بچسبه.</h1><p className="intro">اگه به دلت ننشست، تا شش بار یه پیشنهاد تازه ببین.</p></div><button className="text-button" disabled={busy} onClick={returnHome}>شرایطم رو عوض کنم <span aria-hidden="true">↗</span></button></div>
           <div className="constraint-summary"><span>{number(summary.available_minutes)} دقیقه</span><span>{summary.social_mode === 'solo' ? 'تنهایی' : summary.social_mode === 'together' ? 'با همراه' : 'تنها یا با همراه'}</span><span>{({home:'خونه',outdoor:'هوای آزاد',indoor_public:'سرپوشیده',any:'هر جا شد'})[summary.venue]}</span><span>{summary.budget.mode === 'free' ? 'رایگان' : summary.budget.mode === 'cap' ? 'تا '+number(summary.budget.cap_toman!)+' تومان' : 'هزینهٔ منعطف'}</span></div>
@@ -202,7 +204,7 @@ export default function Funilo() {
       </>}
     </main>
     {user && <nav className="bottom-nav" aria-label="صفحه‌های اصلی"><button aria-current={['questions','results','detail','active','complete'].includes(view) ? 'page' : undefined} onClick={returnHome}><Icon name="spark"/>امروز</button><button aria-current={view === 'saved' ? 'page' : undefined} onClick={() => route('saved')}><Icon name="bookmark"/>ذخیره‌ها</button><button aria-current={view === 'journey' ? 'page' : undefined} onClick={() => route('journey')}><Icon name="journey"/>مسیر من</button></nav>}
-    <footer className={`site-footer ${user ? 'with-navigation' : ''}`}><span className="footer-brand"><Icon name="spark" size={17}/>فانیلو <span>· با ریتم تو</span></span><span>یه کم وقت برای خودت، بدون باید.</span><span className="footer-local">نسخهٔ آزمایشی</span></footer>
+    <footer className={`site-footer ${user ? 'with-navigation' : ''}`}><span className="footer-brand"><Icon name="spark" size={17}/>مودیگو <span>· با ریتم تو</span></span><span>یه کم وقت برای خودت، بدون باید.</span><span className="footer-local">نسخهٔ آزمایشی</span></footer>
   </>;
 }
 

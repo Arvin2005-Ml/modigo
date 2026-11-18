@@ -22,6 +22,10 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
             or activity['id'] in (excluded or set())):
         return None
     content = activity['content']
+    if content.get('requires_venue_check') and not context.get('allow_venue_planning', False):
+        return None
+    if content.get('place') and context.get('city') != content['place']['city']:
+        return None
     duration = sum(content[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes'))
     if duration > context['available_minutes']:
         return None

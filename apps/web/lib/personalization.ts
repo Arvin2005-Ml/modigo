@@ -4,12 +4,15 @@ export const itemOptions = [
   ['book','کتاب'], ['playing_cards','ورق بازی'], ['board_game','بازی رومیزی'],
   ['colored_pencils','مدادرنگی'], ['ball','توپ'], ['kitchen','آشپزخانه'],
   ['food_ingredients','مواد غذایی'], ['headphones','هدفون'],
+  ['towel','حوله'],
 ] as const;
 
 export const interestOptions = [
   ['games','بازی'], ['puzzles','معما'], ['drawing','نقاشی'], ['music','موسیقی'],
   ['storytelling','قصه و نمایش'], ['photography','عکاسی'], ['reading','کتاب'],
   ['craft','ساختنی'], ['nature','طبیعت'], ['humor','طنز'], ['dance','رقص و حرکت'],
+  ['culture','سینما و تئاتر'], ['food','غذا و کافه'], ['movement','ورزش و تحرک'],
+  ['discovery','گردش و کشف'], ['science','علم و فناوری'],
 ] as const;
 
 export const goalOptions = [

@@ -13,7 +13,7 @@ export default function SingleSuggestion({slate, busy, saved, open, save, replac
   const hasPrevious = slate.suggestion_index > 0;
   const hasNext = slate.suggestion_index < slate.suggestion_count - 1;
   if(!item) return <Empty title="با این شرایط فعلاً چیزی پیدا نکردیم.">
-    <p>اگه دوست داشتی یه انتخاب رو تغییر بده تا دوباره بگردیم.</p>
+    <p>اگه دوست داشتی یه انتخاب رو تغییر بده تا دوباره بگردیم. برای کارهای عملی، وسایل موجودت رو هم در سؤال آخر مشخص کن؛ برای مکان‌های شهری، شهر و اجازهٔ بررسی محل لازمه.</p>
     <Button onClick={changeConditions}>برگردم به سؤال‌ها</Button>
   </Empty>;
   return <div className="single-suggestion">

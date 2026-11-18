@@ -2,10 +2,10 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'فانیلو — یه وقت کوچیک برای خودت',
+  title: 'مودیگو — یه وقت کوچیک برای خودت',
   description: 'چند پیشنهاد ساده برای وقت آزاد،با حال و شرایط خودت.',
-  applicationName: 'فانیلو',
-  appleWebApp: {capable: true, statusBarStyle: 'default', title: 'فانیلو'},
+  applicationName: 'مودیگو',
+  appleWebApp: {capable: true, statusBarStyle: 'default', title: 'مودیگو'},
   icons: {icon: '/icons/icon.svg', apple: '/icons/apple-touch-icon.png'},
   robots: {index: false, follow: false}
 };

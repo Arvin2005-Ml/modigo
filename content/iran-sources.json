@@ -1,0 +1,21 @@
+{
+  "reviewed_on": "2026-11-13",
+  "scope": "Examples of activity categories in Iran; not live availability, quoted prices, or proof that every authored workshop is currently offered.",
+  "sources": {
+    "tiwall": {"name": "تیوال؛ نمایش، موسیقی، فیلم و آموزش", "url": "https://www.tiwall.com/", "access": "page_read", "scope": "category_example"},
+    "cinematicket": {"name": "سینماتیکت", "url": "https://cinematicket.org/", "access": "javascript_required", "scope": "discovery_portal_only"},
+    "honarticket": {"name": "هنرتیکت؛ برنامه‌های تهران و دیگر شهرها", "url": "https://www.honarticket.com/", "access": "page_read", "scope": "category_example"},
+    "snappfood": {"name": "اسنپ‌فود؛ رستوران، کافه و غذا", "url": "https://snappfood.ir/", "access": "page_read", "scope": "category_example"},
+    "kashan_crafts": {"name": "اداره میراث فرهنگی کاشان؛ فهرست کارگاه‌ها", "url": "https://kashancth.ir/lis-crafts", "access": "page_read", "scope": "craft_existence_only_not_visitor_admission"},
+    "kashan_attractions": {"name": "اداره میراث فرهنگی کاشان؛ جاذبه‌ها", "url": "https://kashancth.ir/", "access": "linked_from_read_page", "scope": "discovery_portal_only"},
+    "craft_workshops": {"name": "سیپان؛ کارگاه‌های تجربه‌محور", "url": "https://seepangroup.com/en/category/main-art-culture/classes-workshops", "access": "search_excerpt", "scope": "category_example"},
+    "chocolate_workshop": {"name": "کارگاه شکلات‌سازی؛ فهرست رویداد فلورتو", "url": "https://flurto.com/events/workshop-tehran-ekeepa-art-34/", "access": "search_excerpt", "scope": "category_example"},
+    "enghelab": {"name": "شرکت توسعه و نگهداری اماکن ورزشی؛ امکانات انقلاب", "url": "https://tanavar.ir/subsidiaries/aboutus/default.aspx?qs=4809974", "access": "search_excerpt", "scope": "facility_types_only_not_public_session_access"},
+    "plania": {"name": "پلانیا پارک؛ بازی‌ها و بولینگ", "url": "https://planiapark.com/about/", "access": "page_read", "scope": "category_example"},
+    "escape_example": {"name": "اسکیپ‌دی‌بی؛ نمونهٔ اتاق فرار اصفهان", "url": "https://escapedb.ir/escape-room/mkhmsh", "access": "search_excerpt", "scope": "category_example"},
+    "tochal_facilities": {"name": "معرفی امکانات توچال در سفرتاپ", "url": "https://blog.safartop.com/natural-attractions/tochal-sports-recreation/", "access": "search_excerpt", "scope": "category_example_not_current_operations"},
+    "iran_museums": {"name": "فهرست موزه‌های ایران", "url": "https://en.wikipedia.org/wiki/List_of_museums_in_Iran", "access": "search_excerpt", "scope": "museum_types_only"},
+    "science_museum": {"name": "ویزیت ایران؛ موزهٔ علوم و فناوری", "url": "https://visitiran.ir/fa/attraction/موزه‌ی-علوم-و-فناوری-ایران", "access": "search_excerpt", "scope": "category_example_not_workshop_schedule"},
+    "botanical_garden": {"name": "باغ گیاه‌شناسی ملی؛ معرفی کارناوال", "url": "https://www.karnaval.ir/things-to-do/national-botanical-garden-of-iran", "access": "search_excerpt", "scope": "category_example"}
+  }
+}

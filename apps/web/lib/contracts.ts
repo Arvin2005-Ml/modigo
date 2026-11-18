@@ -1,4 +1,4 @@
-export type User = {id: string; display_name: string; email: string; role: 'user' | 'editor' | 'admin'; timezone: string};
+export type User = {id: string; display_name: string; email: string; role: 'user' | 'editor' | 'admin'; timezone: string; city?: string | null};
 export type Budget = {mode: 'free' | 'cap' | 'flexible'; cap_toman: number | null};
 export type Context = {
   available_minutes: number; energy: 'low' | 'medium' | 'high' | 'unknown'; social_mode: 'solo' | 'together' | 'either';
@@ -9,17 +9,22 @@ export type Context = {
   goal?: 'unwind' | 'switch_off' | 'learn' | 'connect' | 'meaning' | 'choose' | 'any';
   need_now?: NonNullable<Context['goal']>;
   desired_outcome?: NonNullable<Context['goal']>;
+  allow_venue_planning?: boolean;
+  city?: string | null;
   weather?: 'fair' | 'adverse' | 'unknown';
   daylight?: 'day' | 'night' | 'unknown';
 };
 export type Slot = {slot_id: string; activity_id?: string; revision_id?: string; title?: string; teaser?: string;
-  total_minutes?: number; cost_label?: string; explanation?: string; unavailable: boolean};
+  total_minutes?: number; cost_label?: string; explanation?: string; requires_venue_check?: boolean; unavailable: boolean};
 export type ReplacementState = {replacement_count: number; replacement_limit: number; replacements_remaining: number; replacement_available: boolean;
   suggestion_index: number; suggestion_count: number};
 export type Slate = ReplacementState & {id: string; check_in_id: string; version: number; items: Slot[]; result_count: number; partial: boolean; context_summary: Pick<Context, 'available_minutes'|'social_mode'|'party_size'|'venue'|'budget'>};
 export type Content = {
+  place?: {name: string; city: string; source_url: string; source_name: string; researched_on: string; evidence_scope: 'place_and_activity_type_only'} | null;
+  dramma?: {version: 'dramma_v1'; mechanisms: {dimension: string; intent: string; step_indexes: number[]}[]};
   title: string; teaser: string; first_step: string; steps: string[]; lighter_version: string;
   materials_note: string; accessibility_note: string; conditions_note: string;
+  requires_venue_check?: boolean;
   active_minutes: number; setup_minutes: number; travel_minutes: number;
   safety_notes: string[]; primary_dimension: string; cost: {kind: string; note: string};
   [key: string]: unknown;

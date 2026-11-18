@@ -1,5 +1,10 @@
 # مدل داده و انواع مرجع
 
+**افزودهٔ ۱۴ نوامبر۲۰۲۶:** Context فیلد اختیاری city و Content فیلد اختیاری place شامل نام/شهر/لینک HTTPS/نام منبع/تاریخ بررسی/دامنهٔ شواهد دارد. origin=curated و مبنای درخواست مالک در release جدید، تأیید انسانی جعل نمی‌کنند. [قرارداد جاری هفتصد مورد](28-real-catalog-700.md).
+
+
+**قرارداد جاری — ۱۴ نوامبر۲۰۲۶:** `Content.dramma={version:"dramma_v1",mechanisms:[{dimension,intent,step_indexes}]}` اجباری است. هر بُعد اصلی/فرعی باید دقیقاً یک دلیل و ارجاع یک‌مبنا به قدم اجرایی داشته باشد؛ affiliation فقط در اجرای مشترک. محتوای نامنطبق در تولید/ویرایش/بررسی/انتشار رد و از پیشنهاد و شروع تازه حذف می‌شود. [قرارداد و مهاجرت نسخه‌ای](27-dramma-alignment.md).
+
 **فاز جاری — ۹ نوامبر ۲۰۲۶:** اسناد در collectionهای واقعی MongoDB روی endpoint عمومی ذخیره می‌شوند. UUID رشته‌ای به `_id`، زمان به BSON UTC با دقت میلی‌ثانیه و atomic به transaction واقعی نگاشت می‌شود. نسخهٔ عمومی store با شمارهٔ محتوایی `revision_number` و `draft_version` جداست. نام فیلدها و ایندکس‌های اجرایی در `app/core/mongo.py` و [سند24](24-mongodb-storage.md) ثبت شده‌اند؛ جدول پایین طرح دامنه است و برای قابلیت‌های پیاده‌نشده ادعای اجرا ندارد.
 
 همهٔ زمان‌های ذخیره‌شده BSON UTC Date و در JSON رشتهٔ RFC3339 با `Z` هستند. timezone نمایشی/روز امتیاز از IANA profile، پیش‌فرض `Asia/Tehran`. شناسهٔ موجودیت‌ها UUID4 به‌شکل string؛ `seed_key` مانند `D001` جدا و یکتاست. مبلغ integer تومان است؛ float برای پول ممنوع. متن‌ها Unicode نرمال‌شده، سقف طول و `extra=forbid` در DTOهای ورودی.
@@ -24,6 +29,8 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
 `seated < light < active` ترتیب نیاز به تحرک است؛ `max_mobility` پیش‌فرض active، نیاز حرکتی خاص تنها با اعلام کاربر. `requires_step_free` و `requires_quiet` boolean هستند. هیچ تشخیص پزشکی نگهداری نشود. tagهای علاقه/مسدود و itemها از واژگان کنترل‌شدهٔ نسخه‌دار بیایند؛ مثال `nature`, `music`, `drawing`, `walking`, `paper`, `pen`, `phone`, `internet`, `kitchen`. افزودن tag جدید در import با تأیید ادمین و migration واژگان، نه متن آزاد کاربر.
 
 ## Context؛ snapshot هر نوبت
+
+**افزودهٔ۱۳ نوامبر۲۰۲۶:** `allow_venue_planning:boolean=false` رضایت صریح برای پیشنهاد تفریح‌های نیازمند بررسی محل و رزرو در همان نوبت است. `Content.requires_venue_check:boolean=false` شرط سمت محتواست؛ اگر true و رضایت false یا حذف‌شده باشد، فیلتر سخت آن را رد می‌کند. DTO کارت هم `requires_venue_check` را می‌دهد. هزینهٔ unknown همچنان فقط با budget flexible سازگار است. زمان در این برنامه‌های مشروط سقف انتخاب برنامه است و شرایط آن آشکار نمایش داده می‌شود؛ [قرارداد جاری](26-iran-paid-catalog.md).
 
 **تصمیم جاری مالک — ۹ نوامبر ۲۰۲۶:** دو فیلد `need_now` و `desired_outcome` از نوع `Goal` با پیش‌فرض `any` به context اضافه شدند. این‌ها پاسخ دو سؤال موقعیتی‌اند و در profile ذخیره نمی‌شوند. session پیشنهاد حداکثر یک item دارد و شامل `replacement_count=0` و `replacement_limit=6` است؛ `check_ins.recommendation_session_id` به تنها session آن نوبت اشاره می‌کند. `suggestion_history` حداکثر هفت snapshot مرتب از itemهای عرضه‌شده و `suggestion_index` اندیس صفرمبنای جاری است. مرور شمارنده را تغییر نمی‌دهد؛ فقط نسخه و item جاری عوض می‌شوند. DTO شامل `suggestion_index` و `suggestion_count` است و تاریخچهٔ داخلی را نمی‌دهد. سابقهٔ انتخاب بُعد از `primary_dimension_snapshot` تجربه‌های همان کاربر، با یک رأی برای هر recommendation session و نخستین شروع موفق آن، خوانده می‌شود؛ نمایش، تعویض، ذخیره و پایان مجدد رأی نیستند. مشخصات جاری در [23](23-single-suggestion.md) بر متن‌های قدیمی شش‌کارتی این سند مقدم است.
 

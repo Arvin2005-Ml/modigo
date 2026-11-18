@@ -30,6 +30,8 @@
 !content/demo-extra.json
 !content/demo-catalog.json
 !content/demo-cook-fixtures.json
+!content/iran-catalog.json
+!content/dramma-legacy-checksums.json
 !DRAMMA_450_activities_fa.json
 # These exclusions also apply inside allowed source directories.
 **/.env
@@ -39,3 +41,4 @@
 **/*.log
 **/*.pem
 **/*.key
+!content/activities.json

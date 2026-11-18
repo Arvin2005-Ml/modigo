@@ -2,7 +2,7 @@ import type {MetadataRoute} from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    id: '/', name: 'فانیلو — وقتِ خودت', short_name: 'فانیلو',
+    id: '/', name: 'مودیگو — وقتِ خودت', short_name: 'مودیگو',
     description: 'چند پیشنهاد ساده برای وقت آزاد، با حال و شرایط خودت.',
     lang: 'fa', dir: 'rtl', start_url: '/', scope: '/', display: 'standalone',
     background_color: '#f6f8f7', theme_color: '#f6f8f7',

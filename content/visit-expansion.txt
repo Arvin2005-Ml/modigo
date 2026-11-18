@@ -1,0 +1,60 @@
+# id|https URL|publisher
+@tehran-carpet|https://visitiran.ir/attraction/carpet-museum|Visit Iran
+تهران|موزه فرش ایران|museum|بازدید قالی‌ها و گلیم‌های نمایش داده‌شده
+@tehran-malik|https://visitiran.ir/attraction/malik-museum|Visit Iran
+تهران|کتابخانه و موزه ملی ملک|museum|بازدید مجموعه هنر و آثار تاریخی در تالارهای باز
+@tehran-clock|https://visitiran.ir/en/attraction/Time-Museum-Tehran|Visit Iran
+تهران|موزه زمان|museum|دیدن ساعت‌های تاریخی و روش‌های سنجش زمان
+@tehran-glass|https://visitiran.ir/fa/attraction/%D9%85%D9%88%D8%B2%D9%87%E2%80%8C%DB%8C-%D8%A2%D8%A8%DA%AF%DB%8C%D9%86%D9%87-%D9%88-%D8%B3%D9%81%D8%A7%D9%84%DB%8C%D9%86%D9%87|Visit Iran
+تهران|موزه آبگینه و سفالینه|museum|دیدن ظرف‌های شیشه‌ای و سفالی در تالارهای باز
+@tehran-artgarden|https://visitiran.ir/en/attraction/iranian-art-museum-garden|Visit Iran
+تهران|باغ موزه هنر ایرانی|garden|گردش در باغ و دیدن ماکت بناهای ایرانی
+@saadabad|https://visitiran.ir/en/attraction/saadabad-palace-complex|Visit Iran
+تهران|کاخ موزه سبز سعدآباد|museum|دیدن معماری کاخ و تزیینات تالارهای باز
+تهران|کاخ موزه ملت سعدآباد|museum|دیدن فضاهای عمومی و آثار کاخ سفید
+تهران|موزه هنرهای زیبای سعدآباد|museum|دیدن آثار نقاشی در تالارهای باز
+تهران|موزه پوشاک سلطنتی سعدآباد|museum|دیدن پوشاک و منسوجات در تالار باز
+تهران|موزه ظروف سلطنتی سعدآباد|museum|بازدید ظروف و صنایع دستی در بخش باز
+تهران|موزه خط و کتابت میرعماد سعدآباد|museum|دیدن آثار خوشنویسی در بخش باز
+تهران|موزه برادران امیدوار سعدآباد|museum|دیدن یادگارهای سفر و تصاویر جهانگردی
+تهران|موزه آشپزخانه سلطنتی سعدآباد|museum|دیدن فضای آشپزخانه و ابزارهای نمایش داده‌شده
+تهران|موزه اتومبیل‌های سلطنتی سعدآباد|museum|بازدید خودروهای تاریخی نمایش داده‌شده
+تهران|موزه فرشچیان سعدآباد|museum|دیدن آثار نگارگری در تالارهای باز
+تهران|موزه آلبوم‌های سلطنتی سعدآباد|museum|دیدن اسناد و تصاویر در نمایشگاه باز
+@niavaran|https://visitiran.ir/attraction/niavaran-palace|Visit Iran
+تهران|کاخ موزه نیاوران|museum|بازدید فضاهای عمومی و معماری کاخ
+تهران|موزه جهان نما نیاوران|museum|دیدن مجموعه آثار هنری در تالار باز
+تهران|موزه خودرو نیاوران|museum|دیدن خودروها و نمونه‌های تاریخی نمایش داده‌شده
+تهران|کتابخانه اختصاصی نیاوران|museum|دیدن ساختمان کتابخانه و آثار نمایشی آن
+تهران|باغ کتیبه‌های نیاوران|garden|گردش در مسیر نمایش کتیبه‌های باز
+@gilan|https://visitiran.ir/en/province/gilan-province|Visit Iran
+رشت|میدان شهرداری رشت|walk|گردش پیاده در مسیر عمومی میدان و دیدن نمای برج ساعت
+رشت|باغ محتشم رشت|garden|گردش در مسیرهای عمومی باغ و دیدن نمای عمارت
+رشت|خانه میرزا کوچک خان جنگلی|museum|بازدید فضاهای باز خانه و آشنایی با تاریخ نهضت جنگل
+رشت|موزه رشت|museum|بازدید مجموعه عمومی باستان‌شناسی و مردم‌شناسی
+@rural|https://visitiran.ir/en/attraction/gilan-rural-heritage-museum|Visit Iran
+رشت|موزه میراث روستایی گیلان|museum|دیدن خانه‌های بومی و ابزارهای زندگی روستایی در مسیر باز
+@gilan-lahijan|https://visitiran.ir/en/attraction/Ahraar--Cable--Car|Visit Iran
+لاهیجان|تله کابین احرار لاهیجان|cable|رفت و برگشت با تله کابین در مسیر فعال
+@kish-beaches|https://visitiran.ir/en/attraction/Kish-Beaches|Visit Iran
+کیش|پارک ساحلی میرمهنا|park|قدم‌زدن در مسیر عمومی پارک و اسکله بدون ورود به آب
+کیش|پارک ساحلی سیمرغ|park|قدم‌زدن در مسیر ساحلی و استراحت در بخش مجاز
+کیش|پارک ساحلی ماهیگیر|park|گردش در مسیر عمومی و دیدن تندیس ساحلی
+کیش|پارک ساحلی مرجان|park|گردش در بخش مجاز ساحلی بدون ورود به آب
+@kish|https://visitiran.ir/en/province/hormozgan-province|Visit Iran
+کیش|کشتی یونانی|view|تماشای نمای کشتی از مسیر مجاز ساحلی
+کیش|خانه مردم شناسی بومیان کیش|museum|بازدید بخش‌های باز خانه و آشنایی با زندگی بومی جزیره
+کیش|گذر هنرمندان کیش|walk|گردش در مسیر عمومی و دیدن تندیس‌های مسیر
+کیش|شهر باستانی حریره|heritage|بازدید مسیر مشخص مجموعه باستانی
+کیش|شهر زیرزمینی کاریز|heritage|بازدید مسیر رسمی قنات و آثار مجموعه
+کیش|رستوران دارچین کیش|restaurant|انتخاب یک وعده از منوی روز مجموعه
+کیش|رستوران کوه نور کیش|restaurant|انتخاب یک وعده از منوی روز مجموعه
+کیش|رستوران میرمهنا کیش|restaurant|انتخاب یک وعده از منوی روز مجموعه
+@isfahan-music|https://visitiran.ir/attraction/Isfahan--Museum--of--Music|Visit Iran
+اصفهان|موزه موسیقی اصفهان|museum|دیدن سازهای ایرانی و آشنایی با شیوه ساخت آن‌ها
+@tehran-reza|https://visitiran.ir/attraction/reza-abbasi-museum|Visit Iran
+تهران|موزه رضا عباسی|museum|دیدن آثار تاریخی و خوشنویسی در تالارهای باز
+@tehran-national|https://visitiran.ir/attraction/iran-national-museum|Visit Iran
+تهران|موزه ملی ایران|museum|بازدید آثار باستانی در ساختمان‌های باز مجموعه
+@tehran-quran|https://visitiran.ir/index.php/en/attraction/national-museum-holy-quran|Visit Iran
+تهران|موزه ملی قرآن|museum|دیدن نسخه‌ها و آثار هنر کتابت در تالارهای باز

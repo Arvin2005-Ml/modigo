@@ -5,6 +5,7 @@ import {Button, Choices} from './ui';
 import Icon from './Icon';
 import Personalization from './Personalization';
 import {needNowOptions, outcomeOptions} from '@/lib/personalization';
+import activityCities from '@/lib/activity-cities.json';
 
 export const initialContext: Context = {available_minutes: 30, energy: 'low', social_mode: 'solo', party_size: 1,
   venue: 'home', budget: {mode: 'free', cap_toman: null}, mood: 'skip', need_now:'any', desired_outcome:'any'};
@@ -28,6 +29,7 @@ export default function Questionnaire({value, change, submit, busy, defaults}: {
   const advance = () => {
     if (step === 0 && (!/^\d+$/.test(digits(minutes)) || +digits(minutes) < 5 || +digits(minutes) > 480)) {setError('وقت آزاد رو بین ۵ تا ۴۸۰ دقیقه بنویس.'); return;}
     if (step === 1 && value.social_mode !== 'solo' && (!/^\d+$/.test(digits(party)) || +digits(party) < (value.social_mode === 'together' ? 2 : 1) || +digits(party) > 12)) {setError('تعداد نفرها رو درست وارد کن؛حداکثر ۱۲ نفر.'); return;}
+    if (step === 1 && value.venue !== 'home' && value.allow_venue_planning && value.city && value.city.trim().length < 2) {setError('نام شهر رو کامل بنویس.'); return;}
     if (step === 2 && value.budget.mode === 'cap' && (!/^\d+$/.test(digits(cap)) || +digits(cap) < 1 || +digits(cap) > 100000000)) {setError('یه سقف هزینهٔ معتبر به تومان بنویس.');return;}
     setError('');
     if (step < stepLabels.length - 1) setStep(step + 1); else submit();
@@ -38,7 +40,7 @@ export default function Questionnaire({value, change, submit, busy, defaults}: {
     <h1 id="question-title" ref={heading} tabIndex={-1}>{stepTitles[step]}</h1>
     <p className="intro">{stepIntros[step]}</p>
     {step === 0 && <>
-      <Choices legend="چقدر وقت آزادی؟" value={value.available_minutes} options={[[15,'یه ربع'],[30,'نیم ساعت'],[60,'یه ساعت'],[120,'دو ساعت']]} onChange={v => {set('available_minutes',v);setMinutes(String(v));}} />
+      <Choices legend="چقدر وقت آزادی؟" value={value.available_minutes} options={[[15,'یه ربع'],[30,'نیم ساعت'],[60,'یه ساعت'],[120,'دو ساعت'],[240,'چهار ساعت']]} onChange={v => {set('available_minutes',v);setMinutes(String(v));}} />
       <label className="label">یا خودت بنویس،به دقیقه<input inputMode="numeric" className="input number-input" value={minutes} onChange={e => {setMinutes(e.target.value);set('available_minutes',+digits(e.target.value));}} /></label>
       <Choices legend="انرژیت چقدره؟" value={value.energy} options={[["low","یه کار سبک"],["medium","معمولی‌ام"],["high","انرژی دارم"],["unknown","مطمئن نیستم"]]} onChange={v => set('energy',v)} />
     </>}
@@ -46,12 +48,18 @@ export default function Questionnaire({value, change, submit, busy, defaults}: {
       <Choices legend="تنهایی یا با هم؟" value={value.social_mode} options={[["solo","برای خودم"],["together","با همراه"],["either","فرقی نداره"]]} onChange={v => {change({...value,social_mode:v,party_size:v === 'solo' ? 1 : v === 'together' ? Math.max(2,value.party_size) : value.party_size});setParty(v === 'solo' ? '1' : v === 'together' ? String(Math.max(2,value.party_size)) : String(value.party_size));}} />
       {value.social_mode !== 'solo' && <label className="label">با خودت چند نفر می‌شین؟<input className="input number-input" inputMode="numeric" value={party} onChange={e => {setParty(e.target.value);set('party_size',+digits(e.target.value));}} /><span className="hint">اگه فرقی نداره و کسی کنارت نیست،۱ رو انتخاب کن.</span></label>}
       <Choices legend="کجا می‌خوای باشی؟" value={value.venue} options={[["home","توی خونه"],["outdoor","هوای آزاد"],["indoor_public","یه جای سرپوشیده"],["any","هر جا شد"]]} onChange={v => set('venue',v)} />
-      {value.venue !== 'home' && <p className="hint">پیشنهادهای بیرون برای جایی‌ان که همین حالا بهش دسترسی امن و مجاز داری؛ مسیر، بلیت یا محل تازه‌ای رو حدس نمی‌زنیم.</p>}
+      {value.venue !== 'home' && <label className="choice">
+        <input type="checkbox" checked={value.allow_venue_planning ?? false} onChange={e => set('allow_venue_planning',e.target.checked)}/>
+        <span>تفریح‌های نیازمند محل یا رزرو هم پیشنهاد بده؛ محل، سانس و مسیر رو خودم بررسی می‌کنم.</span>
+      </label>}
+      {value.venue !== 'home' && value.allow_venue_planning && <label className="label">تفریح در کدام شهر؟<input className="input" list="activity-cities" maxLength={60} value={value.city ?? ''} onChange={e => set('city',e.target.value || null)}/><datalist id="activity-cities">{activityCities.map(city => <option value={city} key={city}/>)}</datalist><span className="hint">مکان‌های مشخص فقط برای همین شهر پیشنهاد می‌شن؛ بدون انتخاب شهر وارد پیشنهادها نمی‌شن.</span></label>}
+      {value.venue !== 'home' && <p className="hint">لینک معرفی محل در جزئیات پیشنهاد هست؛ سانس، ظرفیت، مسیر و قیمت روز رو پیش از رفتن بررسی کن.</p>}
     </>}
     {step === 2 && <>
       <Choices legend="بودجه‌ات چقدره؟" value={value.budget.mode} options={[["free","رایگان باشه"],["cap","یه سقف دارم"],["flexible","منعطفم"]]} onChange={mode => set('budget',{mode,cap_toman:mode === 'cap' ? +digits(cap) : null})} />
       {value.budget.mode === 'cap' && <label className="label">سقف هزینه برای همه،تومان<input className="input number-input" inputMode="numeric" value={cap} onChange={e => {setCap(e.target.value);set('budget',{mode:'cap',cap_toman:+digits(e.target.value)});}} /></label>}
       <p className="hint">برای پیشنهادهای رایگان،خرید و رفت‌وآمد پولی لازم نیست.</p>
+      {value.budget.mode !== 'free' && <p className="hint">قیمت تفریح‌های شهری به محل و روز بستگی داره؛ تا وقتی قیمت تأییدشده نداریم، فقط با بودجهٔ «منعطفم» پیشنهاد می‌شن. قبل از خرید، هزینهٔ همهٔ نفرها و رفت‌وآمد رو بررسی کن.</p>}
     </>}
     {step === 3 && <>
       <Choices legend="کدوم به حالت نزدیک‌تره؟" value={value.mood} options={[["tired","خسته‌ام"],["restless","ذهنم شلوغه"],["bored","حوصله‌ام سر رفته"],["low","یه کم بی‌حالم"],["okay","خوبم"],["skip","نمی‌خوام بگم"]]} onChange={v => set('mood',v)} />

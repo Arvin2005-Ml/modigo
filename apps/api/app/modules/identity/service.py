@@ -42,7 +42,7 @@ class Identity:
         return user
 
     def public(self, user):
-        return {key: user[key] for key in PUBLIC_FIELDS}
+        return {**{key: user[key] for key in PUBLIC_FIELDS}, 'city': user.get('city')}
 
     def by_email(self, email):
         return next((u for u in self.store.list('users') if u['email'] == email.lower().strip()), None)
@@ -71,7 +71,7 @@ class Identity:
             if existing:
                 raise DomainError('ACCOUNT_EXISTS', 'با این ایمیل قبلاً حساب ساختی؛ وارد شو.', 409)
             user = self.store.insert('users', dict(id=uid(), email=data.email, display_name=data.display_name.strip(),
-                password_hash=encoded, role='user', email_verified=False, status='active', timezone='Asia/Tehran',
+                password_hash=encoded, role='user', email_verified=False, status='active', timezone='Asia/Tehran', city=data.city,
                 created_at=self.clock(), adult_confirmed_at=self.clock()))
             self.store.insert('profiles', dict(id=user['id'], user_id=user['id'], preferences=Preferences().model_dump()))
             return {'message': 'حسابت ساخته شد.'}

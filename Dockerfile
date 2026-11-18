@@ -31,16 +31,18 @@ ENV PATH=/opt/venv/bin:$PATH \
     NEXT_TELEMETRY_DISABLED=1 \
     APP_ENV=production \
     APP_ORIGIN=https://shadophena.liara.run \
+    CSRF_TRUSTED_ORIGINS=https://moodigo.ir,https://www.moodigo.ir \
     DATA_BACKEND=mongo \
     API_WORKERS=1 \
     WEB_CONCURRENCY=1 \
     JOB_RUNNER_MODE=in_process \
     LLM_PROVIDER=demo \
     DEMO_CONTENT=true \
+    CATALOG_RELEASE=real700 \
     PORT=3000
 COPY --chown=funilo:funilo apps/api/app/ ./apps/api/app/
 COPY --chown=funilo:funilo DRAMMA_450_activities_fa.json ./
-COPY --chown=funilo:funilo content/cooked-examples.md content/demo-extra.json content/demo-catalog.json content/demo-cook-fixtures.json ./content/
+COPY --chown=funilo:funilo content/cooked-examples.md content/demo-extra.json content/demo-catalog.json content/demo-cook-fixtures.json content/iran-catalog.json content/dramma-legacy-checksums.json content/activities.json ./content/
 COPY --chown=funilo:funilo scripts/container.py ./scripts/container.py
 COPY --from=web-build --chown=funilo:funilo /build/web/.next/standalone/ ./apps/web/
 COPY --from=web-build --chown=funilo:funilo /build/web/.next/static/ ./apps/web/.next/static/

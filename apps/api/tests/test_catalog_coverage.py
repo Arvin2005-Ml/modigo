@@ -81,8 +81,8 @@ class CatalogCoverageTests(unittest.TestCase):
         self.assertEqual(self.ranked(context, excluded), [])
 
     def test_supplement_has_stable_keys_and_stays_explicit_demo(self):
-        self.assertEqual(len(demo_examples()), 131)
-        self.assertEqual(len(self.candidates), 113)
+        self.assertEqual(len(demo_examples()), 431)
+        self.assertEqual(len(self.candidates), 413)
         store = MemoryTestStore()
         seed_demo(store, lambda: NOW)
         before = store.list('activities')

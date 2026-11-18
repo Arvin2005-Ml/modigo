@@ -94,3 +94,37 @@ test('history boundaries disable only the unavailable direction', () => {
   assert.match(last, /<button[^>]*disabled=""[^>]*>پیشنهاد بعدی/);
   assert.ok(last.includes('یه پیشنهاد دیگه'));
 });
+
+test('conditional venue plans show their booking requirement and bounded duration', () => {
+  const html = render({items:[{...item,cost_label:'هزینهٔ متغیر',requires_venue_check:true,total_minutes:210}]});
+  assert.ok(html.includes('نیاز به بررسی محل، قیمت و رزرو'));
+  assert.match(html, /تا .*۲۱۰.*دقیقه/);
+  const {ContentDetails} = load('components/Activity.tsx');
+  const detail = renderToStaticMarkup(React.createElement(ContentDetails, {content:{
+    title:'سینما',teaser:'فیلم روی پرده',first_step:'سانس مناسب را بررسی کن',
+    steps:['بلیت را بررسی کن','فیلم را ببین'],lighter_version:'سانس کوتاه‌تر',
+    active_minutes:120,setup_minutes:30,travel_minutes:60,requires_venue_check:true,
+    conditions_note:'رفتن و برگشتن حداکثر ۶۰ دقیقه',cost:{kind:'unknown',note:'قیمت تأیید نشده'},
+    materials_note:'وسایل را بپرس',accessibility_note:'دسترسی تأیید نشده',safety_notes:[],
+  }}));
+  assert.ok(detail.includes('این پیشنهاد رزرو قطعی نیست'));
+  assert.ok(detail.includes('رفتن و برگشتن حداکثر ۶۰ دقیقه'));
+  assert.ok(detail.includes('قیمت تأیید نشده'));
+});
+
+test('a researched place exposes a labelled source link without promising booking or price', () => {
+  const {ContentDetails} = load('components/Activity.tsx');
+  const detail = renderToStaticMarkup(React.createElement(ContentDetails,{content:{
+    title:'پردیس سینمایی کورش',teaser:'یک فیلم از برنامه جاری',first_step:'برنامه را بررسی کن',
+    steps:['بلیت معتبر همان سانس را تهیه کن','فیلم را کامل ببین'],lighter_version:'یک فیلم کوتاه‌تر انتخاب کن',
+    active_minutes:120,setup_minutes:20,travel_minutes:60,requires_venue_check:true,
+    place:{name:'پردیس سینمایی کورش',city:'تهران',source_url:'https://kouroshmall.com/',source_name:'مجتمع کورش',researched_on:'2026-11-14',evidence_scope:'place_and_activity_type_only'},
+    conditions_note:'برنامه روز تأیید نشده',cost:{kind:'unknown',note:'قیمت روز را بپرس'},
+    materials_note:'بلیت معتبر',accessibility_note:'دسترسی را بررسی کن',safety_notes:[],
+  }}));
+  assert.match(detail,/href="https:\/\/kouroshmall.com\/" target="_blank" rel="noopener noreferrer"/);
+  assert.ok(detail.includes('معرفی محل در مجتمع کورش'));
+  assert.ok(detail.includes('قیمت امروز را تأیید نمی‌کند'));
+  assert.ok(detail.includes('تهران'));
+  assert.ok(!detail.includes('DRAMMA'));
+});
