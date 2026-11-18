@@ -116,6 +116,13 @@ export function ContentDetails({
           </a>
         </p>
       )}
+      {content.place?.program && (
+        <p>
+          <a className="underline underline-offset-4" href={content.place.program.url} target="_blank" rel="noopener noreferrer">
+            {content.place.program.label}
+          </a>
+        </p>
+      )}
       {content.requires_venue_check && (
         <p className="hint">
           قبل از رفتن، باز بودن، هزینه، رزرو و شرایط دسترسی رو با خود محل بررسی کن.

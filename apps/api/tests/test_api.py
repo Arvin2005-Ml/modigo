@@ -122,13 +122,91 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual((await self.a.get('/api/v1/me/journey')).json()['total_points'], 10)
         self.assertIsNone((await self.a.get('/api/v1/experiences/active')).json()['experience'])
 
+    async def test_full_day_recommendations_stay_inside_origin_duration_and_budget(self):
+        from app.modules.catalog.full_day_outings import import_full_day_outings
+        from test_full_day_outings import BASE
+
+        public = await self.new_client()
+        self.assertEqual((await public.get('/api/v1/outing-origins')).status_code, 401)
+        origins = await self.a.get('/api/v1/outing-origins')
+        self.assertEqual(origins.json(), {'cities': ['تهران', 'مشهد', 'اصفهان', 'شیراز', 'تبریز']})
+        import_full_day_outings(self.s.store, lambda: self.now)
+        for venue in ('home', 'any'):
+            response = await self.post(self.a, '/check-ins', {**BASE, 'venue': venue})
+            self.assertEqual(response.status_code, 422, response.text)
+
+        def check_card(result, city, days):
+            self.assertEqual(result['context_summary']['outing_days'], days)
+            self.assertIsNone(result['venue_alternative'])
+            item = result['items'][0]
+            self.assertEqual((item['outing']['origin_city'], item['outing']['days']), (city, days))
+            return item
+
+        slate = await self.slate(context=BASE)
+        first = check_card(slate, 'تهران', 1)
+        seen = {first['revision_id']}
+        for _ in range(6):
+            slate = await self.next_suggestion(slate)
+            item = check_card(slate, 'تهران', 1)
+            self.assertNotIn(item['revision_id'], seen)
+            self.assertEqual(item['slot_id'], first['slot_id'])
+            seen.add(item['revision_id'])
+        self.assertEqual(slate['replacements_remaining'], 0)
+        other = await self.slate(context={**BASE, 'available_minutes': 2880, 'outing_days': 2, 'city': 'مشهد'})
+        check_card(other, 'مشهد', 2)
+        self.assertNotIn(other['items'][0]['revision_id'], seen)
+
+        for budget in ({'mode': 'free'}, {'mode': 'cap', 'cap_toman': 1_000_000}):
+            empty = await self.slate(context={**BASE, 'budget': budget})
+            self.assertEqual(empty['items'], [])
+            self.assertIsNotNone(empty['budget_alternative'])
+            self.assertIsNone(empty['venue_alternative'])
+        bad_weather = await self.slate(context={**BASE, 'weather': 'adverse'})
+        self.assertEqual(bad_weather['items'], [])
+        self.assertIsNone(bad_weather['budget_alternative'])
+        short = await self.slate(context={**BASE, 'available_minutes': 480, 'outing_days': None})
+        self.assertTrue(all(not item.get('outing') for item in short['items']))
+
+    async def test_two_day_outing_requires_explicit_start_and_can_finish_on_day_two(self):
+        from app.modules.catalog.full_day_outings import import_full_day_outings
+        from test_full_day_outings import BASE
+
+        import_full_day_outings(self.s.store, lambda: self.now)
+        result = await self.slate(context={**BASE, 'available_minutes': 2880, 'outing_days': 2, 'city': 'تبریز'})
+        card = result['items'][0]
+        detail = await self.a.get('/api/v1/activity-revisions/' + card['revision_id'])
+        self.assertIsNone(detail.json()['catalog_start'])
+        outing = detail.json()['content']['outing']
+        self.assertEqual(outing['country_code'], 'IR')
+        self.assertEqual(len(outing['itinerary']), 2)
+        self.assertTrue(outing['overnight_city'])
+        direct = await self.post(self.a, '/experiences', {'source': 'catalog', 'revision_id': card['revision_id'],
+                                                          'party_size': 1, 'conditions_confirmed': True})
+        self.assertEqual(direct.json()['error']['code'], 'INVALID_STATE')
+        start = dict(recommendation_session_id=result['id'], slot_id=card['slot_id'], revision_id=card['revision_id'])
+        no_confirmation = await self.post(self.a, '/experiences', start)
+        self.assertEqual(no_confirmation.status_code, 422)
+        self.assertEqual(no_confirmation.json()['error']['fields']['conditions_confirmed'], 'required')
+        started = await self.post(self.a, '/experiences', {**start, 'conditions_confirmed': True})
+        self.assertEqual(started.status_code, 201, started.text)
+        experience = started.json()
+        self.assertEqual(experience['content_snapshot']['outing'], outing)
+        self.assertEqual(datetime.fromisoformat(experience['active_until']), self.now + timedelta(hours=48))
+
+        self.now += timedelta(hours=30)
+        active = (await self.a.get('/api/v1/experiences/active')).json()['experience']
+        self.assertEqual(active['id'], experience['id'])
+        completed = await self.post(self.a, f'/experiences/{experience["id"]}/complete')
+        self.assertEqual(completed.status_code, 200, completed.text)
+        self.assertEqual(completed.json()['experience']['status'], 'completed')
+
     async def test_readiness_checks_storage_and_liveness_survives_outage(self):
         from unittest.mock import patch
         from app.core.storage import StorageUnavailable
         ready = await self.a.get('/api/v1/health/ready')
         self.assertEqual(ready.status_code, 200)
         self.assertEqual(ready.json()['data_backend'], 'mongo')
-        self.assertEqual(ready.json()['venue_policy'], 'explicit_opt_in_and_exact_city_v1')
+        self.assertEqual(ready.json()['venue_policy'], 'exact_city_and_reviewed_outing_origins_v2')
         with patch.object(self.s.store, 'ping', side_effect=StorageUnavailable('database unavailable')):
             failed = await self.a.get('/api/v1/health/ready')
             self.assertEqual(failed.status_code, 503)
@@ -1002,6 +1080,57 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.s.catalog.withdraw(self.s.identity.user(self.ua['id']), first['activity_id'], 'بازبینی محتوایی')
         saved = self.s.experiences.saved(self.ua['id'])
         self.assertEqual(saved[0], {'activity_id': first['activity_id'], 'unavailable': True})
+
+    async def test_venue_program_enriches_existing_experiences_and_receipts(self):
+        from app.modules.catalog.cinema_expansion import import_additive
+        from app.modules.catalog.unified import release
+        from app.modules.catalog.venue_programs import apply_programs, seed_rows
+
+        store = self.s.store
+        catalog = release('real_catalog_v1')
+        entry = next(e for e in catalog['entries']
+                     if (e['content'].get('place') or {}).get('name') == 'تالار رودکی')
+        import_additive(store, lambda: self.now, {**catalog, 'entries': [entry]}, version=catalog['version'],
+                        source_file='content/activities.json', raw_intent='test', reason='test', scoped_keys=True)
+        activity = store.activities_by_seed_keys({entry['key']})[0]
+        revision_id = activity['published_revision_id']
+        revision = '/api/v1/activity-revisions/' + revision_id
+        original = (await self.a.get(revision)).json()['content']['place']
+        self.assertNotIn('program', original)
+
+        key = str(uuid4())
+        request = {'source': 'catalog', 'revision_id': revision_id, 'conditions_confirmed': True}
+        started = await self.post(self.a, '/experiences', request, key=key)
+        self.assertEqual(started.status_code, 201, started.text)
+        experience_id = started.json()['id']
+        self.assertEqual(started.json()['content_snapshot']['place'], original)
+        rows, keys = seed_rows()
+        venue = keys[entry['key']]
+        apply_programs(store, {venue: rows[venue]})
+
+        program = {'scope': 'collection', 'label': 'دیدن برنامه‌های بنیاد رودکی در تیوال',
+                   'url': 'https://www.tiwall.com/roudaki'}
+        expected = {**original, 'program': program}
+        detail = await self.a.get(revision)
+        self.assertEqual(detail.json()['content']['place'], expected)
+        active = await self.a.get('/api/v1/experiences/active')
+        self.assertEqual(active.json()['experience']['content_snapshot']['place'], expected)
+        replay = await self.post(self.a, '/experiences', request, key=key)
+        self.assertEqual(replay.json()['content_snapshot']['place'], expected)
+        self.assertEqual(store.get('experiences', experience_id)['content_snapshot']['place'], original)
+        self.assertEqual(store.get('activity_revisions', revision_id)['content']['place'], original)
+        self.assertEqual((await self.a.get(revision + '/assistant')).status_code, 200)
+        slate = await self.slate(context={**CONTEXT, 'available_minutes': 300, 'venue': 'indoor_public',
+                                 'city': 'تهران', 'allow_venue_planning': True, 'budget': {'mode': 'flexible'}})
+        self.assertEqual(slate['items'][0]['place'], expected)
+
+        _, admin = await self.account('venue-admin@example.test')
+        self.s.identity.promote(admin['email'], 'admin')
+        self.s.catalog.withdraw(self.s.identity.user(admin['id']), activity['id'], 'بازبینی محتوایی')
+        self.assertEqual((await self.a.get(revision)).status_code, 410)
+        replay = await self.post(self.a, '/experiences', request, key=key)
+        self.assertTrue(replay.json()['unavailable'])
+        self.assertNotIn('content_snapshot', replay.json())
 
     async def test_idempotency_receipt_cannot_reveal_withdrawn_snapshot(self):
         e = await self.start()

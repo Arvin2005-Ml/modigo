@@ -4,6 +4,7 @@ from app.core.errors import DomainError, conflict, missing
 from app.core.schemas import CatalogStartInput
 from app.core.values import uid, replace, owned
 from app.modules.catalog.service import catalog_start_checks
+from app.modules.experiences.timing import active_until, is_active
 from app.modules.recommendations.eligibility import access_allows, execution_for_party
 
 BADGES = [('first_step', 1), ('five_moments', 5), ('ten_moments', 10)]
@@ -14,9 +15,10 @@ class Experiences:
         self.store, self.catalog, self.recommendations, self.identity, self.clock = store, catalog, recommendations, identity, clock
 
     def _active(self, user_id):
+        now = self.clock()
         for e in self.store.list('experiences'):
             if e['user_id'] == user_id and e['status'] == 'active':
-                if e['started_at'] + timedelta(hours=24) <= self.clock():
+                if not is_active(e, now):
                     e['status'] = 'expired'
                     replace(self.store, 'experiences', e)
                 else:
@@ -25,6 +27,7 @@ class Experiences:
 
     def present(self, e):
         result = {k: v for k, v in e.items() if k not in ('version', 'user_id', 'context_snapshot', 'award_result')}
+        result['active_until'] = active_until(e)
         activity = self.catalog.activity(e['activity_id'])
         revision = self.catalog.revision(e['revision_id'])
         result['unavailable'] = not activity['active'] or revision['state'] == 'archived'
@@ -50,6 +53,8 @@ class Experiences:
         if parsed is None:
             raise DomainError('CONTENT_WITHDRAWN', 'این فعالیت فعلاً در دسترس نیست.', 410)
         content = parsed.model_dump()
+        if content.get('outing'):
+            raise DomainError('INVALID_STATE', 'برای این گردش، اول مدت و شهر مبدأ رو در پرسش‌ها انتخاب کن.')
         preferences = self.identity.preferences(user_id)['preferences']
         if not access_allows(content, preferences):
             raise DomainError('INVALID_STATE', 'این فعالیت با محدودیت‌های حساب تو سازگار نیست.')
@@ -76,9 +81,12 @@ class Experiences:
         if activity['published_revision_id'] != data.revision_id:
             conflict('نسخهٔ تازه‌ای آماده شده؛دوباره پیشنهاد بگیر.')
         context = self.recommendations.session_context(session)
-        _, execution = self.recommendations.card_execution(activity, revision, context)
+        content, execution = self.recommendations.card_execution(activity, revision, context)
         if not execution:
             raise DomainError('INVALID_STATE', 'این پیشنهاد با شرایط الانت جور نیست؛یه پیشنهاد تازه بگیر.')
+        if content.get('outing') and not data.conditions_confirmed:
+            raise DomainError('VALIDATION_ERROR', 'قبل از شروع، مسیر و شرایط گردش رو بررسی و تأیید کن.', 422,
+                              fields={'conditions_confirmed': 'required'})
         return activity, revision['content'], context, execution, session
 
     def start(self, user_id, data):
@@ -163,7 +171,7 @@ class Experiences:
             e = owned(self.store, 'experiences', experience_id, user_id)
             if e['status'] == 'completed':
                 return {'experience': self.present(e), 'award': e['award_result']}
-            if e['status'] != 'active' or e['started_at'] + timedelta(hours=24) <= self.clock():
+            if not is_active(e, self.clock()):
                 raise DomainError('INVALID_STATE', 'این تجربه دیگه برای پایان‌دادن باز نیست.')
             award = self._award(e)
             e.update(status='completed', completed_at=self.clock(), award_result=award)
@@ -177,7 +185,7 @@ class Experiences:
             if e['status'] == 'completed':
                 raise DomainError('INVALID_STATE', 'این تجربه قبلاً تموم شده.')
             if e['status'] == 'active':
-                e['status'] = 'cancelled' if e['started_at'] + timedelta(hours=24) > self.clock() else 'expired'
+                e['status'] = 'cancelled' if is_active(e, self.clock()) else 'expired'
                 replace(self.store, 'experiences', e)
             return self.present(e)
 

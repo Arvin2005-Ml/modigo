@@ -4,12 +4,13 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from app.core.schemas import AccountEmail, ResetPassword, PasswordConfirm, ChangePassword, Signup, Credentials, Empty, Context, SlateInput, ReplaceInput, NavigateInput, StartInput, CatalogStartInput, Feedback, PreferencesUpdate
 from app.core.errors import DomainError
+from app.core.outing import OUTING_ORIGINS
 from app.modules.catalog.schemas import DraftUpdate, ReviewInput, WithdrawInput, CloneInput, CookInput
 from app.modules.activity_assistant.schemas import AssetKind, AssistantState, ChatInput, ChatReply
 from app.modules.catalog.activation import ActivationStatus, activation_queue
 from app.modules.recommendations.eligibility import VENUE_POLICY_VERSION
 from app.modules.recommendations.ranking import ALGORITHM_VERSION
-from app.http.presentation import public_response
+from app.http.presentation import public_response, with_venue_programs
 
 router = APIRouter()
 
@@ -28,7 +29,8 @@ User = Annotated[dict, Depends(user)]
 
 
 def send(s, data, status=200):
-    return JSONResponse(jsonable_encoder(public_response(data, s.store)), status_code=status)
+    return JSONResponse(jsonable_encoder(with_venue_programs(public_response(data, s.store), s.store)),
+                        status_code=status)
 
 
 def idem(request, actor, scope, payload, action, status=200, *, on_replay=None):
@@ -119,7 +121,8 @@ def create_slate(data: SlateInput, actor: User, request: Request):
 
 @router.get('/recommendation-sessions/{session_id}')
 def get_slate(session_id: str, actor: User, request: Request):
-    return services(request).recommendations.get(actor['id'], session_id)
+    s = services(request)
+    return with_venue_programs(s.recommendations.get(actor['id'], session_id), s.store)
 
 
 @router.post('/recommendation-sessions/{session_id}/slots/{slot_id}/replace')
@@ -142,7 +145,8 @@ def navigate_suggestion(session_id: str, data: NavigateInput, actor: User, reque
 
 @router.get('/activity-revisions/{revision_id}')
 def revision(revision_id: str, actor: User, request: Request):
-    return services(request).catalog.visible_revision(revision_id, include_start_options=True)
+    s = services(request)
+    return with_venue_programs(s.catalog.visible_revision(revision_id, include_start_options=True), s.store)
 
 
 @router.get('/activity-revisions/{revision_id}/assistant', response_model=AssistantState)
@@ -177,6 +181,11 @@ def activity_cities(actor: User, request: Request):
     return {'cities': services(request).catalog.cities()}
 
 
+@router.get('/outing-origins')
+def outing_origins(actor: User):
+    return {'cities': list(OUTING_ORIGINS.values())}
+
+
 @router.get('/discover')
 def discover(actor: User, request: Request):
     return {'items': services(request).catalog.discover()}
@@ -185,23 +194,29 @@ def discover(actor: User, request: Request):
 @router.post('/experiences', status_code=201)
 def start(data: StartInput | CatalogStartInput, actor: User, request: Request):
     s = services(request)
-    return idem(request, actor, 'start', data.model_dump(), lambda: s.experiences.start(actor['id'], data), 201)
+    # Keep the same receipt hash for old recommendation clients and retries.
+    exclude = {'conditions_confirmed'} if isinstance(data, StartInput) and not data.conditions_confirmed else None
+    return idem(request, actor, 'start', data.model_dump(exclude=exclude), lambda: s.experiences.start(actor['id'], data), 201)
 
 
 @router.get('/experiences/active')
 def active(actor: User, request: Request):
-    return services(request).experiences.active(actor['id'])
+    s = services(request)
+    return with_venue_programs(s.experiences.active(actor['id']), s.store)
 
 
 @router.get('/experiences')
 def history(actor: User, request: Request, limit: int = Query(default=20, ge=1, le=100)):
-    items = services(request).experiences.history(actor['id'])
-    return {'items': items[:limit], 'next_cursor': None, 'has_more': len(items) > limit}
+    s = services(request)
+    items = s.experiences.history(actor['id'])
+    return with_venue_programs({'items': items[:limit], 'next_cursor': None,
+                                'has_more': len(items) > limit}, s.store)
 
 
 @router.get('/experiences/{experience_id}')
 def experience(experience_id: str, actor: User, request: Request):
-    return services(request).experiences.get(actor['id'], experience_id)
+    s = services(request)
+    return with_venue_programs(s.experiences.get(actor['id'], experience_id), s.store)
 
 
 @router.post('/experiences/{experience_id}/complete')
@@ -212,7 +227,8 @@ def complete(experience_id: str, data: Empty, actor: User, request: Request):
 
 @router.post('/experiences/{experience_id}/cancel')
 def cancel(experience_id: str, data: Empty, actor: User, request: Request):
-    return services(request).experiences.cancel(actor['id'], experience_id)
+    s = services(request)
+    return with_venue_programs(s.experiences.cancel(actor['id'], experience_id), s.store)
 
 
 @router.put('/experiences/{experience_id}/feedback')
@@ -232,7 +248,8 @@ def journey(actor: User, request: Request):
 
 @router.get('/saved')
 def saved(actor: User, request: Request):
-    return {'items': services(request).experiences.saved(actor['id']), 'next_cursor': None}
+    s = services(request)
+    return with_venue_programs({'items': s.experiences.saved(actor['id']), 'next_cursor': None}, s.store)
 
 
 @router.put('/saved/{activity_id}', status_code=204)

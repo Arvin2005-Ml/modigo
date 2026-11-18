@@ -11,12 +11,13 @@ from app.modules.catalog.short_now import import_short_now, short_now_catalog
 from app.modules.catalog.long_now import import_long_now, long_now_catalog
 from app.modules.catalog.practical_now import import_practical_now, practical_now_catalog
 from app.modules.catalog.northern_outings import import_northern_outings, northern_outings_catalog
+from app.modules.catalog.full_day_outings import import_full_day_outings, full_day_catalog
 from app.modules.catalog.unified import unified_catalog
 from app.modules.catalog.deduplication import duplicate_records
 
 IMPORTERS = (import_catalog, import_cinemas, import_food, import_visits,
              import_short_activities, import_home_short, import_everyday, import_short_now, import_long_now,
-             import_practical_now, import_northern_outings)
+             import_practical_now, import_northern_outings, import_full_day_outings)
 
 
 def import_unified(store, clock):
@@ -25,6 +26,7 @@ def import_unified(store, clock):
     long_now_catalog()
     practical_now_catalog()
     northern_outings_catalog()
+    full_day_catalog()
     results = [importer(store, clock) for importer in IMPORTERS]
     return {'releases': results, 'inserted': sum(r['inserted'] for r in results),
             'duplicates_skipped': [key for r in results for key in r.get('duplicate_keys', [])],
@@ -53,7 +55,8 @@ def main():
     ) if enabled), None)
     if not args.apply:
         releases = ([selected[0]()] if selected else [*unified_catalog()['releases'].values(),
-                     short_now_catalog(), long_now_catalog(), practical_now_catalog(), northern_outings_catalog()])
+                     short_now_catalog(), long_now_catalog(), practical_now_catalog(), northern_outings_catalog(),
+                     full_day_catalog()])
         from app.modules.catalog.schemas import Content
         for release in releases:
             for entry in release['entries']:

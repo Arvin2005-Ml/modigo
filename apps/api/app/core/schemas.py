@@ -3,6 +3,7 @@ import re
 import unicodedata
 from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from app.core.outing import MINUTES_PER_DAY, OUTING_ORIGINS
 
 DIMENSIONS = ('detachment', 'relaxation', 'autonomy', 'mastery', 'meaning', 'affiliation')
 TAGS = set('observation sensory imagination play nature walking music listening reading writing drawing photography craft puzzles language rhythm movement dance rest reflection storytelling memory gratitude kindness community culture family friendship conversation cooperation food gardening discovery choice creativity mindfulness science games design humor outdoors indoors no_screen digital'.split())
@@ -124,7 +125,8 @@ class PreferencesUpdate(Input):
 
 
 class Context(Constraints):
-    available_minutes: Integer = Field(ge=5, le=480)
+    available_minutes: Integer = Field(ge=5, le=2 * MINUTES_PER_DAY)
+    outing_days: Integer | None = Field(default=None, ge=1, le=2)
     energy: Literal['low', 'medium', 'high', 'unknown']
     social_mode: Literal['solo', 'together', 'either']
     party_size: Integer = Field(ge=1, le=12)
@@ -153,11 +155,23 @@ class Context(Constraints):
         return value
 
     @model_validator(mode='after')
-    def social(self):
+    def consistency(self):
         if self.social_mode == 'solo' and self.party_size != 1:
             raise ValueError('solo_requires_one_person')
         if self.social_mode == 'together' and self.party_size < 2:
             raise ValueError('group_requires_companion')
+        if self.outing_days is None:
+            if self.available_minutes > 480:
+                raise ValueError('short_window_max_480')
+            return self
+        if self.available_minutes != self.outing_days * MINUTES_PER_DAY:
+            raise ValueError('outing_duration_mismatch')
+        if self.venue != 'away_from_home':
+            raise ValueError('outing_requires_away_from_home')
+        if not self.allow_venue_planning:
+            raise ValueError('outing_requires_venue_opt_in')
+        if self.city not in OUTING_ORIGINS.values():
+            raise ValueError('outing_origin_not_supported')
         return self
 
 
@@ -177,6 +191,7 @@ class StartInput(Input):
     recommendation_session_id: str = Field(min_length=36, max_length=36)
     slot_id: str = Field(min_length=36, max_length=36)
     revision_id: str = Field(min_length=36, max_length=36)
+    conditions_confirmed: bool = Field(default=False, strict=True)
 
 
 class CatalogStartInput(Input):

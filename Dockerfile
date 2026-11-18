@@ -43,7 +43,8 @@ COPY --chown=funilo:funilo DRAMMA_450_activities_fa.json ./
 COPY --chown=funilo:funilo content/cooked-examples.md content/demo-extra.json content/demo-catalog.json content/demo-cook-fixtures.json ./content/
 COPY --chown=funilo:funilo content/activities.json content/iran-catalog.json content/dramma-legacy-checksums.json content/short-now.txt content/long-now.txt ./content/
 COPY --chown=funilo:funilo content/practical-now.txt ./content/
-COPY --chown=funilo:funilo content/northern-outings.txt ./content/
+COPY --chown=funilo:funilo content/northern-outings.txt content/full-day-outings.txt ./content/
+COPY --chown=funilo:funilo content/venue-programs.txt ./content/
 COPY --chown=funilo:funilo scripts/container.py ./scripts/container.py
 COPY --from=web-build --chown=funilo:funilo /build/web/.next/standalone/ ./apps/web/
 COPY --from=web-build --chown=funilo:funilo /build/web/.next/static/ ./apps/web/.next/static/

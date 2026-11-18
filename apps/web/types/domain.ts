@@ -35,7 +35,13 @@ export type Context = {
   daylight?: "day" | "night" | "unknown";
 };
 
-export type Place = { name: string; city: string; source_url: string; source_name: string };
+export type Place = {
+  name: string;
+  city: string;
+  source_url: string;
+  source_name: string;
+  program?: { url: string; label: string; scope: "venue" | "collection" | "directory" };
+};
 
 export type Slot = {
   slot_id: string;
