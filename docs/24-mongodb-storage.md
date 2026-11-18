@@ -18,6 +18,14 @@ PYTHONPATH=apps/api .venv/bin/python -m app.cli
 PYTHONPATH=apps/api .venv/bin/python -m uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
 ```
 
+در PowerShell ویندوز، از ریشهٔ پروژه با محیط مجازی `venv`، فقط API را به این شکل اجرا کنید. گزینهٔ `-X utf8` برای خواندن فایل‌های فارسی کاتالوگ با UTF-8 است:
+
+```powershell
+.\venv\Scripts\python.exe -X utf8 -m uvicorn app.main:create_app --factory --app-dir apps/api --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
+```
+
+پس از پایان راه‌اندازی، در پنجرهٔ دیگری با `Invoke-RestMethod http://127.0.0.1:8000/api/v1/health/ready` آمادگی API و اتصال MongoDB را بررسی کنید.
+
 `CSRF_HMAC_SECRET` یک مقدار تصادفی حداقل ۳۲نویسه‌ای و ثابت در محیط سرور است؛ با هر restart تولید نشود. مقدار واقعی برای محیط فعلی در `.env` ساخته شده است. تغییر آن نشست‌های فعلی را از نظر CSRF ناسازگار می‌کند و نیازمند ورود تازه است.
 
 ## تشخیص اتصال بدون نوشتن
