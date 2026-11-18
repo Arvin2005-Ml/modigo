@@ -1,0 +1,86 @@
+# Specific venue pages and named collections from the public Tiwall, Cinematicket and Gisheh 7 listings.
+# Exact cinema names or unambiguous aliases matched by city/address; these links are not availability evidence.
+# city|venue name|kind|scope|url|checked_on
+تهران|تالار رودکی|concert|collection|https://www.tiwall.com/roudaki|2026-11-19
+تهران|تالار حافظ|theatre|collection|https://www.tiwall.com/roudaki|2026-11-19
+تهران|تالار فردوسی|theatre|collection|https://www.tiwall.com/roudaki|2026-11-19
+تهران|تالار وحدت|concert|venue|https://www.tiwall.com/talarvahdat|2026-11-19
+تهران|تماشاخانه ایرانشهر|theatre|venue|https://www.tiwall.com/iranshahr|2026-11-19
+تهران|پردیس سینمایی کورش|cinema|venue|https://cinematicket.org/cinema/detail/260|2026-11-19
+تهران|پردیس سینمایی ایران‌مال|cinema|venue|https://cinematicket.org/cinema/detail/387|2026-11-19
+تهران|سینما آزادی|cinema|venue|https://cinematicket.org/cinema/detail/163|2026-11-19
+تهران|پردیس سینماگالری ملت|cinema|venue|https://cinematicket.org/cinema/detail/197|2026-11-19
+تهران|پردیس سینمایی چارسو|cinema|venue|https://cinematicket.org/cinema/detail/262|2026-11-19
+تهران|پردیس سینمایی مگامال|cinema|venue|https://cinematicket.org/cinema/detail/301|2026-11-19
+تهران|سینما فرهنگ|cinema|venue|https://cinematicket.org/cinema/detail/20|2026-11-19
+تهران|پردیس سینمایی هدیش|cinema|venue|https://cinematicket.org/cinema/detail/566|2026-11-19
+تهران|پردیس سینمایی معین‌مال|cinema|venue|https://cinematicket.org/cinema/detail/586|2026-11-19
+تهران|پردیس سینمایی باغ کتاب|cinema|venue|https://cinematicket.org/cinema/detail/336|2026-11-19
+تهران|پردیس اطلس مال|cinema|venue|https://cinematicket.org/cinema/detail/645|2026-11-19
+تهران|سینما بام نیایش|cinema|venue|https://cinematicket.org/cinema/detail/690|2026-11-19
+تهران|پردیس رز مال|cinema|venue|https://cinematicket.org/cinema/detail/675|2026-11-19
+تهران|پردیس شمیران سنتر|cinema|venue|https://cinematicket.org/cinema/detail/543|2026-11-19
+تهران|پردیس صبا مال|cinema|venue|https://cinematicket.org/cinema/detail/569|2026-11-19
+تهران|پردیس گالریا|cinema|venue|https://cinematicket.org/cinema/detail/405|2026-11-19
+تهران|پردیس لوتوس مال|cinema|venue|https://cinematicket.org/cinema/detail/568|2026-11-19
+اصفهان|پردیس سینمایی ساحل|cinema|venue|https://cinematicket.org/cinema/detail/61|2026-11-19
+اصفهان|پردیس سیتی سنتر|cinema|venue|https://cinematicket.org/cinema/detail/368|2026-11-19
+شیراز|پردیس هنرشهر آفتاب|cinema|venue|https://cinematicket.org/cinema/detail/325|2026-11-19
+تهران|پردیس سینمایی زندگی|cinema|venue|https://gisheh7.ir/cinema/1146/|2026-11-19
+تهران|پردیس سینمایی هروی‌سنتر|cinema|venue|https://gisheh7.ir/cinema/1215/|2026-11-19
+تهران|سینما استقلال|cinema|venue|https://gisheh7.ir/cinema/1057/|2026-11-19
+تهران|سینما آفریقا|cinema|venue|https://gisheh7.ir/cinema/1050/|2026-11-19
+تهران|سینما برج میلاد|cinema|venue|https://gisheh7.ir/cinema/1163/|2026-11-19
+تهران|سینما بهمن|cinema|venue|https://gisheh7.ir/cinema/1059/|2026-11-19
+تهران|پردیس ارگ|cinema|venue|https://gisheh7.ir/cinema/1188/|2026-11-19
+تهران|پردیس اریکه ایرانیان|cinema|venue|https://gisheh7.ir/cinema/1128/|2026-11-19
+تهران|پردیس تماشا|cinema|venue|https://gisheh7.ir/cinema/1127/|2026-11-19
+تهران|پردیس تیراژه ۲|cinema|venue|https://gisheh7.ir/cinema/1168/|2026-11-19
+تهران|سینما بازار آرین|cinema|venue|https://gisheh7.ir/cinema/1552/|2026-11-19
+تهران|پردیس رازی|cinema|venue|https://gisheh7.ir/cinema/1133/|2026-11-19
+تهران|پردیس راگا|cinema|venue|https://gisheh7.ir/cinema/1154/|2026-11-19
+تهران|پردیس سمرقند|cinema|venue|https://gisheh7.ir/cinema/1166/|2026-11-19
+تهران|پردیس شهرک|cinema|venue|https://gisheh7.ir/cinema/1205/|2026-11-19
+تهران|پردیس کوثر|cinema|venue|https://gisheh7.ir/cinema/1505/|2026-11-19
+تهران|پردیس کیان|cinema|venue|https://gisheh7.ir/cinema/1159/|2026-11-19
+کیش|پردیس سینمایی میکامال|cinema|venue|https://gisheh7.ir/cinema/1480/|2026-11-19
+اصفهان|پردیس سینمایی چهارباغ|cinema|venue|https://gisheh7.ir/cinema/1110/|2026-11-19
+اصفهان|سینما بهمن|cinema|venue|https://gisheh7.ir/cinema/1225/|2026-11-19
+اصفهان|سینما سپاهان|cinema|venue|https://gisheh7.ir/cinema/1104/|2026-11-19
+اصفهان|سینما سوره|cinema|venue|https://gisheh7.ir/cinema/1429/|2026-11-19
+اصفهان|سینما فرهنگیان|cinema|venue|https://gisheh7.ir/cinema/1201/|2026-11-19
+اصفهان|سینما فلسطین|cinema|venue|https://gisheh7.ir/cinema/1101/|2026-11-19
+اصفهان|سینما قدس|cinema|venue|https://gisheh7.ir/cinema/1325/|2026-11-19
+رشت|سینما ۲۲ بهمن|cinema|venue|https://gisheh7.ir/cinema/1324/|2026-11-19
+رشت|سینما سپیدرود|cinema|venue|https://gisheh7.ir/cinema/1345/|2026-11-19
+آستارا|سینما دریا|cinema|venue|https://gisheh7.ir/cinema/1290/|2026-11-19
+بندرانزلی|سینما هلال احمر|cinema|venue|https://gisheh7.ir/cinema/1291/|2026-11-19
+بندرانزلی|سینما آرش مال|cinema|venue|https://gisheh7.ir/cinema/1580/|2026-11-19
+رودبار|سینما شهید آوینی زیتون|cinema|venue|https://gisheh7.ir/cinema/1304/|2026-11-19
+فومن|سینما طلوع|cinema|venue|https://gisheh7.ir/cinema/1305/|2026-11-19
+لاهیجان|سینما شهرسبز|cinema|venue|https://gisheh7.ir/cinema/1546/|2026-11-19
+آمل|سینما بهمن|cinema|venue|https://gisheh7.ir/cinema/1119/|2026-11-19
+آمل|پردیس اکسین شمال|cinema|venue|https://gisheh7.ir/cinema/1232/|2026-11-19
+بابل|سینما آزادی|cinema|venue|https://gisheh7.ir/cinema/1252/|2026-11-19
+بابل|مجتمع سینمایی هنر و تجربه|cinema|venue|https://gisheh7.ir/cinema/1182/|2026-11-19
+بابلسر|سینما شقایق|cinema|venue|https://gisheh7.ir/cinema/1253/|2026-11-19
+بهشهر|سینما بهمن|cinema|venue|https://gisheh7.ir/cinema/1118/|2026-11-19
+چالوس|سینما جهان نما|cinema|venue|https://gisheh7.ir/cinema/1254/|2026-11-19
+رامسر|سینما آرامش|cinema|venue|https://gisheh7.ir/cinema/1211/|2026-11-19
+ساری|سینما سپهر|cinema|venue|https://gisheh7.ir/cinema/1123/|2026-11-19
+ساری|سینما کانون|cinema|venue|https://gisheh7.ir/cinema/1222/|2026-11-19
+قائم شهر|سینما حر|cinema|venue|https://gisheh7.ir/cinema/1298/|2026-11-19
+محمودآباد|پردیس سیمرغ|cinema|venue|https://gisheh7.ir/cinema/1369/|2026-11-19
+نوشهر|پردیس مهر همافران|cinema|venue|https://gisheh7.ir/cinema/1451/|2026-11-19
+نوشهر|سینما شقایق|cinema|venue|https://gisheh7.ir/cinema/1176/|2026-11-19
+گرگان|سینما ۲۲ بهمن|cinema|venue|https://gisheh7.ir/cinema/1111/|2026-11-19
+گرگان|پردیس عصر جدید|cinema|venue|https://gisheh7.ir/cinema/1124/|2026-11-19
+گرگان|پردیس کاپری|cinema|venue|https://gisheh7.ir/cinema/1167/|2026-11-19
+گنبدکاووس|سینما مهر گنبد|cinema|venue|https://gisheh7.ir/cinema/1125/|2026-11-19
+شیراز|سینما ایران|cinema|venue|https://gisheh7.ir/cinema/1095/|2026-11-19
+شیراز|پردیس شیراز مال|cinema|venue|https://gisheh7.ir/cinema/1442/|2026-11-19
+شیراز|سینما امین تارخ|cinema|venue|https://gisheh7.ir/cinema/1584/|2026-11-19
+شیراز|پردیس گلستان|cinema|venue|https://gisheh7.ir/cinema/1/|2026-11-19
+شیراز|سینما سعدی|cinema|venue|https://gisheh7.ir/cinema/1084/|2026-11-19
+شیراز|سینما شیراز|cinema|venue|https://gisheh7.ir/cinema/1094/|2026-11-19
+شیراز|سینما فرهنگ|cinema|venue|https://gisheh7.ir/cinema/16/|2026-11-19

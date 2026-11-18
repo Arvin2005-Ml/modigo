@@ -35,11 +35,16 @@ class MemoryTestStore:
         with self._lock:
             return deepcopy(list(self._collections.get(collection, {}).values()))
 
-    def published_catalog(self) -> list[Document]:
+    def activities_by_seed_keys(self, keys):
+        return [row for row in self.list('activities') if row.get('seed_key') in keys]
+
+    def published_catalog(self, activity_ids=None) -> list[Document]:
         with self._lock:
             revisions = self._collections.get('activity_revisions', {})
             rows = []
             for activity in self._collections.get('activities', {}).values():
+                if activity_ids is not None and activity['id'] not in activity_ids:
+                    continue
                 pointer = activity.get('published_revision_id')
                 revision = revisions.get(pointer)
                 if (activity.get('active') is True and revision and revision.get('state') == 'published'

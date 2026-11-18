@@ -187,7 +187,7 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
             async with app.router.lifespan_context(app):
                 catalog_counts = counts(app.state.services.store)
                 self.assertEqual(catalog_counts['curated_recommendable'],700)
-                self.assertEqual(catalog_counts['recommendable'],1056)
+                self.assertEqual(catalog_counts['recommendable'],1156)
                 async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app),base_url=origin,
                         headers={'Origin':origin}) as client:
                     csrf=(await client.get('/api/v1/auth/csrf')).json()['csrf_token'];client.headers['X-CSRF-Token']=csrf
@@ -323,7 +323,7 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(queue.status_code, 200, queue.text)
                     self.assertEqual(queue.json()['total'], 450)
                     self.assertEqual(len(queue.json()['items']), 3)
-                    self.assertEqual(queue.json()['counts']['active'], 1056)
+                    self.assertEqual(queue.json()['counts']['active'], 1156)
 
                     # At the five-minute floor, the initial home card and all six
                     # replacements must be distinct and stay free and equipment-free.

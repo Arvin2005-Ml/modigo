@@ -7,7 +7,7 @@ from app.modules.recommendations.eligibility import eligible, total_minutes, ver
 GOALS = {'unwind': 'relaxation', 'switch_off': 'detachment', 'learn': 'mastery',
          'connect': 'affiliation', 'meaning': 'meaning', 'choose': 'autonomy'}
 ENERGY = {'low': 0, 'medium': 1, 'high': 2}
-ALGORITHM_VERSION = 'time_budget_fit_v7'
+ALGORITHM_VERSION = 'nearby_full_day_outings_v8'
 
 
 def activity_family(content):
@@ -103,6 +103,8 @@ def jaccard(a, b):
 def rank(candidates, context, now, excluded, seed, history, feedback, shown, count=1, selected=None, *, seen=()):
     selected = list(selected or [])
     seen_families = Counter(activity_family(a['content']) for a in seen)
+    is_outing = context.get('outing_days') is not None
+    seen_cities = Counter(a['content']['place']['city'] for a in seen if a['content'].get('outing')) if is_outing else {}
     scored = []
     needs = current_needs(context)
     likes = set(context['liked_tags'])
@@ -180,6 +182,14 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
                 family_count = seen_families[item['family']] + sum(
                     activity_family(a['content']) == item['family'] for a in others)
                 base = item['score'] - .12 * similarity - .08 * n
+                if is_outing:
+                    city = c['place']['city']
+                    city_count = seen_cities.get(city, 0) + sum(
+                        (a['content'].get('place') or {}).get('city') == city for a in others)
+                    travel = c['outing']['one_way_travel_minutes']
+                    options.append((-city_count, -(travel // 45), -family_count, item['need_fit'],
+                                    item['interest'], base - travel / 1000, item['tie'], item))
+                    continue
                 long_window = context['available_minutes'] >= 60
                 preference = item['dimension_preference']
                 minutes = item['minutes'] if long_window else 0

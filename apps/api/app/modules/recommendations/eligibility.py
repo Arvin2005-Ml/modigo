@@ -6,7 +6,7 @@ publication state and ownership are checked here only as candidate eligibility.
 from datetime import datetime
 from app.core.schemas import city_key
 
-VENUE_POLICY_VERSION = 'explicit_opt_in_and_exact_city_v1'
+VENUE_POLICY_VERSION = 'exact_city_and_reviewed_outing_origins_v2'
 
 MOBILITY = {'seated': 0, 'light': 1, 'active': 2}
 VENUE_MATCHES = {
@@ -38,6 +38,12 @@ def verified_cost(cost: dict, people: int, now: datetime) -> tuple[int, int] | N
 def venue_allowed(context: dict, content: dict) -> bool:
     place = content.get('place')
     if (place or content.get('requires_venue_check')) and context.get('allow_venue_planning') is not True:
+        return False
+    if outing := content.get('outing'):
+        return (context.get('outing_days') == outing['days']
+                and context['venue'] == 'away_from_home'
+                and context.get('city') == outing['origin_city'])
+    if context.get('outing_days') is not None:
         return False
     return not place or bool(context.get('city') and city_key(context['city']) == city_key(place['city']))
 

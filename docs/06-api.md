@@ -50,6 +50,7 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | Method / path | درخواست / پاسخ اصلی |
 | --- | --- |
 | POST `/check-ins` | context طبق05؛ 201 `{id,context,created_at}` |
+| GET `/outing-origins` | نشست لازم؛ 200 `{cities:["تهران","مشهد","اصفهان","شیراز","تبریز"]}`؛ فقط مبدأهای گردش کامل |
 | POST `/recommendation-sessions` | `{check_in_id}`؛ 201 session؛ یک session برای هر check-in، درخواست تکراری حتی با کلید تازه همان session جاری را می‌دهد |
 | GET `/recommendation-sessions/{id}` | 200 session مالک؛ expired→410 با امکان ساخت check-in جدید |
 | POST `/recommendation-sessions/{id}/slots/{slot_id}/replace` | `{expected_version:1}`؛ 200 `{session_version,item,replaced,replacement_count,replacement_limit,replacements_remaining,replacement_available,suggestion_index,suggestion_count}`؛ نبود گزینه200 با item قبلی و `replaced:false`، بدون مصرف سهمیه/نسخه؛ سقف409 `REPLACEMENT_LIMIT`، میانهٔ تاریخچه409 `HISTORY_NOT_AT_END` |
@@ -59,7 +60,7 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | GET `/saved` | لیست آخرین revision فعال هر activity؛ مورد inactive با `{unavailable:true,activity_id}`، بدون محتوای ممنوع |
 | PUT `/saved/{activity_id}` | `{}`؛ 204؛ فقط activity منتشرشده و فعال |
 | DELETE `/saved/{activity_id}` | 204، حتی اگر قبلاً نبود |
-| POST `/experiences` | پیشنهاد: `{recommendation_session_id,slot_id,revision_id}`؛ انتخاب مستقیم: `{source:"catalog",revision_id,party_size?,conditions_confirmed?}`؛ هر دو 201 experience active |
+| POST `/experiences` | پیشنهاد: `{recommendation_session_id,slot_id,revision_id,conditions_confirmed?}`؛ انتخاب مستقیم: `{source:"catalog",revision_id,party_size?,conditions_confirmed?}`؛ هر دو 201 experience active |
 | GET `/experiences/active` | 200 `{experience:...}` یا `{experience:null}`؛ قبل از پاسخ active منقضی شود |
 | GET `/experiences` | history با filter status و cursor |
 | GET `/experiences/{id}` | 200 experience مالک؛ content_snapshot تاریخی |
@@ -71,6 +72,8 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | POST `/analytics/events` | `{events:[{event_id,name,occurred_at,properties}]}`؛ 202 `{accepted,duplicates}`؛ سقف۲۰ در batch، allowlist13 |
 
 فهرست خلاصهٔ `/discover` به ترتیب عنوان و سپس شناسه مرتب است و در یک پاسخ می‌آید تا مرورگر جست‌وجو و فیلتر دسته را روی تمام عنوان‌ها انجام دهد. متن و اطلاعات داخلی کاتالوگ در این فهرست نیستند؛ پاسخ `no-store` است.
+
+گردش کامل فقط از مسیر پیشنهاد به دست می‌آید و در `/discover` و گزینه‌های شهرِ گردش کوتاه افزوده نمی‌شود. `outing_days: 1|2` به‌ترتیب ۱۴۴۰/۲۸۸۰ دقیقه، `away_from_home`، اجازهٔ پیشنهاد مکان و یکی از پنج مبدأ را لازم دارد؛ ترکیب ناسازگار ۴۲۲ است. فیلتر بر اساس مبدأ و مدت دقیق است؛ `context_summary.city` مبدأ و `items[].place.city` مقصد اصلی‌اند. `items[].outing` خلاصهٔ سفر و `content.outing` برنامهٔ روزها را دارد. در گردش کامل `venue_alternative` ارائه نمی‌شود. هزینهٔ تأییدنشده فقط با بودجهٔ منعطف واجد شرایط است؛ `budget_alternative` صرفاً پیش‌نمایش است. برای شروع این نوع پیشنهاد، `conditions_confirmed:true` ضروری است؛ بدون آن ۴۲۲ و `error.fields.conditions_confirmed="required"`. `catalog_start` این محتوا `null` است. [سند45](45-full-day-outings-frontend.md) نمونهٔ بدنه و رفتار رابط را دارد.
 
 در مسیر پیشنهاد، شروع از slot فعلی session معتبر و متعلق به کاربر است. شرایط واقعی محتوا با snapshot دوباره hard-filter می‌شوند چون قیمت و انتشار ممکن است عوض شده باشند؛ excludeهای تاریخچه و «قبلاً در همین slate دیده‌شده» در این بررسی اعمال نمی‌شوند. محدودیت‌های ماندگار تازه مثل blocked_tags و الزام دسترسی با snapshot ادغام می‌شوند. اگر slot عوض شده، پاسخ `VERSION_CONFLICT` است.
 
@@ -100,7 +103,7 @@ create slate در transaction با CAS روی check_ins.version،افزایش cr
 
 برای یک کارت قابل نمایش `partial:false,empty_reason:null`؛ صفر کارت مجاز `partial:true,empty_reason:"NO_MATCHES"`. تاریخچهٔ مرور می‌تواند کارت withdrawn بدون متن را در slot جاری نگه دارد؛ با قبلی/بعدی همچنان جابه‌جا می‌شود. مدل یا score از خروجی حذف می‌شود. `content_snapshot` تجربهٔ مالک پس از withdrawal با برچسب unavailable و حذف دستورالعمل ممنوع پاسخ داده شود، هرچند snapshot داخلی برای audit حفظ است.
 
-GET یک session قدیمی،کارت withdrawn یا archived را با `{slot_id,unavailable:true}` بدون متن محتوا پاسخ دهد؛ slot حفظ شود تا کاربر replace کند. `result_count` تعداد کارت‌های قابل نمایش است. جایگزینی خودکار و بی‌خبر انجام نشود؛برای نسخهٔ superseded ولی هنوز مجاز،جزئیات تاریخی قابل دیدن است و شروع نیازمند پیشنهاد تازه طبق قاعدهٔ بالا. expiry پیشنهاد،expiry تجربهٔ شروع‌شده نیست؛تجربه از started_at خود۲۴ساعت فرصت دارد.
+GET یک session قدیمی،کارت withdrawn یا archived را با `{slot_id,unavailable:true}` بدون متن محتوا پاسخ دهد؛ slot حفظ شود تا کاربر replace کند. `result_count` تعداد کارت‌های قابل نمایش است. جایگزینی خودکار و بی‌خبر انجام نشود؛برای نسخهٔ superseded ولی هنوز مجاز،جزئیات تاریخی قابل دیدن است و شروع نیازمند پیشنهاد تازه طبق قاعدهٔ بالا. انقضای پیشنهاد با مهلت تجربه فرق دارد؛ فیلد `active_until` تجربه ۴۸ ساعت پس از شروع برای گردش دوروزه و ۲۴ ساعت برای سایر تجربه‌هاست.
 
 کارت نشست پس از تغییر محدودیت پروفایل، منقضی‌شدن قیمتِ لازم برای سقف هزینه، یا عوض‌شدن نسخهٔ جاری نیز سمت سرور دوباره سنجیده می‌شود. اگر نامعتبر باشد شکل همان `{slot_id,unavailable:true}` است. صفر کارت نمایشی به معنی نبود جایگزین نیست: `replacement_available` را جدا بخوانید. تکرار درخواست با همان کلید عمل را دوباره انجام نمی‌دهد؛ تا وقتی نسخهٔ نشست یکسان است، واجد شرایط بودن کارت و امکان تعویض دوباره سنجیده می‌شود. رسید نسخهٔ قدیمی هنوز نتیجه و شمارندهٔ عمل خودش را دارد؛ برای اقدام بعدی نشست جاری را از GET بگیرید.
 

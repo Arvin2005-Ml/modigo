@@ -15,7 +15,8 @@ RETIRED_DEMO_KEYS = frozenset(f'demo:{i:03}' for i in range(7, 25))
 
 def content_checksum(content):
     # Null place did not exist in the checksum format for shipped demos.
-    canonical = {key: value for key, value in content.items() if key != 'place' or value is not None}
+    canonical = {key: value for key, value in content.items()
+                 if key not in ('place', 'outing') or value is not None}
     return sha256(json.dumps(canonical, ensure_ascii=False, sort_keys=True,
                              separators=(',', ':'), default=str).encode()).hexdigest()
 

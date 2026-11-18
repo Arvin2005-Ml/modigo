@@ -1,5 +1,36 @@
 """Apply current withdrawal rules even to responses from idempotency receipts."""
 from copy import deepcopy
+from app.modules.catalog.venue_programs import place_id, program_for_place
+
+
+def with_venue_programs(value, store):
+    """Decorate public views after ownership, visibility and idempotency checks."""
+    resolved = {}
+
+    def walk(item):
+        if isinstance(item, list):
+            return [walk(entry) for entry in item]
+        if not isinstance(item, dict) or item.get('unavailable'):
+            return item
+        result = {**item}
+        for field in ('items', 'item', 'experience', 'content', 'content_snapshot'):
+            if field in item:
+                result[field] = walk(item[field])
+        place = item.get('place')
+        if isinstance(place, dict):
+            # Only the separately validated registry may supply the public link.
+            clean = {k: v for k, v in place.items() if k != 'program'}
+            city, name = place.get('city'), place.get('name')
+            if isinstance(city, str) and isinstance(name, str) and city and name:
+                key = place_id(city, name)
+                if key not in resolved:
+                    resolved[key] = program_for_place(store, key)
+                if resolved[key]:
+                    clean['program'] = resolved[key]
+            result['place'] = clean
+        return result
+
+    return walk(value)
 
 
 def public_response(value, store):
@@ -22,7 +53,7 @@ def public_response(value, store):
                     return {'slot_id': item['slot_id'], 'unavailable': True}
                 item['unavailable'] = True
                 for field in ('content_snapshot', 'content', 'title', 'teaser', 'first_step', 'steps',
-                              'requires_venue_check', 'place', 'venue_check_message'):
+                              'requires_venue_check', 'place', 'venue_check_message', 'outing'):
                     item.pop(field, None)
         result = {k: walk(v) for k, v in item.items()}
         if 'items' in result and 'result_count' in result:

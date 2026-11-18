@@ -25,6 +25,7 @@ INDEXES = {
     'activities': [([('seed_key', ASCENDING)], {'unique': True, 'sparse': True}),
                    ([('active', ASCENDING), ('published_revision_id', ASCENDING)], {})],
     'activity_revisions': [([('activity_id', ASCENDING), ('revision_number', ASCENDING)], {'unique': True})],
+    'venue_program_links': [([('city', ASCENDING)], {})],
     'auth_sessions': [([('user_id', ASCENDING)], {}), ([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
     'preauth': [([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
     'account_tokens': [([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
@@ -174,11 +175,28 @@ class MongoDocumentStore:
         except PyMongoError:
             raise StorageUnavailable('MongoDB read failed') from None
 
-    def published_catalog(self):
+    def activities_by_seed_keys(self, keys):
+        if not keys:
+            return []
         try:
-            return list(self._db.activities.aggregate(PUBLISHED_CATALOG, session=self._session,
-                                                     batchSize=2000))
-        except PyMongoError:
+            return list(self._db.activities.find({'seed_key': {'$in': sorted(keys)}}, {'_id': False},
+                                                session=self._session, batch_size=25))
+        except PyMongoError as exc:
+            raise mongo_failure(exc, 'outing_keys') from None
+
+    def published_catalog(self, activity_ids=None):
+        pipeline = PUBLISHED_CATALOG
+        batch_size = 2000
+        if activity_ids is not None:
+            if not activity_ids:
+                return []
+            pipeline = [{'$match': {'_id': {'$in': sorted(activity_ids)}}}, *pipeline]
+            batch_size = 25
+        try:
+            return list(self._db.activities.aggregate(pipeline, session=self._session, batchSize=batch_size))
+        except PyMongoError as exc:
+            if activity_ids is not None:
+                raise mongo_failure(exc, 'outing_catalog') from None
             raise StorageUnavailable('MongoDB catalog read failed') from None
 
     @staticmethod

@@ -4,6 +4,7 @@ from app.core.schemas import Context, merge_constraints
 from app.core.values import uid, replace, owned
 from app.modules.recommendations.ranking import rank, GOALS, ALGORITHM_VERSION
 from app.modules.recommendations.eligibility import eligible, total_minutes, verified_cost
+from app.modules.experiences.timing import is_active
 
 REPLACEMENT_LIMIT = 6
 VENUE_CHECK_MESSAGE = 'پیش از رفتن، باز بودن، هزینه، رزرو و شرایط دسترسی را از محل بررسی کن.'
@@ -21,8 +22,10 @@ def cost_label(cost, estimate):
 def planning_alternatives(context, candidates, now, blocked):
     """Find previews that each change just one choice and cannot start a slot."""
     available = context['available_minutes']
-    wider = ({**context, 'venue': 'any'} if available >= 60 and context['venue'] != 'any' else None)
-    flexible = ({**context, 'budget': {'mode': 'flexible'}} if context['budget']['mode'] == 'cap' else None)
+    is_outing = context.get('outing_days') is not None
+    wider = ({**context, 'venue': 'any'} if not is_outing and available >= 60 and context['venue'] != 'any' else None)
+    flexible = ({**context, 'budget': {'mode': 'flexible'}}
+                if context['budget']['mode'] == 'cap' or (is_outing and context['budget']['mode'] == 'free') else None)
     best, paid, different_venue, different_budget = 0, False, None, None
     for activity in candidates:
         content = activity['content']
@@ -36,7 +39,7 @@ def planning_alternatives(context, candidates, now, blocked):
                 and (different_venue is None or minutes > different_venue['total_minutes'])):
             different_venue = {'title': content['title'], 'venue': content['venue'], 'total_minutes': minutes}
         if (not execution and flexible and not paid and content.get('place')
-                and (available < 60 or minutes * 4 >= available * 3)
+                and (is_outing or available < 60 or minutes * 4 >= available * 3)
                 and (different_budget is None or minutes > different_budget['total_minutes'])):
             with_flexible = eligible(flexible, activity, now, blocked)
             if with_flexible and verified_cost(content['cost'], with_flexible[1], now) is None:
@@ -82,8 +85,8 @@ class Recommendations:
         history = [e for e in self.store.list('experiences') if e['user_id'] == user_id]
         now = self.clock()
         active = {e['activity_id'] for e in history
-                  if e['status'] == 'active' and e['started_at'] + timedelta(hours=24) > now}
-        return rank(self.catalog.candidates() if candidates is None else candidates,
+                  if is_active(e, now)}
+        return rank(self.catalog.recommendation_candidates(context) if candidates is None else candidates,
             context, now, set(excluded) | active, seed,
             history,
             [f for f in self.store.list('feedback') if f['user_id'] == user_id],
@@ -93,7 +96,9 @@ class Recommendations:
     def _slot(self, item, index, context, slot_id=None):
         activity = item['activity']
         content = activity['content']
-        if item['need_fit'] > 0:
+        if content.get('outing'):
+            explanation = 'این برنامه از شهر مبدأیی که گفتی شروع می‌شه و برای همین تعداد روز چیده شده.'
+        elif item['need_fit'] > 0:
             explanation = 'با چیزی که الان از این وقت می‌خوای جور درمیاد.'
         elif item['dimension_preference'] > 0:
             explanation = 'از جنس تفریح‌هاییه که قبلاً انتخاب کردی.'
@@ -128,7 +133,7 @@ class Recommendations:
                 return self.present(self.load(user_id, check_in['recommendation_session_id']))
             context = self._effective_context(user_id, check_in, check_in['context'])
             seed = uid()
-            candidates = self.catalog.candidates()
+            candidates = self.catalog.recommendation_candidates(context)
             ranked = self._rank(user_id, context, check_in['shown_activity_ids'], seed, candidates)
             items = [self._slot(item, i, context) for i, item in enumerate(ranked, 1)]
             ids = [item['activity_id'] for item in items]
@@ -172,6 +177,7 @@ class Recommendations:
         if not execution:
             return unavailable
         estimate = verified_cost(c['cost'], execution[1], self.clock())
+        outing = c.get('outing')
         return {**{k: v for k, v in item.items() if k != 'score_internal'},
             'title': c['title'], 'teaser': c['teaser'],
             'execution_social_mode': execution[0], 'execution_people': execution[1],
@@ -179,7 +185,9 @@ class Recommendations:
             'cost_label': cost_label(c['cost'], estimate), 'unavailable': False,
             'cost_range_toman': None if estimate is None else {'min': estimate[0], 'max': estimate[1]},
             'requires_venue_check': c['requires_venue_check'], 'place': c['place'],
-            'venue_check_message': VENUE_CHECK_MESSAGE if c['requires_venue_check'] else None}
+            'venue_check_message': VENUE_CHECK_MESSAGE if c['requires_venue_check'] else None,
+            **({'outing': {k: outing[k] for k in ('days', 'origin_city', 'one_way_travel_minutes', 'overnight_city')}}
+               if outing else {})}
 
     def present(self, session, candidates=None, *, check_in=None, context=None):
         if check_in is None:
@@ -193,15 +201,16 @@ class Recommendations:
         if ((context['available_minutes'] >= 60 and context['venue'] != 'any')
                 or context['budget']['mode'] == 'cap'):
             if candidates is None:
-                candidates = self.catalog.candidates()
+                candidates = self.catalog.recommendation_candidates(context)
             active = {e['activity_id'] for e in self.store.list('experiences')
                       if e['user_id'] == session['user_id'] and e['status'] == 'active'
-                      and e['started_at'] + timedelta(hours=24) > now}
+                      and is_active(e, now)}
             alternatives = planning_alternatives(context, candidates, now, active)
         return dict(id=session['id'], check_in_id=session['check_in_id'], version=session['version'],
             expires_at=session['expires_at'],
             context_summary={**{k: context[k] for k in ('available_minutes','social_mode','party_size','venue','budget')},
-                'city': context.get('city'), 'allow_venue_planning': context.get('allow_venue_planning', False)},
+                'city': context.get('city'), 'allow_venue_planning': context.get('allow_venue_planning', False),
+                'outing_days': context.get('outing_days')},
             items=items, result_count=n, partial=n == 0,
             empty_reason=None if n else 'NO_MATCHES',
             **alternatives,
@@ -211,13 +220,12 @@ class Recommendations:
         remaining = max(0, session['replacement_limit'] - session['replacement_count'])
         available = False
         if remaining and session['items'] and session['suggestion_index'] == len(session['suggestion_history']) - 1:
+            now = self.clock()
             excluded = set(check_in['shown_activity_ids']) | {
                 e['activity_id'] for e in self.store.list('experiences')
-                if e['user_id'] == session['user_id'] and e['status'] == 'active'
-                and e['started_at'] + timedelta(hours=24) > self.clock()}
-            now = self.clock()
+                if e['user_id'] == session['user_id'] and is_active(e, now)}
             available = any(eligible(context, a, now, excluded)
-                            for a in (self.catalog.candidates() if candidates is None else candidates))
+                            for a in (self.catalog.recommendation_candidates(context) if candidates is None else candidates))
         return dict(replacement_count=session['replacement_count'],
             replacement_limit=session['replacement_limit'], replacements_remaining=remaining,
             replacement_available=available, suggestion_index=session['suggestion_index'],
@@ -281,7 +289,7 @@ class Recommendations:
                     'شش بار پیشنهاد رو عوض کردی؛ می‌تونی پیشنهادهای قبلی رو ببینی یا شرایط تازه‌ای بگی.')
             check_in = owned(self.store, 'check_ins', session['check_in_id'], user_id)
             context = self.session_context(session, check_in)
-            candidates = self.catalog.candidates()
+            candidates = self.catalog.recommendation_candidates(context)
             excluded = set(check_in['shown_activity_ids'])
             seen = [a for a in candidates if a['id'] in excluded]
             ranked = self._rank(user_id, context, excluded, session['seed'], candidates, seen)

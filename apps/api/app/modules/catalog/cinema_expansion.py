@@ -32,17 +32,22 @@ def cinema_catalog():
     return catalog
 
 
-def import_additive(store, clock, catalog, *, version, source_file, raw_intent, reason):
+def import_additive(store, clock, catalog, *, version, source_file, raw_intent, reason, scoped_keys=False):
     """Insert one validated release without modifying any existing identity."""
-    existing = {a['seed_key'] for a in store.list('activities')}
+    keys = {entry['key'] for entry in catalog['entries']}
+    existing = {a['seed_key'] for a in (store.activities_by_seed_keys(keys) if scoped_keys else store.list('activities'))}
     pending = [entry for entry in catalog['entries'] if entry['key'] not in existing]
     inserted = 0
     duplicate_keys = []
     for offset in range(0, len(pending), 25):
+        batch = pending[offset:offset + 25]
         with store.atomic():
-            present = {a['seed_key'] for a in store.list('activities')}
-            identities = existing_identities(store)
-            for entry in pending[offset:offset + 25]:
+            # Scoped releases use a reserved, validated key namespace; old
+            # importers still deduplicate by content across the whole catalog.
+            rows = store.activities_by_seed_keys({e['key'] for e in batch}) if scoped_keys else store.list('activities')
+            present = {a['seed_key'] for a in rows}
+            identities = {} if scoped_keys else existing_identities(store)
+            for entry in batch:
                 if entry['key'] in present:
                     continue
                 content = entry['content']

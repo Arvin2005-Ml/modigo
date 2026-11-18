@@ -71,27 +71,38 @@ class Catalog:
             result['catalog_start'] = None
             if revision['state'] == 'published' and activity['published_revision_id'] == revision['id']:
                 parsed = parsed or self.checked_content(content, activity['primary_dimension'])
-                if parsed:
+                if parsed and parsed.outing is None:
                     result['catalog_start'] = dict(min_people=parsed.min_people, max_people=parsed.max_people,
                                                    checks=catalog_start_checks(parsed))
         return result
 
-    def candidates(self):
+    def candidates(self, activity_ids=None):
         result = []
-        for row in self.store.published_catalog():
+        rows = self.store.published_catalog() if activity_ids is None else self.store.published_catalog(activity_ids)
+        for row in rows:
             content = self.checked_content(row.get('content'), row.get('primary_dimension'))
             if content is not None and row.get('revision_id') == row['published_revision_id']:
                 result.append({**row, 'content': content.model_dump()})
         return result
 
+    def recommendation_candidates(self, context):
+        days = context.get('outing_days')
+        if days is None:
+            return self.candidates()
+        from app.modules.catalog.full_day_outings import outing_seed_keys
+        keys = outing_seed_keys(context.get('city'), days)
+        activities = self.store.activities_by_seed_keys(keys)
+        return self.candidates({a['id'] for a in activities})
+
     def cities(self):
-        cities = sorted({row['content']['place']['city'] for row in self.candidates() if row['content']['place']})
+        cities = sorted({row['content']['place']['city'] for row in self.candidates()
+                         if row['content']['place'] and not row['content'].get('outing')})
         return list({city_key(city): city for city in cities}.values())
 
     def discover(self):
         items = [dict(activity_id=row['id'], revision_id=row['revision_id'],
                       title=row['content']['title'], primary_dimension=row['primary_dimension'])
-                 for row in self.candidates()]
+                 for row in self.candidates() if not row['content'].get('outing')]
         return sorted(items, key=lambda item: (item['title'], item['activity_id']))
 
     @staticmethod

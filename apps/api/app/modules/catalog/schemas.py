@@ -5,6 +5,7 @@ from typing import Literal
 from urllib.parse import urlsplit
 from pydantic import Field, field_validator, model_validator
 from app.core.schemas import Input, Dimension, Integer, normalize_city
+from app.core.outing import OUTING_DESTINATIONS, OUTING_ONE_WAY_LIMIT
 
 
 class Cost(Input):
@@ -96,6 +97,23 @@ class Dramma(Input):
     mechanisms: list[Mechanism] = Field(min_length=1, max_length=4)
 
 
+class OutingDay(Input):
+    morning: str = Field(min_length=10, max_length=200)
+    afternoon: str = Field(min_length=10, max_length=200)
+    active_minutes: Integer = Field(ge=60, le=600)
+    setup_minutes: Integer = Field(ge=0, le=180)
+    travel_minutes: Integer = Field(ge=0, le=390)
+
+
+class Outing(Input):
+    days: Integer = Field(ge=1, le=2)
+    origin_city: str
+    country_code: Literal['IR']
+    one_way_travel_minutes: Integer = Field(ge=0, le=180)
+    overnight_city: str | None = None
+    itinerary: list[OutingDay] = Field(min_length=1, max_length=2)
+
+
 class Content(Input):
     title: str = Field(min_length=5, max_length=60)
     teaser: str = Field(min_length=15, max_length=140)
@@ -126,6 +144,7 @@ class Content(Input):
     cost: Cost
     safety_notes: list[str] = Field(max_length=3)
     place: Place | None = None
+    outing: Outing | None = Field(default=None, exclude_if=lambda value: value is None)
     requires_venue_check: bool = Field(default=False, strict=True)
     dramma: Dramma
 
@@ -141,8 +160,27 @@ class Content(Input):
         from app.core.schemas import TAGS, ITEMS
         if not set(self.tags) <= TAGS or not set(self.required_items) <= ITEMS:
             raise ValueError('unknown_vocabulary')
-        if not 5 <= self.active_minutes + self.setup_minutes + self.travel_minutes <= 480:
-            raise ValueError('invalid_total_time')
+        total = self.active_minutes + self.setup_minutes + self.travel_minutes
+        if self.outing is None:
+            if not 5 <= total <= 480:
+                raise ValueError('invalid_total_time')
+        else:
+            outing = self.outing
+            nearby = OUTING_DESTINATIONS.get(outing.origin_city, ())
+            if (self.venue != 'outdoor' or not self.place or self.place.city not in nearby
+                    or not self.requires_venue_check
+                    or len(outing.itinerary) != outing.days
+                    or not (480 < total <= 720 if outing.days == 1 else 720 < total <= 1440)
+                    or not (outing.overnight_city is None if outing.days == 1 else outing.overnight_city in nearby)
+                    or outing.one_way_travel_minutes > OUTING_ONE_WAY_LIMIT[outing.days]
+                    or self.travel_minutes < 2 * outing.one_way_travel_minutes):
+                raise ValueError('invalid_outing')
+            for key in ('active_minutes', 'setup_minutes', 'travel_minutes'):
+                if sum(getattr(day, key) for day in outing.itinerary) != getattr(self, key):
+                    raise ValueError('outing_time_mismatch')
+            if any(not 360 <= day.active_minutes + day.setup_minutes + day.travel_minutes <= 720
+                   or day.travel_minutes < outing.one_way_travel_minutes for day in outing.itinerary):
+                raise ValueError('invalid_outing_day_time')
         modes = set(self.supported_social_modes)
         if (len(modes) != len(self.supported_social_modes) or self.min_people > self.max_people
                 or ('solo' in modes and self.min_people != 1)

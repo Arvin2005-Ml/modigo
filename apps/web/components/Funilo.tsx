@@ -17,7 +17,14 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { apiSlice, useGetPreferencesQuery } from "@/lib/store/api/apiSlice";
 import { createApiClient } from "@/lib/store/api/apiClient";
 import { toApiError } from "@/lib/store/api/baseQuery";
-import type { Slate, Slot, Revision, Experience, Award, StartExperienceRequest } from "@/types";
+import type {
+  CompleteExperienceResponse,
+  Experience,
+  Revision,
+  Slate,
+  Slot,
+  StartExperienceRequest,
+} from "@/types";
 
 import Admin from "./Admin";
 import { ContentDetails } from "./Activity";
@@ -54,7 +61,7 @@ export default function Funilo() {
   const [detail, setDetail] = useState<Revision | null>(null);
   const [slot, setSlot] = useState<Slot | null>(null);
   const [experience, setExperience] = useState<Experience | null>(null);
-  const [award, setAward] = useState<Award | null>(null);
+  const [completion, setCompletion] = useState<CompleteExperienceResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -98,7 +105,7 @@ export default function Funilo() {
     setDetail(null);
     setSlot(null);
     setExperience(null);
-    setAward(null);
+    setCompletion(null);
     setActiveConflict(null);
   }, []);
 
@@ -159,7 +166,7 @@ export default function Funilo() {
     let cancelled = false;
 
     const loadRoute = async () => {
-      const needsLoading = ["detail", "active", "complete"].includes(view);
+      const needsLoading = view === "detail" || view === "active";
 
       if (!needsLoading) {
         setRouteLoading(false);
@@ -216,12 +223,6 @@ export default function Funilo() {
             setExperience(active.experience);
           }
         }
-
-        if (view === "complete" && !award) {
-          // The current Backend does not expose
-          // a dedicated award recovery endpoint.
-          router.replace(paths.journey);
-        }
       } catch (error) {
         if (!cancelled) {
           report(error);
@@ -245,10 +246,24 @@ export default function Funilo() {
     searchParams,
     view,
     client,
-    router,
     report,
-    award,
   ]);
+
+  const pageCompletion =
+    view === "complete" && completion?.experience.id === pathname.split("/")[2]
+      ? completion
+      : null;
+
+  useEffect(() => {
+    if (
+      status === "authenticated" &&
+      user &&
+      view === "complete" &&
+      !pageCompletion
+    ) {
+      router.replace(paths.journey);
+    }
+  }, [status, user, view, pageCompletion, router]);
 
   useEffect(() => {
     const heading = main.current?.querySelector("h1");
@@ -290,8 +305,8 @@ export default function Funilo() {
 
       const result = await client.completeExperience(experience.id);
 
-      setExperience(result.experience);
-      setAward(result.award);
+      setExperience(null);
+      setCompletion(result);
       setFeedbackDone(false);
 
       router.push(
@@ -343,6 +358,7 @@ export default function Funilo() {
   }
 
   const openExperience = activeExperienceQuery.data?.experience;
+  const award = pageCompletion?.award;
   const activeExperienceId = openExperience?.id ??
     (activeConflict?.revisionId === detail?.id ? activeConflict?.experienceId : undefined);
   const fromIndividual = searchParams.get("from") === "individual";
@@ -499,7 +515,7 @@ export default function Funilo() {
                 </div>
               </section>
             )}
-          {view === "complete" && experience && award && (
+          {pageCompletion && award && (
             <section className="completion-column">
               <div className="completion-symbol" aria-hidden="true">
                 ✳
@@ -549,7 +565,7 @@ export default function Funilo() {
                         onClick={() =>
                           run(async () => {
                             await client.sendFeedback({
-                              experienceId: experience.id,
+                              experienceId: pageCompletion.experience.id,
                               rating,
                               reason: null,
                             });
