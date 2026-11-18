@@ -1,7 +1,10 @@
 from datetime import timedelta
 from zoneinfo import ZoneInfo
 from app.core.errors import DomainError, conflict, missing
+from app.core.schemas import CatalogStartInput
 from app.core.values import uid, replace, owned
+from app.modules.catalog.service import catalog_start_checks
+from app.modules.recommendations.eligibility import access_allows, execution_for_party
 
 BADGES = [('first_step', 1), ('five_moments', 5), ('ten_moments', 10)]
 
@@ -34,33 +37,70 @@ class Experiences:
             e = self._active(user_id)
             return {'experience': self.present(e) if e else None}
 
+    def _catalog_selection(self, user_id, data):
+        revision = self.catalog.revision(data.revision_id)
+        if revision['state'] not in ('published', 'superseded', 'archived'):
+            missing()
+        activity = self.catalog.activity(revision['activity_id'])
+        if not activity['active'] or revision['state'] == 'archived':
+            raise DomainError('CONTENT_WITHDRAWN', 'این فعالیت فعلاً در دسترس نیست.', 410)
+        if revision['state'] != 'published' or activity['published_revision_id'] != revision['id']:
+            conflict('نسخهٔ تازه‌ای آماده شده؛به فهرست برگرد و فعالیت رو دوباره باز کن.')
+        parsed = self.catalog.checked_content(revision.get('content'), activity['primary_dimension'])
+        if parsed is None:
+            raise DomainError('CONTENT_WITHDRAWN', 'این فعالیت فعلاً در دسترس نیست.', 410)
+        content = parsed.model_dump()
+        preferences = self.identity.preferences(user_id)['preferences']
+        if not access_allows(content, preferences):
+            raise DomainError('INVALID_STATE', 'این فعالیت با محدودیت‌های حساب تو سازگار نیست.')
+        mode = 'solo' if data.party_size == 1 else 'together'
+        execution = execution_for_party(content, mode, data.party_size)
+        if execution is None:
+            raise DomainError('VALIDATION_ERROR', 'تعداد نفرات با شرایط این فعالیت جور نیست.', 422,
+                              fields={'party_size': 'unsupported'})
+        if catalog_start_checks(parsed) and not data.conditions_confirmed:
+            raise DomainError('VALIDATION_ERROR', 'اول شرایط اجرای این فعالیت رو بررسی و تأیید کن.', 422,
+                              fields={'conditions_confirmed': 'required'})
+        context = dict(party_size=data.party_size, conditions_confirmed=data.conditions_confirmed)
+        return activity, content, context, execution
+
+    def _recommendation_selection(self, user_id, data):
+        session = self.recommendations.load(user_id, data.recommendation_session_id)
+        slot = next((s for s in session['items'] if s['slot_id'] == data.slot_id), None)
+        if not slot or slot['revision_id'] != data.revision_id:
+            conflict('این پیشنهاد عوض شده؛پیشنهاد تازه رو ببین.')
+        activity = self.catalog.activity(slot['activity_id'])
+        revision = self.catalog.revision(slot['revision_id'])
+        if not activity['active'] or revision['state'] == 'archived':
+            raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
+        if activity['published_revision_id'] != data.revision_id:
+            conflict('نسخهٔ تازه‌ای آماده شده؛دوباره پیشنهاد بگیر.')
+        context = self.recommendations.session_context(session)
+        _, execution = self.recommendations.card_execution(activity, revision, context)
+        if not execution:
+            raise DomainError('INVALID_STATE', 'این پیشنهاد با شرایط الانت جور نیست؛یه پیشنهاد تازه بگیر.')
+        return activity, revision['content'], context, execution, session
+
     def start(self, user_id, data):
         with self.store.atomic():
             user = self.identity.user(user_id)
-            session = self.recommendations.load(user_id, data.recommendation_session_id)
-            slot = next((s for s in session['items'] if s['slot_id'] == data.slot_id), None)
-            if not slot or slot['revision_id'] != data.revision_id:
-                conflict('این پیشنهاد عوض شده؛پیشنهاد تازه رو ببین.')
-            activity = self.catalog.activity(slot['activity_id'])
-            revision = self.catalog.revision(slot['revision_id'])
-            if not activity['active'] or revision['state'] == 'archived':
-                raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
-            if activity['published_revision_id'] != data.revision_id:
-                conflict('نسخهٔ تازه‌ای آماده شده؛دوباره پیشنهاد بگیر.')
-            context = self.recommendations.session_context(session)
-            _, execution = self.recommendations.card_execution(activity, revision, context)
-            if not execution:
-                raise DomainError('INVALID_STATE', 'این پیشنهاد با شرایط الانت جور نیست؛یه پیشنهاد تازه بگیر.')
+            session = None
+            if isinstance(data, CatalogStartInput):
+                activity, content, context, execution = self._catalog_selection(user_id, data)
+            else:
+                activity, content, context, execution, session = self._recommendation_selection(user_id, data)
             active = self._active(user_id)
             if active:
                 raise DomainError('ACTIVE_EXPERIENCE', 'یه تجربهٔ باز داری؛اول همون رو ببند.', fields={'experience_id': active['id']})
             # Shared synchronous lock serializes start with replace, publish, withdrawal and another start.
             activity['start_guard_version'] += 1
             replace(self.store, 'activities', activity)
-            replace(self.store, 'recommendation_sessions', session)
+            if session is not None:
+                replace(self.store, 'recommendation_sessions', session)
             experience = self.store.insert('experiences', dict(id=uid(), user_id=user_id, activity_id=activity['id'],
-                revision_id=revision['id'], recommendation_session_id=session['id'], slot_id=slot['slot_id'],
-                content_snapshot=revision['content'], context_snapshot=context, primary_dimension_snapshot=revision['content']['primary_dimension'],
+                revision_id=data.revision_id, recommendation_session_id=session['id'] if session else None,
+                slot_id=None if isinstance(data, CatalogStartInput) else data.slot_id,
+                content_snapshot=content, context_snapshot=context, primary_dimension_snapshot=content['primary_dimension'],
                 execution_social_mode=execution[0], execution_people=execution[1], timezone_at_start=user['timezone'],
                 status='active', started_at=self.clock(), completed_at=None, award_result=None))
             return self.present(experience)

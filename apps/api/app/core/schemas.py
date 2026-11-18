@@ -179,6 +179,13 @@ class StartInput(Input):
     revision_id: str = Field(min_length=36, max_length=36)
 
 
+class CatalogStartInput(Input):
+    source: Literal['catalog']
+    revision_id: str = Field(min_length=36, max_length=36)
+    party_size: Integer = Field(default=1, ge=1, le=12)
+    conditions_confirmed: bool = Field(default=False, strict=True)
+
+
 class Feedback(Input):
     rating: Literal['liked', 'neutral', 'disliked']
     reason: Literal['time', 'cost', 'interest', 'access', 'too_hard', 'repeated'] | None = None

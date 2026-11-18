@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, BackgroundTasks, Depends, Request, Response, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from app.core.schemas import AccountEmail, ResetPassword, PasswordConfirm, ChangePassword, Signup, Credentials, Empty, Context, SlateInput, ReplaceInput, NavigateInput, StartInput, Feedback, PreferencesUpdate
+from app.core.schemas import AccountEmail, ResetPassword, PasswordConfirm, ChangePassword, Signup, Credentials, Empty, Context, SlateInput, ReplaceInput, NavigateInput, StartInput, CatalogStartInput, Feedback, PreferencesUpdate
 from app.core.errors import DomainError
 from app.modules.catalog.schemas import DraftUpdate, ReviewInput, WithdrawInput, CloneInput, CookInput
 from app.modules.activity_assistant.schemas import AssetKind, AssistantState, ChatInput, ChatReply
@@ -142,7 +142,7 @@ def navigate_suggestion(session_id: str, data: NavigateInput, actor: User, reque
 
 @router.get('/activity-revisions/{revision_id}')
 def revision(revision_id: str, actor: User, request: Request):
-    return services(request).catalog.visible_revision(revision_id)
+    return services(request).catalog.visible_revision(revision_id, include_start_options=True)
 
 
 @router.get('/activity-revisions/{revision_id}/assistant', response_model=AssistantState)
@@ -177,8 +177,13 @@ def activity_cities(actor: User, request: Request):
     return {'cities': services(request).catalog.cities()}
 
 
+@router.get('/discover')
+def discover(actor: User, request: Request):
+    return {'items': services(request).catalog.discover()}
+
+
 @router.post('/experiences', status_code=201)
-def start(data: StartInput, actor: User, request: Request):
+def start(data: StartInput | CatalogStartInput, actor: User, request: Request):
     s = services(request)
     return idem(request, actor, 'start', data.model_dump(), lambda: s.experiences.start(actor['id'], data), 201)
 

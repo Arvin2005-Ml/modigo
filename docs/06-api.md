@@ -54,11 +54,12 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | GET `/recommendation-sessions/{id}` | 200 session مالک؛ expired→410 با امکان ساخت check-in جدید |
 | POST `/recommendation-sessions/{id}/slots/{slot_id}/replace` | `{expected_version:1}`؛ 200 `{session_version,item,replaced,replacement_count,replacement_limit,replacements_remaining,replacement_available,suggestion_index,suggestion_count}`؛ نبود گزینه200 با item قبلی و `replaced:false`، بدون مصرف سهمیه/نسخه؛ سقف409 `REPLACEMENT_LIMIT`، میانهٔ تاریخچه409 `HISTORY_NOT_AT_END` |
 | POST `/recommendation-sessions/{id}/navigate` | `{direction:"previous"\|"next",expected_version}`؛ 200 session کامل با کارت جاری؛ مرور نسخه را زیاد می‌کند، سهمیه ثابت؛ مرز409 `HISTORY_BOUNDARY`؛ CSRF و idempotency لازم |
-| GET `/activity-revisions/{id}` | 200 content کامل منتشرشده/superseded به‌همراه activity_id؛ withdrawn410؛ draft404 برای user |
+| GET `/discover` | نشست لازم؛ 200 `{items:[{activity_id,revision_id,title,primary_dimension}]}`؛ فقط نسخهٔ جاری و معتبر فعالیت‌های فعال و منتشرشده |
+| GET `/activity-revisions/{id}` | 200 content کامل منتشرشده/superseded به‌همراه activity_id و `catalog_start`؛ withdrawn410؛ draft404 برای user |
 | GET `/saved` | لیست آخرین revision فعال هر activity؛ مورد inactive با `{unavailable:true,activity_id}`، بدون محتوای ممنوع |
 | PUT `/saved/{activity_id}` | `{}`؛ 204؛ فقط activity منتشرشده و فعال |
 | DELETE `/saved/{activity_id}` | 204، حتی اگر قبلاً نبود |
-| POST `/experiences` | `{recommendation_session_id,slot_id,revision_id}`؛ 201 experience active |
+| POST `/experiences` | پیشنهاد: `{recommendation_session_id,slot_id,revision_id}`؛ انتخاب مستقیم: `{source:"catalog",revision_id,party_size?,conditions_confirmed?}`؛ هر دو 201 experience active |
 | GET `/experiences/active` | 200 `{experience:...}` یا `{experience:null}`؛ قبل از پاسخ active منقضی شود |
 | GET `/experiences` | history با filter status و cursor |
 | GET `/experiences/{id}` | 200 experience مالک؛ content_snapshot تاریخی |
@@ -69,9 +70,15 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | GET `/me/journey` | 200 `{total_points,rewarded_completions,completed_dimensions,badges}` |
 | POST `/analytics/events` | `{events:[{event_id,name,occurred_at,properties}]}`؛ 202 `{accepted,duplicates}`؛ سقف۲۰ در batch، allowlist13 |
 
-شروع فقط از slot فعلی session معتبر، مالک، activity فعال و **همان revision که هنوز published_revision_id جاری است**؛ اگر نسخهٔ تازه منتشر شده409 `VERSION_CONFLICT` و دعوت به تازه‌کردن پیشنهاد. شرایط واقعی محتوا با snapshot دوباره hard-filter شوند چون قیمت/انتشار ممکن است عوض شده باشد؛ excludeهای تاریخچه و «قبلاً در همین slate دیده‌شده» در این بررسی اعمال نشوند. محدودیت‌های ماندگارِ تازه مثل blocked_tags و الزام دسترسی نیز سخت‌گیرانه با snapshot union شوند. اگر slot عوض شده VERSION_CONFLICT. تجربهٔ فعال دیگر409 با id خودش. پیش از start، active منقضی همان کاربر در transaction بسته شود. سابقهٔ ذخیره‌ها برای شروع از مسیر check-in با شرایط تازه عبور کند، نه bypass فیلتر.
+فهرست خلاصهٔ `/discover` به ترتیب عنوان و سپس شناسه مرتب است و در یک پاسخ می‌آید تا مرورگر جست‌وجو و فیلتر دسته را روی تمام عنوان‌ها انجام دهد. متن و اطلاعات داخلی کاتالوگ در این فهرست نیستند؛ پاسخ `no-store` است.
 
-create slate در transaction با CAS روی check_ins.version،افزایش created_slate_count و union شناسه‌های activity نمایش‌داده‌شده انجام شود؛ دو درخواست هم‌زمان همان یک session را دریافت می‌کنند. مرور نیز session.version را کنترل می‌کند؛ هم‌زمانی فقط یک حرکت اعمال می‌کند. شروع از کارت قبلی پس از بازگشت صریح مجاز است؛ کارت غیرجاری رد می‌شود. replace نیز session.version و check_in.version را همراه تغییر یک slot اتمیک عوض می‌کند. start برای رقابت با replace،write روی session با شرط version/slot جاری و برای رقابت با withdraw/publish،write محافظ روی activity با شرط active و published_revision_id انجام دهد؛ write محافظ counter داخلی `start_guard_version` را افزایش می‌دهد،نه محتوای revision را. فقط read در snapshot transaction جلوی همهٔ raceها را نمی‌گیرد. ترتیب دستیابی به اسناد مشترک در application service ثابت باشد و خطای conflict با retry محدود مدیریت شود.
+در مسیر پیشنهاد، شروع از slot فعلی session معتبر و متعلق به کاربر است. شرایط واقعی محتوا با snapshot دوباره hard-filter می‌شوند چون قیمت و انتشار ممکن است عوض شده باشند؛ excludeهای تاریخچه و «قبلاً در همین slate دیده‌شده» در این بررسی اعمال نمی‌شوند. محدودیت‌های ماندگار تازه مثل blocked_tags و الزام دسترسی با snapshot ادغام می‌شوند. اگر slot عوض شده، پاسخ `VERSION_CONFLICT` است.
+
+از «کشف» یا «ذخیره‌ها» کاربر می‌تواند یک فعالیت مشخص را بدون check-in انتخاب کند. `catalog_start` در پاسخ جزئیات، `{min_people,max_people,checks}` یا برای نسخهٔ غیرجاری/نامعتبر `null` است. مقدارهای `checks` عبارت‌اند از `venue`، `cost`، `materials`، `weather`، `daylight` و `contact`. با وجود هرکدام، `conditions_confirmed:true` لازم است؛ کاربر شرایط را خودش بررسی می‌کند. برای انتخاب مستقیم فیلتر موقعیتی بودجه، وقت و شهرِ پرسش‌نامه اعمال نمی‌شود؛ محدودیت‌های دسترسی و موضوع‌های مسدود حساب از سرور خوانده می‌شوند. `party_size` پیش‌فرض ۱ و باید با تعداد نفرات محتوای منتشرشده سازگار باشد. ارسال فیلدهای هر دو شکل در یک درخواست معتبر نیست. پیش‌نویس 404، نسخهٔ جدیدتر 409، پس‌گرفته‌شده 410 و تعداد نفرات یا تأیید نامعتبر 422 دارند.
+
+هر دو شکل فقط فعالیت فعال و نسخهٔ جاریِ منتشرشده را شروع می‌کنند و نشست، CSRF و کلید idempotency می‌خواهند. اگر تجربهٔ دیگری باز باشد، پاسخ 409 `ACTIVE_EXPERIENCE` و `error.fields.experience_id` برای ادامه است. پیش از شروع، تجربهٔ منقضیِ همان کاربر در تراکنش بسته می‌شود. ادامه، پایان، لغو و بازخورد هر دو شکل یکسان‌اند.
+
+create slate در transaction با CAS روی check_ins.version،افزایش created_slate_count و union شناسه‌های activity نمایش‌داده‌شده انجام شود؛ دو درخواست هم‌زمان همان یک session را دریافت می‌کنند. مرور نیز session.version را کنترل می‌کند؛ هم‌زمانی فقط یک حرکت اعمال می‌کند. شروع از کارت قبلی پس از بازگشت صریح مجاز است؛ کارت غیرجاری رد می‌شود. replace نیز session.version و check_in.version را همراه تغییر یک slot اتمیک عوض می‌کند. شروع از پیشنهاد برای رقابت با replace روی session جاری می‌نویسد؛ هر دو نوع شروع برای رقابت با withdraw/publish روی activity با شرط active و published_revision_id می‌نویسند و counter داخلی `start_guard_version` را افزایش می‌دهند. فقط read در snapshot transaction جلوی همهٔ raceها را نمی‌گیرد. ترتیب دستیابی به اسناد مشترک در application service ثابت باشد و خطای conflict با retry محدود مدیریت شود.
 
 نمونهٔ session؛ مقدار شناسه‌ها در این نمونه فقط برای خوانایی کوتاه است، دادهٔ واقعی UUID است:
 

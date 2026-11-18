@@ -5,6 +5,23 @@ from app.core.values import uid, replace
 from app.modules.catalog.schemas import Content
 
 
+def catalog_start_checks(content):
+    checks = []
+    if content.venue != 'home':
+        checks.append('venue')
+    if content.cost.kind != 'free':
+        checks.append('cost')
+    if content.required_items:
+        checks.append('materials')
+    if content.weather_requirement == 'fair':
+        checks.append('weather')
+    if content.daylight_requirement == 'day':
+        checks.append('daylight')
+    if content.requires_async_contact:
+        checks.append('contact')
+    return checks
+
+
 class Catalog:
     def __init__(self, store, clock):
         self.store, self.clock = store, clock
@@ -31,7 +48,7 @@ class Catalog:
             missing()
         return revision
 
-    def visible_revision(self, revision_id):
+    def visible_revision(self, revision_id, *, include_start_options=False):
         revision = self.revision(revision_id)
         if revision['state'] not in ('published', 'superseded', 'archived'):
             missing()
@@ -43,12 +60,21 @@ class Catalog:
             raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
         # Historical content may predate the new schema. Only surface verified
         # source metadata when it passes the current contract.
+        parsed = None
         if content.get('place') or content.get('requires_venue_check'):
             parsed = self.checked_content(content, activity['primary_dimension'])
             if parsed is None:
                 raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
             content = parsed.model_dump()
-        return dict(id=revision['id'], activity_id=activity['id'], content=content, origin=revision['origin'])
+        result = dict(id=revision['id'], activity_id=activity['id'], content=content, origin=revision['origin'])
+        if include_start_options:
+            result['catalog_start'] = None
+            if revision['state'] == 'published' and activity['published_revision_id'] == revision['id']:
+                parsed = parsed or self.checked_content(content, activity['primary_dimension'])
+                if parsed:
+                    result['catalog_start'] = dict(min_people=parsed.min_people, max_people=parsed.max_people,
+                                                   checks=catalog_start_checks(parsed))
+        return result
 
     def candidates(self):
         result = []
@@ -61,6 +87,12 @@ class Catalog:
     def cities(self):
         cities = sorted({row['content']['place']['city'] for row in self.candidates() if row['content']['place']})
         return list({city_key(city): city for city in cities}.values())
+
+    def discover(self):
+        items = [dict(activity_id=row['id'], revision_id=row['revision_id'],
+                      title=row['content']['title'], primary_dimension=row['primary_dimension'])
+                 for row in self.candidates()]
+        return sorted(items, key=lambda item: (item['title'], item['activity_id']))
 
     @staticmethod
     def checked_content(raw, dimension):

@@ -169,7 +169,8 @@ class ContainerTests(unittest.TestCase):
                 path.write_text('source')
             forbidden = ('.env', 'apps/web/.env.production', 'apps/api/app/.env',
                          'apps/api/app/__pycache__/config.pyc', 'apps/api/app/secret.key',
-                         'apps/web/node_modules/dependency.js', 'apps/web/.next/server.js')
+                         'apps/web/node_modules/dependency.js', 'apps/web/.next/server.js',
+                         'apps/web/activities(1).json')
             for name in forbidden:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)

@@ -124,7 +124,7 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
 | activity_revisions | unique(activity_id,version)، index state و activity_id |
 | check_ins | user_id، context، context_input (پاسخ‌های صریحِ نرمال‌شده؛ در رکوردهای جدید، فقط داخلی)، recommendation_session_id=null،created_slate_count=0،shown_activity_ids=[]،version، created_at، expires_at؛ index(user_id,created_at)، TTL expires_at=۹۰روز |
 | recommendation_sessions | user_id، check_in_id، context_snapshot، items، suggestion_history،suggestion_index=0،replacement_count=0،replacement_limit=6،shown_activity_ids، version، algorithm_version، seed، created_at، expires_at=۲۴ساعت،purge_at=۹۰روز؛ index(user_id,created_at) |
-| experiences | user_id، activity_id، revision_id، recommendation_session_id، slot_id، content_snapshot، context_snapshot، status active/completed/cancelled/expired، started_at، completed_at، completion_local_date، timezone_at_start، award_result؛ unique partial(user_id) where status=active |
+| experiences | user_id، activity_id، revision_id، recommendation_session_id و slot_id (برای شروع مستقیم هر دو null)، content_snapshot، context_snapshot، status active/completed/cancelled/expired، started_at، completed_at، completion_local_date، timezone_at_start، award_result؛ unique partial(user_id) where status=active |
 | feedback | experience_id unique، user_id، rating، reason|null، updated_at؛ index(user_id,updated_at) |
 | saved_activities | unique(user_id,activity_id)، saved_at؛ ذخیره به activity است، نه revision |
 | reward_ledger | user_id،experience_id unique،activity_id،primary_dimension_snapshot،points،reason،award_date،rules_version،created_at؛index(user_id,award_date)،index(user_id,activity_id,created_at) |
@@ -139,6 +139,8 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
 | schema_migrations | migration_id unique، applied_at، checksum |
 
 Session document item: `{slot_id, activity_id, revision_id, rank, execution_social_mode, execution_people, explanation, score_internal}`. یک slot حداکثر؛ slot_id در تعویض و مرور ثابت می‌ماند و revision جاری عوض می‌شود. snapshotهای قبلی در suggestion_history حفظ می‌شوند؛ حداکثر هفت، بدون مصرف سهمیه برای مرور. برای audit نسخهٔ الگوریتم و score ثبت شود، ولی score در DTO کاربر حذف است. شناسه‌های دیده‌شدهٔ همان check_in در تولید گزینهٔ تازه حذف می‌شوند؛ مرور snapshot قبلی این حذف را دور نمی‌زند چون تولید تازه نیست. experience نیز execution_social_mode و execution_people و primary_dimension_snapshot را مستقل ذخیره کند.
+
+در شروع مستقیم از کاتالوگ، `context_snapshot` فقط تعداد نفرات و تأیید شرایط را ثبت می‌کند و پرسش‌نامه یا شناسهٔ ساختگی ایجاد نمی‌شود. هر شروع مستقیم یک انتخاب برای سابقهٔ ترجیح بُعد محسوب می‌شود؛ مسیر پیشنهاد همچنان حداکثر یک رأی برای هر نوبت می‌دهد.
 
 مجموعهٔ recommendation_sessions بعد از ۹۰ روز پاک شود (`purge_at` جدا از expires_at)؛ تجربه snapshot لازم را دارد. reward_ledger، user_badges و feedback تا حذف حساب نگه داشته شوند؛ aggregateها بی‌هویت و بدون گروه کوچک باقی می‌مانند. دادهٔ operational و analytics از یکدیگر برای authorization استفاده نکنند.
 

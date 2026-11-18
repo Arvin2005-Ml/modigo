@@ -42,6 +42,22 @@ def venue_allowed(context: dict, content: dict) -> bool:
     return not place or bool(context.get('city') and city_key(context['city']) == city_key(place['city']))
 
 
+def execution_for_party(content, requested, size):
+    modes = content['supported_social_modes']
+    if requested in ('solo', 'either') and 'solo' in modes and content['min_people'] <= 1 <= content['max_people']:
+        return 'solo', 1
+    if requested in ('together', 'either') and size >= 2 and 'together' in modes and content['min_people'] <= size <= content['max_people']:
+        return 'together', size
+    return None
+
+
+def access_allows(content, constraints):
+    return (MOBILITY[content['mobility_required']] <= MOBILITY[constraints.get('max_mobility', 'active')]
+            and (not constraints.get('requires_step_free') or content['step_free'] is True)
+            and (not constraints.get('requires_quiet') or content['quiet_compatible'] is True)
+            and not (set(content['tags']) & set(constraints.get('blocked_tags', []))))
+
+
 def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | None = None) -> tuple[str, int] | None:
     """Return the execution mode and number of people, or None if ineligible.
 
@@ -62,15 +78,10 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
         return None
     if not venue_allowed(context, content):
         return None
-    requested = context['social_mode']
-    size = context['party_size']
-    modes = content['supported_social_modes']
-    if requested in ('solo', 'either') and 'solo' in modes and content['min_people'] <= 1 <= content['max_people']:
-        mode, people = 'solo', 1
-    elif requested in ('together', 'either') and size >= 2 and 'together' in modes and content['min_people'] <= size <= content['max_people']:
-        mode, people = 'together', size
-    else:
+    execution = execution_for_party(content, context['social_mode'], context['party_size'])
+    if execution is None:
         return None
+    _, people = execution
     cost = content['cost']
     budget = context['budget']
     if budget['mode'] == 'free' and cost['kind'] != 'free':
@@ -81,13 +92,7 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
             return None
     if not set(content['required_items']).issubset(context.get('owned_items', [])):
         return None
-    if MOBILITY[content['mobility_required']] > MOBILITY[context.get('max_mobility', 'active')]:
-        return None
-    if context.get('requires_step_free', False) and content['step_free'] is not True:
-        return None
-    if context.get('requires_quiet', False) and content['quiet_compatible'] is not True:
-        return None
-    if set(content['tags']) & set(context.get('blocked_tags', [])):
+    if not access_allows(content, context):
         return None
     if content['requires_async_contact'] and not context.get('allow_async_contact', False):
         return None
@@ -95,4 +100,4 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
         return None
     if content['daylight_requirement'] == 'day' and context.get('daylight', 'unknown') != 'day':
         return None
-    return mode, people
+    return execution

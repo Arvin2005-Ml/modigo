@@ -87,6 +87,7 @@ export type Content = {
     kind: string;
     note: string;
   };
+  place?: { name: string; city: string } | null;
   [key: string]: unknown;
 };
 
@@ -95,6 +96,11 @@ export type Revision = {
   activity_id: string;
   content: Content;
   origin: string;
+  catalog_start: {
+    min_people: number;
+    max_people: number;
+    checks: ("venue" | "cost" | "materials" | "weather" | "daylight" | "contact")[];
+  } | null;
 };
 
 export type Experience = {
@@ -148,9 +154,5 @@ export type DiscoverItem = {
   activity_id: string;
   revision_id: string;
   title: string;
-  teaser: string;
-  tags: string[];
-  city: string | null;
-  total_minutes: number;
-  free: boolean;
+  primary_dimension: string;
 };

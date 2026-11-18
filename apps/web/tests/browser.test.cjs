@@ -1,4 +1,4 @@
-const {chromium} = require('playwright');
+const {chromium, firefox} = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -78,6 +78,9 @@ async function setup(browser, options = {}) {
       if(method==='PUT') state.preferences={...body,version:state.preferences.version+1};
       return send(state.preferences);
     }
+    if (endpoint === '/discover') return send({items:[
+      {activity_id:'activity-0', revision_id:'revision-0', title:content.title, primary_dimension:content.primary_dimension},
+    ]});
     if (endpoint === '/saved') return send({items:state.saved ? [{activity_id:'activity-0',revision_id:'revision-0',content,unavailable:false}] : []});
     if (endpoint.startsWith('/saved/')) {state.saved=method==='PUT';return send(null,204);}
     if (endpoint === '/check-ins') {state.checkin=body;return send({id:'check-1'},201);}
@@ -87,7 +90,10 @@ async function setup(browser, options = {}) {
     }
     if (endpoint.endsWith('/navigate')) {state.index+=body.direction==='previous' ? -1:1;state.version++;return send(slate());}
     if (endpoint.startsWith('/recommendation-sessions')) return send(slate(),method==='POST'?201:200);
-    if (endpoint.startsWith('/activity-revisions/')) return send({id:'revision-0',activity_id:'activity-0',content,origin:'human'});
+    if (endpoint.startsWith('/activity-revisions/')) return send({
+      id:endpoint.split('/').at(-1), activity_id:'activity-0', content, origin:'human',
+      catalog_start:options.catalogStart || {min_people:1,max_people:1,checks:[]},
+    });
     if (endpoint === '/experiences/active') return send({experience:state.active});
     if (endpoint === '/experiences' && method === 'POST') {
       state.active={id:'experience-1',activity_id:'activity-0',revision_id:body.revision_id,status:'active',started_at:'2026-11-17T09:00:00Z',content_snapshot:content,unavailable:false};
@@ -128,9 +134,54 @@ async function screen(page,name) {
     if(width===390) await page.screenshot({path:path.join(artifacts,name+'.png'),fullPage:true});
   }
 }
+
+async function catalogFlow(browser) {
+  const app = await setup(browser, {catalogStart:{min_people:2,max_people:4,checks:['materials']}});
+  const {page} = app;
+  await page.setViewportSize({width:360,height:800});
+  await page.goto(origin + '/discover');
+  const detail = page.getByRole('link', {name:/یه مکث آروم/});
+  await detail.click();
+  const start = page.getByRole('button', {name:'همین رو شروع می‌کنم'});
+  await start.waitFor();
+  assert.equal(await start.isDisabled(), true);
+  await page.getByLabel('تعداد نفرات، با خودت').selectOption('3');
+  await page.getByRole('checkbox', {name:/شرایط بالا رو بررسی کردم/}).check();
+  await start.click();
+  await page.waitForURL('**/experiences/experience-1');
+  const request = app.requests.find(({method,endpoint}) => method === 'POST' && endpoint === '/experiences');
+  assert.deepEqual(request.body, {source:'catalog',revision_id:'revision-0',party_size:3,conditions_confirmed:true});
+  assert.equal(app.requests.some(({endpoint}) => endpoint === '/check-ins' || endpoint.startsWith('/recommendation-sessions')), false);
+
+  await page.goto(origin + '/discover');
+  await detail.click();
+  await page.getByRole('button', {name:'ادامهٔ همین فعالیت'}).click();
+  await page.waitForURL('**/experiences/experience-1');
+  await page.goto(origin + '/discover');
+  await page.getByRole('link', {name:'ادامهٔ فعالیت قبلی'}).click();
+  await page.waitForURL('**/experiences/experience-1');
+  await page.reload();
+  await page.getByRole('button', {name:'تمومش کردم'}).click();
+  await page.getByRole('button', {name:'چسبید',exact:true}).click();
+  await page.getByText('بازخوردت ثبت شد.', {exact:true}).waitFor();
+
+  app.state.saved = true;
+  await page.goto(origin + '/saved');
+  await page.getByRole('button', {name:'ببینمش'}).click();
+  await page.getByRole('checkbox', {name:/شرایط بالا رو بررسی کردم/}).check();
+  await start.click();
+  await page.waitForURL('**/experiences/experience-1');
+  assert.equal(app.requests.filter(({method,endpoint}) => method === 'POST' && endpoint === '/experiences').length, 2);
+  await app.finish();
+  console.log('PASS catalog flow: discovery, conditions, start, resume, complete, feedback, and saved.');
+}
+
 async function main() {
-  const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
+  const browserType=process.env.WEB_TEST_BROWSER === 'firefox' ? firefox : chromium;
+  const browser=await browserType.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
   try {
+    await catalogFlow(browser);
+    if (process.argv.includes('--discover')) return;
     {
       const app=await setup(browser,{authenticated:false});
       const {page}=app;

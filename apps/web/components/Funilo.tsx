@@ -12,17 +12,16 @@ import {
 } from "@/lib/navigation";
 
 import { useAuth } from "@/lib/hooks/useAuth";
-import { ApiError, badgeNames, number, refreshCsrf } from "@/lib/api";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { ApiError, badgeNames, number } from "@/lib/api";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { apiSlice, useGetPreferencesQuery } from "@/lib/store/api/apiSlice";
 import { createApiClient } from "@/lib/store/api/apiClient";
 import { toApiError } from "@/lib/store/api/baseQuery";
-import { setUser, clearUser } from "@/lib/store/slices/authSlice";
-import type { Slate, Slot, Revision, Experience, Award } from "@/types";
+import type { Slate, Slot, Revision, Experience, Award, StartExperienceRequest } from "@/types";
 
-import Auth from "./Auth";
 import Admin from "./Admin";
 import { ContentDetails } from "./Activity";
+import CatalogStart from "./CatalogStart";
 import { Button, Empty, Note } from "./ui";
 import Icon from "./Icon";
 
@@ -60,6 +59,7 @@ export default function Funilo() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [feedbackDone, setFeedbackDone] = useState(false);
+  const [activeConflict, setActiveConflict] = useState<{ revisionId: string; experienceId: string } | null>(null);
 
   const [routeLoading, setRouteLoading] = useState(false);
 
@@ -99,6 +99,7 @@ export default function Funilo() {
     setSlot(null);
     setExperience(null);
     setAward(null);
+    setActiveConflict(null);
   }, []);
 
   const report = useCallback(
@@ -170,6 +171,11 @@ export default function Funilo() {
       try {
         if (view === "detail") {
           const revisionId = pathname.split("/")[2];
+          setDetail(null);
+          setSlate(null);
+          setSlot(null);
+          setActiveConflict(null);
+          setError("");
 
           const revision = await client.getRevision(revisionId);
 
@@ -258,23 +264,22 @@ export default function Funilo() {
     });
   }, [view, routeLoading]);
 
-  const start = () =>
+  const start = (request: StartExperienceRequest) =>
     run(async () => {
-      if (!slate || !slot || searchParams.get("from") !== "individual") {
-        throw new Error(
-          "این فعالیت ابتدا باید از یک پیشنهاد معتبر انتخاب شود.",
-        );
+      try {
+        const result = await client.startExperience(request);
+        setExperience(result);
+        router.push(`/experiences/${encodeURIComponent(result.id)}`);
+      } catch (failure) {
+        const apiError = toApiError(failure);
+        if (apiError.code === "ACTIVE_EXPERIENCE" && apiError.fields.experience_id) {
+          setActiveConflict({
+            revisionId: request.revision_id,
+            experienceId: apiError.fields.experience_id,
+          });
+        }
+        throw apiError;
       }
-
-      const result = await client.startExperience({
-        recommendation_session_id: slate.id,
-        slot_id: slot.slot_id,
-        revision_id: slot.revision_id,
-      });
-
-      setExperience(result);
-
-      router.push(`/experiences/${encodeURIComponent(result.id)}`);
     });
 
   const complete = () =>
@@ -337,9 +342,16 @@ export default function Funilo() {
     return null;
   }
 
-  const activeExperience =
-    activeExperienceQuery.data?.experience ??
-    (experience?.status === "active" ? experience : null);
+  const openExperience = activeExperienceQuery.data?.experience;
+  const activeExperienceId = openExperience?.id ??
+    (activeConflict?.revisionId === detail?.id ? activeConflict?.experienceId : undefined);
+  const fromIndividual = searchParams.get("from") === "individual";
+  const recommendationStart =
+    fromIndividual && detail && slate && slot && !slot.unavailable &&
+    slate.id === searchParams.get("slate") && slot.slot_id === searchParams.get("slot") &&
+    slot.revision_id === detail.id
+      ? { recommendation_session_id: slate.id, slot_id: slot.slot_id, revision_id: detail.id }
+      : null;
 
   return (
     <main
@@ -373,7 +385,7 @@ export default function Funilo() {
         </div>
       ) : (
         <>
-          {view === "detail" && detail && (
+          {view === "detail" && detail && detail.id === pathname.split("/")[2] && (
             <section className="detail-column">
               <button
                 className="text-button back-button"
@@ -400,21 +412,38 @@ export default function Funilo() {
               </button>
               <ContentDetails content={detail.content} />
 
-              {searchParams.get("from") === "individual" &&
-              slate &&
-              slot &&
-              slot.revision_id === pathname.split("/")[2] ? (
-                <Button className="w-full" disabled={busy} onClick={start}>
+              {activeExperienceId ? (
+                <>
+                  <Note>یه تجربهٔ باز داری. برای شروع یه فعالیت تازه، اول همون رو ببند.</Note>
+                  <Button className="w-full" onClick={() => router.push(`/experiences/${encodeURIComponent(activeExperienceId)}`)}>
+                    {openExperience?.revision_id === detail.id ? "ادامهٔ همین فعالیت" : "ادامهٔ تجربهٔ باز"}
+                  </Button>
+                </>
+              ) : recommendationStart ? (
+                <Button className="w-full" disabled={busy} onClick={() => start(recommendationStart)}>
                   {busy ? "یه لحظه…" : "همین رو شروع می‌کنم"}
                 </Button>
+              ) : !fromIndividual && detail.catalog_start ? (
+                <CatalogStart
+                  key={detail.id}
+                  content={detail.content}
+                  options={detail.catalog_start}
+                  busy={busy}
+                  onStart={(partySize, confirmed) => start({
+                    source: "catalog",
+                    revision_id: detail.id,
+                    party_size: partySize,
+                    conditions_confirmed: confirmed,
+                  })}
+                />
               ) : (
                 <>
                   <Note>
-                    فعلاً شروع فعالیت تنها از مسیر Individual پشتیبانی می‌شه.
-                    شروع مستقیم از خانه و ذخیره‌ها به تغییر قرارداد Backend نیاز
-                    داره.
+                    {fromIndividual
+                      ? "این پیشنهاد دیگه از این نوبت قابل شروع نیست."
+                      : "این نسخه قابل شروع نیست. برای دیدن نسخهٔ فعلی به فهرست برگرد."}
                   </Note>
-                  <Button onClick={returnHome}>برای الان پیشنهاد بگیرم</Button>
+                  {fromIndividual && <Button onClick={returnHome}>برای الان پیشنهاد بگیرم</Button>}
                 </>
               )}
             </section>

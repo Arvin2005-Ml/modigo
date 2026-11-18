@@ -10,7 +10,7 @@ from app.main import create_app
 from support import MemoryTestStore
 from app.core.config import Settings
 from app.core.errors import DomainError
-from app.core.schemas import Context, PreferencesUpdate, StartInput, TAGS
+from app.core.schemas import CatalogStartInput, Context, PreferencesUpdate, StartInput, TAGS
 from app.core.values import replace
 from app.modules.catalog.schemas import ReviewInput, DraftUpdate
 from app.modules.catalog.bootstrap import seed_bank, seed_demo
@@ -85,6 +85,13 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
                              slot_id=item['slot_id'], revision_id=item['revision_id']))
         self.assertEqual(r.status_code, 201, r.text)
         return r.json()
+
+    def direct_catalog_row(self):
+        return next(row for row in self.s.catalog.candidates()
+            if row['content']['venue'] == 'home' and 'solo' in row['content']['supported_social_modes']
+            and not row['content']['required_items'] and row['content']['cost']['kind'] == 'free'
+            and not row['content']['requires_async_contact'] and row['content']['weather_requirement'] == 'any'
+            and row['content']['daylight_requirement'] == 'any')
 
     async def next_suggestion(self, slate):
         current = (await self.a.get('/api/v1/recommendation-sessions/' + slate['id'])).json()
@@ -425,9 +432,10 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         slate = await self.slate()
         item = slate['items'][0]
         data = StartInput(recommendation_session_id=slate['id'],slot_id=item['slot_id'],revision_id=item['revision_id'])
-        def start(_):
+        direct = CatalogStartInput(source='catalog', revision_id=self.direct_catalog_row()['revision_id'])
+        def start(index):
             try:
-                self.s.experiences.start(self.ua['id'], data)
+                self.s.experiences.start(self.ua['id'], direct if index % 2 else data)
                 return 'created'
             except DomainError as e:
                 return e.code
@@ -435,6 +443,77 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             results = list(pool.map(start, range(10)))
         self.assertEqual(results.count('created'), 1)
         self.assertEqual(results.count('ACTIVE_EXPERIENCE'), 9)
+
+    async def test_catalog_start_without_check_in_can_resume_complete_and_get_feedback(self):
+        row = self.direct_catalog_row()
+        revision = next(item for item in (await self.a.get('/api/v1/discover')).json()['items']
+                        if item['activity_id'] == row['id'])['revision_id']
+        details = (await self.a.get('/api/v1/activity-revisions/' + revision)).json()
+        self.assertEqual(details['catalog_start']['checks'], [])
+        body = dict(source='catalog', revision_id=revision)
+        key = str(uuid4())
+        anonymous = await self.new_client()
+        self.assertEqual((await self.post(anonymous, '/experiences', body)).status_code, 401)
+        self.assertEqual((await self.a.post('/api/v1/experiences', json=body,
+            headers={'X-CSRF-Token': '', 'Idempotency-Key': key})).status_code, 403)
+        self.assertEqual((await self.post(self.a, '/experiences', {**body, 'slot_id': str(uuid4())})).status_code, 422)
+
+        started = await self.post(self.a, '/experiences', body, key)
+        self.assertEqual(started.status_code, 201, started.text)
+        experience = started.json()
+        self.assertEqual(experience['activity_id'], row['id'])
+        self.assertIsNone(experience['recommendation_session_id'])
+        self.assertIsNone(experience['slot_id'])
+        self.assertEqual((await self.post(self.a, '/experiences', body, key)).json(), experience)
+        self.assertEqual((await self.a.get('/api/v1/experiences/active')).json()['experience'], experience)
+        conflict = await self.post(self.a, '/experiences', body)
+        self.assertEqual(conflict.status_code, 409)
+        self.assertEqual(conflict.json()['error']['fields']['experience_id'], experience['id'])
+        self.assertEqual(len(self.s.store.list('experiences')), 1)
+        self.assertFalse(self.s.store.list('check_ins'))
+        self.assertFalse(self.s.store.list('recommendation_sessions'))
+
+        path = f'/experiences/{experience["id"]}'
+        other, _ = await self.account('other-catalog@example.test')
+        self.assertEqual((await other.get('/api/v1' + path)).status_code, 404)
+        self.assertEqual((await self.post(other, path + '/complete')).status_code, 404)
+        finished = await self.post(self.a, path + '/complete')
+        self.assertEqual(finished.json()['award']['points'], 10)
+        feedback = await self.a.put('/api/v1' + path + '/feedback', json={'rating': 'liked'})
+        self.assertEqual(feedback.status_code, 200, feedback.text)
+        self.assertIsNone((await self.a.get('/api/v1/experiences/active')).json()['experience'])
+
+    async def test_catalog_start_requires_confirmation_and_respects_profile(self):
+        row = self.direct_catalog_row()
+        revision = self.s.catalog.revision(row['revision_id'])
+        revision['content'].update(venue='outdoor', weather_requirement='fair', daylight_requirement='day',
+                                   required_items=['paper'], requires_async_contact=True,
+                                   min_people=2, max_people=4, supported_social_modes=['together'])
+        replace(self.s.store, 'activity_revisions', revision)
+        details = await self.a.get('/api/v1/activity-revisions/' + revision['id'])
+        self.assertEqual(details.json()['catalog_start'], dict(min_people=2, max_people=4,
+                         checks=['venue', 'materials', 'weather', 'daylight', 'contact']))
+        body = dict(source='catalog', revision_id=revision['id'], party_size=3)
+        missing_confirmation = await self.post(self.a, '/experiences', body)
+        self.assertEqual(missing_confirmation.status_code, 422, missing_confirmation.text)
+        self.assertEqual(missing_confirmation.json()['error']['fields'], {'conditions_confirmed': 'required'})
+        wrong_size = await self.post(self.a, '/experiences', {**body, 'party_size': 1, 'conditions_confirmed': True})
+        self.assertEqual(wrong_size.status_code, 422)
+        self.assertEqual(wrong_size.json()['error']['fields'], {'party_size': 'unsupported'})
+        p = self.s.identity.preferences(self.ua['id'])
+        p['preferences']['blocked_tags'] = revision['content']['tags']
+        self.assertEqual((await self.a.put('/api/v1/me/preferences', json=p)).status_code, 200)
+        confirmed = {**body, 'conditions_confirmed': True}
+        blocked = await self.post(self.a, '/experiences', confirmed)
+        self.assertEqual(blocked.status_code, 409)
+        self.assertEqual(blocked.json()['error']['code'], 'INVALID_STATE')
+        self.assertFalse(self.s.store.list('experiences'))
+        p = self.s.identity.preferences(self.ua['id'])
+        p['preferences']['blocked_tags'] = []
+        self.assertEqual((await self.a.put('/api/v1/me/preferences', json=p)).status_code, 200)
+        started = await self.post(self.a, '/experiences', confirmed)
+        self.assertEqual(started.status_code, 201, started.text)
+        self.assertEqual((started.json()['execution_social_mode'], started.json()['execution_people']), ('together', 3))
 
     async def test_daily_cap_and_recent_activity(self):
         slate = await self.slate()
@@ -464,9 +543,29 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
     async def test_publish_permissions_pointer_and_withdrawal_receipt_redaction(self):
         slate = await self.slate()
         item = slate['items'][0]
+        anonymous = await self.new_client()
+        self.assertEqual((await anonymous.get('/api/v1/discover')).status_code, 401)
+        viewer, _ = await self.account('viewer@example.test')
+
+        async def discover():
+            response = await viewer.get('/api/v1/discover')
+            self.assertEqual(response.status_code, 200, response.text)
+            self.assertEqual(response.headers['cache-control'], 'no-store')
+            return response.json()['items']
+
+        indexed = await discover()
+        self.assertIn(dict(activity_id=item['activity_id'], revision_id=item['revision_id'],
+                           title=item['title'],
+                           primary_dimension=self.s.catalog.activity(item['activity_id'])['primary_dimension']), indexed)
+        seed = next(row for row in self.s.store.list('activities') if row['seed_key'] == 'bank:D-001')
+        self.assertNotIn(seed['id'], {row['activity_id'] for row in indexed})
+
         self.s.identity.promote(self.ua['email'], 'editor')
         actor = self.s.identity.user(self.ua['id'])
         draft = self.s.catalog.clone(actor, item['activity_id'], item['revision_id'])
+        self.assertNotIn(draft['id'], {row['revision_id'] for row in await discover()})
+        direct = dict(source='catalog', revision_id=draft['id'], conditions_confirmed=True)
+        self.assertEqual((await self.post(viewer, '/experiences', direct)).status_code, 404)
         draft = self.s.catalog.submit(actor, draft['id'], draft['draft_version'])
         with self.assertRaises(DomainError) as ctx:
             self.s.catalog.publish(actor, draft['id'], draft['draft_version'])
@@ -476,11 +575,26 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.s.catalog.publish(actor, draft['id'], draft['draft_version'])
         self.assertEqual(self.s.catalog.revision(item['revision_id'])['state'], 'superseded')
         self.assertEqual(self.s.catalog.activity(item['activity_id'])['published_revision_id'], draft['id'])
+        indexed = {row['revision_id'] for row in await discover()}
+        self.assertIn(draft['id'], indexed)
+        self.assertNotIn(item['revision_id'], indexed)
+        outdated = await self.post(viewer, '/experiences', {**direct, 'revision_id': item['revision_id']})
+        self.assertEqual(outdated.json()['error']['code'], 'VERSION_CONFLICT')
+        old_detail = await viewer.get('/api/v1/activity-revisions/' + item['revision_id'])
+        self.assertIsNone(old_detail.json()['catalog_start'])
+        direct_key = str(uuid4())
+        started = await self.post(viewer, '/experiences', direct, direct_key)
+        self.assertEqual(started.status_code, 201, started.text)
         data = StartInput(recommendation_session_id=slate['id'], slot_id=item['slot_id'], revision_id=item['revision_id'])
         with self.assertRaises(DomainError) as ctx:
             self.s.experiences.start(actor['id'], data)
         self.assertEqual(ctx.exception.code, 'VERSION_CONFLICT')
         self.s.catalog.withdraw(actor, item['activity_id'], 'بازبینی مجدد محتوا')
+        self.assertNotIn(item['activity_id'], {row['activity_id'] for row in await discover()})
+        self.assertEqual((await self.post(viewer, '/experiences', direct)).status_code, 410)
+        replay = (await self.post(viewer, '/experiences', direct, direct_key)).json()
+        self.assertTrue(replay['unavailable'])
+        self.assertNotIn('content_snapshot', replay)
         from app.http.presentation import public_response
         self.assertEqual(public_response(slate, self.s.store)['items'][0], {'slot_id': item['slot_id'], 'unavailable': True})
         with self.assertRaises(DomainError) as ctx:

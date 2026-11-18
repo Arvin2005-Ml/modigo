@@ -14,13 +14,6 @@ import Icon from "../Icon";
 import MomentArt from "../MomentArt";
 import styles from "./Discover.module.css";
 
-export type DiscoverActivity = {
-  id: string;
-  title: string;
-  dimension: string;
-  revisionId: string;
-};
-
 const categories = new Map([
   ["detachment", "فاصله از روزمرگی"],
   ["relaxation", "آرامش"],
@@ -41,11 +34,7 @@ function normalize(value: string) {
     .trim();
 }
 
-export default function Discover({
-  activities,
-}: {
-  activities: DiscoverActivity[];
-}) {
+export default function Discover() {
   const { user } = useAuth();
   const params = useSearchParams();
   const query = params.get("q") ?? "";
@@ -55,6 +44,10 @@ export default function Discover({
     ? Math.max(pageSize, requestedLimit)
     : pageSize;
 
+  const catalog = apiSlice.endpoints.getDiscover.useQuery(undefined, {
+    skip: !user,
+    refetchOnMountOrArgChange: true,
+  });
   const saved = apiSlice.endpoints.getSaved.useQuery(undefined, {
     skip: !user,
   });
@@ -68,7 +61,8 @@ export default function Discover({
   if (!user) return null;
 
   const term = normalize(query);
-  const results = activities.filter(({ title, dimension }) => {
+  const activities = catalog.isError || catalog.isFetching ? [] : (catalog.data?.items ?? []);
+  const results = activities.filter(({ title, primary_dimension: dimension }) => {
     const label = categories.get(dimension) ?? "";
 
     return (
@@ -142,11 +136,20 @@ export default function Discover({
         ))}
       </div>
 
-      <p role="status">
-        {results.length
-          ? `${number(results.length)} فعالیت`
-          : "فعالیتی پیدا نشد."}
-      </p>
+      {catalog.isFetching ? (
+        <p role="status">در حال دریافت فعالیت‌ها…</p>
+      ) : catalog.isError ? (
+        <p role="alert">
+          فعالیت‌ها دریافت نشد.{" "}
+          <button onClick={catalog.refetch}>تلاش دوباره</button>
+        </p>
+      ) : catalog.isSuccess && (
+        <p role="status">
+          {results.length
+            ? `${number(results.length)} فعالیت`
+            : "فعالیتی پیدا نشد."}
+        </p>
+      )}
 
       {saved.isError && (
         <p role="alert">
@@ -158,25 +161,25 @@ export default function Discover({
 
       <div className={styles.grid}>
         {results.slice(0, limit).map((activity) => {
-          const exists = savedIds.has(activity.id);
+          const exists = savedIds.has(activity.activity_id);
           const detail = new URLSearchParams({
             from: "discover",
             filters: params.toString(),
           });
 
           return (
-            <article className={styles.card} key={activity.id}>
+            <article className={styles.card} key={activity.activity_id}>
               <Link
                 prefetch={false}
-                href={`/activities/${encodeURIComponent(activity.revisionId)}?${detail}`}
+                href={`/activities/${encodeURIComponent(activity.revision_id)}?${detail}`}
               >
                 <div className={styles.cover}>
                   <MomentArt
-                    variant={activity.dimension === "mastery" ? 2 : 0}
+                    variant={activity.primary_dimension === "mastery" ? 2 : 0}
                   />
                 </div>
                 <div className={styles.copy}>
-                  <small>{categories.get(activity.dimension)}</small>
+                  <small>{categories.get(activity.primary_dimension)}</small>
                   <h2>{activity.title}</h2>
                 </div>
               </Link>
@@ -191,7 +194,7 @@ export default function Discover({
                     saving.isLoading ||
                     removing.isLoading
                   }
-                  onClick={() => toggle(activity.id, exists)}
+                  onClick={() => toggle(activity.activity_id, exists)}
                 >
                   <Icon name="bookmark" size={16} />
                   {exists ? "ذخیره‌شده" : "ذخیره برای بعد"}

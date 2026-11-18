@@ -62,11 +62,9 @@ export type NavigateSessionRequest = {
   expected_version: number;
 };
 
-export type StartExperienceRequest = {
-  recommendation_session_id: string;
-  slot_id: string;
-  revision_id?: string;
-};
+export type StartExperienceRequest =
+  | { recommendation_session_id: string; slot_id: string; revision_id: string }
+  | { source: "catalog"; revision_id: string; party_size: number; conditions_confirmed: boolean };
 
 export type CompleteExperienceResponse = {
   experience: Experience;
