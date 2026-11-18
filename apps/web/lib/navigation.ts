@@ -1,4 +1,5 @@
 export type AppView =
+  | "dashboard"
   | "discover"
   | "auth"
   | "questions"
@@ -15,6 +16,7 @@ export type AuthMode = "login" | "signup" | "forgot";
 
 export const paths = {
   landing: "/",
+  dashboard: "/dashboard",
   discover: "/discover",
   questions: "/individual",
   results: "/individual/results",
@@ -29,6 +31,7 @@ export const paths = {
 } as const;
 
 export function viewFromPathname(pathname: string): AppView {
+  if (pathname === paths.dashboard) return "dashboard";
   if (pathname === paths.discover) return "discover";
   if (pathname === paths.questions) return "questions";
   if (pathname === paths.results) return "results";
@@ -84,7 +87,7 @@ export function safeNextPath(next: string | null): string | null {
     const url = new URL(next, "https://moodigo.invalid");
 
     const allowed =
-      /^(?:\/discover|\/individual(?:\/results)?|\/activities\/[^/]+|\/experiences\/[^/]+(?:\/complete)?|\/saved|\/journey|\/settings|\/admin)$/;
+      /^(?:\/dashboard|\/discover|\/individual(?:\/results)?|\/activities\/[^/]+|\/experiences\/[^/]+(?:\/complete)?|\/saved|\/journey|\/settings|\/admin)$/;
 
     if (
       url.origin !== "https://moodigo.invalid" ||

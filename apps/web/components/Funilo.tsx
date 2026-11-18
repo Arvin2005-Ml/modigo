@@ -346,6 +346,7 @@ export default function Funilo() {
 
   if (
     isAuthPath(pathname) ||
+    view === "dashboard" ||
     view === "auth" ||
     view === "saved" ||
     view === "journey" ||

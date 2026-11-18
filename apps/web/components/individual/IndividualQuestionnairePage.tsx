@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { paths } from "@/lib/navigation";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { isUnauthorized } from "@/lib/usePrivatePageAuth";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 import { apiSlice, useGetPreferencesQuery } from "@/lib/store/api/apiSlice";
@@ -32,6 +33,9 @@ export default function IndividualQuestionnairePage() {
   const preferencesQuery = useGetPreferencesQuery(undefined, {
     skip: !user,
   });
+  const originsQuery = apiSlice.endpoints.getOutingOrigins.useQuery(undefined, {
+    skip: !user || !context.outing_days,
+  });
 
   const [createCheckIn] = apiSlice.endpoints.createCheckIn.useMutation();
 
@@ -50,14 +54,10 @@ export default function IndividualQuestionnairePage() {
   }, [preferencesQuery.data?.version]);
 
   useEffect(() => {
-    if (
-      preferencesQuery.error &&
-      "status" in preferencesQuery.error &&
-      preferencesQuery.error.status === 401
-    ) {
+    if (isUnauthorized(preferencesQuery.error) || isUnauthorized(originsQuery.error)) {
       expireSession(paths.questions);
     }
-  }, [preferencesQuery.error, expireSession]);
+  }, [preferencesQuery.error, originsQuery.error, expireSession]);
 
   const handleChange = (next: typeof context) => {
     dispatch(setIndividualContext(next));
@@ -144,6 +144,9 @@ export default function IndividualQuestionnairePage() {
       <Questionnaire
         value={context}
         defaults={preferencesQuery.data?.preferences}
+        origins={originsQuery.isError ? undefined : originsQuery.currentData?.cities}
+        originsUnavailable={originsQuery.isError}
+        retryOrigins={() => void originsQuery.refetch()}
         change={handleChange}
         submit={() => {
           void handleRecommend();

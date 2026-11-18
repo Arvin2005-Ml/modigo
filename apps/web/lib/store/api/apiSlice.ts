@@ -6,6 +6,7 @@ import type {
   Preferences,
   Saved,
   Context,
+  OutingOrigin,
   Slate,
   Revision,
   Experience,
@@ -130,6 +131,9 @@ export const apiSlice = createApi({
     // -----------------------------
     getDiscover: builder.query<ItemsResponse<DiscoverItem>, void>({
       query: () => ({ url: "/discover" }),
+    }),
+    getOutingOrigins: builder.query<{ cities: OutingOrigin[] }, void>({
+      query: () => ({ url: "/outing-origins" }),
     }),
     getSaved: builder.query<ItemsResponse<Saved>, void>({
       query: () => ({

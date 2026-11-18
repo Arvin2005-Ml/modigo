@@ -48,7 +48,7 @@ export default function LandingEntry() {
 
   useEffect(() => {
     if (legacyChecked && status === "authenticated") {
-      router.replace(paths.discover);
+      router.replace(paths.dashboard);
     }
   }, [legacyChecked, status, router]);
 

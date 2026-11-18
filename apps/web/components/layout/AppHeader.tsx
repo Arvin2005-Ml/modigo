@@ -25,7 +25,7 @@ export default function AppHeader() {
   return (
     <header className="site-header">
       <Link
-        href={user ? paths.discover : paths.landing}
+        href={user ? paths.dashboard : paths.landing}
         className="wordmark"
         aria-label="مودیگو، صفحهٔ اصلی"
       >
@@ -57,9 +57,9 @@ export default function AppHeader() {
         {user ? (
           <>
             <Link
-              href={paths.settings}
+              href={paths.dashboard}
               className="account-button"
-              aria-label="تنظیمات حساب"
+              aria-label="پنل کاربری"
             >
               <Icon name="user" size={19} />
 

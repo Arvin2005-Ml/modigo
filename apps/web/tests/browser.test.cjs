@@ -24,6 +24,7 @@ const basePreferences = {
   },
 };
 async function setup(browser, options = {}) {
+  const activityContent = options.activityContent ?? content;
   const context = await browser.newContext({viewport: {width: 1440, height: 1000}, serviceWorkers: 'block'});
   const page = await context.newPage();
   page.setDefaultTimeout(15000);
@@ -38,9 +39,11 @@ async function setup(browser, options = {}) {
     if (message.type() === 'error' && !message.text().includes('Failed to load resource')) errors.push(message.text());
   });
   const state = {
+    outingOriginsStatus: options.outingOriginsStatus || 200,
     authenticated: options.authenticated !== false,
     user: {id:'user-1', email:'test@example.com', display_name:'تست', role:options.role || 'user', timezone:'Asia/Tehran'},
     preferences: structuredClone(basePreferences), saved:false, active:null, completed:[],
+    historyUnavailable:false,
     index:0, count:1, version:1, replacements:0, checkin:null,
     drafts: [
       {id:'draft-2', revision_number:2, draft_version:1, state:'draft', content:structuredClone(content), origin:'human'},
@@ -74,6 +77,10 @@ async function setup(browser, options = {}) {
     if (endpoint === '/auth/forgot-password') return send({},202);
     if (!state.authenticated) return send({error:{code:'AUTH_REQUIRED',message:'دوباره وارد شو.'}},401);
     if (endpoint === '/me') return send(state.user);
+    if (endpoint === '/outing-origins') {
+      if (state.outingOriginsStatus !== 200) return send({},state.outingOriginsStatus);
+      return send({cities:['تهران','مشهد','اصفهان','شیراز','تبریز']});
+    }
     if (endpoint === '/me/preferences') {
       if(method==='PUT') state.preferences={...body,version:state.preferences.version+1};
       return send(state.preferences);
@@ -91,12 +98,12 @@ async function setup(browser, options = {}) {
     if (endpoint.endsWith('/navigate')) {state.index+=body.direction==='previous' ? -1:1;state.version++;return send(slate());}
     if (endpoint.startsWith('/recommendation-sessions')) return send(slate(),method==='POST'?201:200);
     if (endpoint.startsWith('/activity-revisions/')) return send({
-      id:endpoint.split('/').at(-1), activity_id:'activity-0', content, origin:'human',
+      id:endpoint.split('/').at(-1), activity_id:'activity-0', content:activityContent, origin:'human',
       catalog_start:options.catalogStart || {min_people:1,max_people:1,checks:[]},
     });
     if (endpoint === '/experiences/active') return send({experience:state.active});
     if (endpoint === '/experiences' && method === 'POST') {
-      state.active={id:'experience-1',activity_id:'activity-0',revision_id:body.revision_id,status:'active',started_at:'2026-11-17T09:00:00Z',content_snapshot:content,unavailable:false};
+      state.active={id:'experience-1',activity_id:'activity-0',revision_id:body.revision_id,status:'active',started_at:'2026-11-17T09:00:00Z',content_snapshot:activityContent,unavailable:false};
       return send(state.active,201);
     }
     if(endpoint.endsWith('/complete')) {
@@ -104,7 +111,10 @@ async function setup(browser, options = {}) {
       return send({experience,award:{points:10,total_points:10,new_badges:['first_step'],reason:'AWARDED'}});
     }
     if(endpoint.endsWith('/feedback')) return send({});
-    if(endpoint==='/experiences') return send({items:state.completed});
+    if(endpoint==='/experiences') {
+      if (state.historyUnavailable) return send({error:{code:'UNAVAILABLE',message:'Try again'}},503);
+      return send({items:state.completed});
+    }
     if(endpoint==='/me/journey') return send({total_points:10,rewarded_completions:1,completed_dimensions:['relaxation'],badges:['first_step']});
     if(endpoint==='/admin/activities') return send({items:[activity()],total:1,next_offset:null});
     if(endpoint==='/admin/activities/admin-1') return send(activity());
@@ -135,13 +145,84 @@ async function screen(page,name) {
   }
 }
 
+async function dashboardFlow(browser) {
+  const app = await setup(browser, {authenticated:false});
+  const {page, state, requests} = app;
+  await page.goto(origin + '/dashboard');
+  await page.waitForURL('**/login?next=%2Fdashboard');
+  assert.equal(requests.some(({endpoint}) =>
+    ['/saved', '/experiences', '/experiences/active'].includes(endpoint)), false);
+
+  await page.getByLabel('ایمیل', {exact:true}).fill('test@example.com');
+  await page.getByLabel('رمز عبور', {exact:false}).fill('a-test-password');
+  await page.getByRole('button', {name:'وارد بشم',exact:true}).click();
+  await page.waitForURL('**/dashboard');
+  await page.getByRole('heading', {name:'پنل کاربری',level:1}).waitFor();
+  await page.getByText('هنوز فعالیتی در سابقه‌ات ثبت نشده.', {exact:true}).waitFor();
+  await page.getByText('فعالیت‌هایی که برای بعد ذخیره می‌کنی، اینجا می‌مونن.', {exact:true}).waitFor();
+  await screen(page, 'dashboard-empty');
+
+  state.saved = true;
+  state.active = {
+    id:'active-1', activity_id:'activity-1', revision_id:'revision-1',
+    status:'active', started_at:'2026-11-19T09:00:00Z',
+    content_snapshot:{...content,title:'فعالیت امروز'}, unavailable:false,
+  };
+  state.completed = [{...state.active,id:'past-1',status:'completed',unavailable:true}];
+  state.historyUnavailable = true;
+  await page.reload();
+  const saved = page.getByRole('region', {name:'ذخیره‌ها',exact:true});
+  await saved.getByRole('link', {name:content.title}).waitFor();
+  const recent = page.getByRole('region', {name:'فعالیت‌های اخیر'});
+  await recent.getByRole('alert').waitFor();
+  state.historyUnavailable = false;
+  await recent.getByRole('button', {name:'تلاش دوباره'}).click();
+  await recent.getByText('فعالیت کنارگذاشته‌شده', {exact:true}).waitFor();
+  assert.equal(await recent.getByText('فعالیت امروز', {exact:true}).count(), 0);
+  const resume = page.getByRole('link', {name:'ادامهٔ فعالیت',exact:true});
+  await resume.waitFor();
+  assert.equal(await resume.getAttribute('href'), '/experiences/active-1');
+  await screen(page, 'dashboard');
+  await page.screenshot({path:path.join(artifacts,'dashboard-desktop.png'),fullPage:true});
+
+  await saved.getByRole('link', {name:content.title}).click();
+  await page.waitForURL('**/activities/revision-0?from=saved');
+  await page.getByRole('link', {name:'پنل کاربری',exact:true}).click();
+  await page.waitForURL('**/dashboard');
+  await page.getByRole('link', {name:'تنظیمات',exact:true}).click();
+  await page.waitForURL('**/settings');
+  await app.finish();
+  console.log('PASS dashboard: private access, empty and populated states, partial failure and retry, links, and four viewport widths.');
+}
+
 async function catalogFlow(browser) {
-  const app = await setup(browser, {catalogStart:{min_people:2,max_people:4,checks:['materials']}});
+  const program = {
+    url:'https://www.tiwall.com/roudaki',
+    label:'دیدن برنامه‌های بنیاد رودکی در تیوال',
+    scope:'collection',
+  };
+  const app = await setup(browser, {
+    catalogStart:{min_people:2,max_people:4,checks:['materials']},
+    activityContent:{...content, requires_venue_check:true, place:{
+      name:'تالار رودکی', city:'تهران', source_name:'بنیاد رودکی',
+      source_url:'https://roudakifoundation.com/', program,
+    }},
+  });
   const {page} = app;
+  await app.context.route(program.url, route => route.fulfill({body:'Seller fixture'}));
   await page.setViewportSize({width:360,height:800});
   await page.goto(origin + '/discover');
   const detail = page.getByRole('link', {name:/یه مکث آروم/});
   await detail.click();
+  const programLink = page.getByRole('link', {name:program.label,exact:true});
+  await programLink.waitFor();
+  assert.equal(await programLink.getAttribute('href'), program.url);
+  assert.equal(await programLink.getAttribute('rel'), 'noopener noreferrer');
+  await page.getByText('سانس و امکان خرید بلیت رو در سایت مقصد بررسی کن.').waitFor();
+  await page.getByText(/قبل از رفتن، باز بودن، هزینه، رزرو/).waitFor();
+  const [seller] = await Promise.all([page.waitForEvent('popup'), programLink.click()]);
+  await seller.waitForURL(program.url);
+  await seller.close();
   const start = page.getByRole('button', {name:'همین رو شروع می‌کنم'});
   await start.waitFor();
   assert.equal(await start.isDisabled(), true);
@@ -149,6 +230,7 @@ async function catalogFlow(browser) {
   await page.getByRole('checkbox', {name:/شرایط بالا رو بررسی کردم/}).check();
   await start.click();
   await page.waitForURL('**/experiences/experience-1');
+  await programLink.waitFor();
   const request = app.requests.find(({method,endpoint}) => method === 'POST' && endpoint === '/experiences');
   assert.deepEqual(request.body, {source:'catalog',revision_id:'revision-0',party_size:3,conditions_confirmed:true});
   assert.equal(app.requests.some(({endpoint}) => endpoint === '/check-ins' || endpoint.startsWith('/recommendation-sessions')), false);
@@ -212,6 +294,7 @@ async function questionnaireFromDiscover(browser) {
     venue:'away_from_home', budget:{mode:'flexible',cap_toman:null}, activity_intent:'learn',
     allow_venue_planning:true, city:'تهران', weather:'fair', daylight:'day',
   });
+  assert.equal(app.requests.some(({endpoint}) => endpoint === '/outing-origins'), false);
   const summary = page.locator('.constraint-summary');
   await summary.getByText('بیرون از خونه', {exact:true}).waitFor();
   await summary.getByText('تهران', {exact:true}).waitFor();
@@ -220,31 +303,133 @@ async function questionnaireFromDiscover(browser) {
   console.log('PASS questionnaire from Discover: four steps, location opt-in, conditions, intent, and result summary.');
 }
 
+async function fullDayQuestionnaire(browser) {
+  for (const days of [1, 2]) {
+    const app = await setup(browser, {outingOriginsStatus:503});
+    const {page, state} = app;
+    await page.goto(origin + '/individual');
+    const duration = page.getByRole('radio', {name:days === 1 ? 'یک روز کامل' : 'دو روز',exact:true});
+    const minutes = page.getByRole('textbox', {name:'یا به دقیقه بنویس'});
+    const next = page.getByRole('button', {name:'بریم بعدی'});
+    await minutes.fill(String(days * 1440));
+    await next.click();
+    await page.getByRole('alert').filter({hasText:'بین ۵ تا ۴۸۰'}).waitFor();
+    await duration.check();
+    assert.equal(await minutes.count(), 0);
+    await next.click();
+
+    const venue = page.getByRole('group', {name:'کجا می‌خوای باشی؟'});
+    const home = venue.getByRole('radio', {name:'توی خونه',exact:true});
+    assert.equal(await home.isDisabled(), true);
+    assert.equal(await venue.getByRole('radio', {name:'هر جا شد',exact:true}).isDisabled(), true);
+    assert.equal(await venue.getByRole('radio', {name:'بیرون از خونه',exact:true}).isChecked(), true);
+    const cities = page.getByRole('combobox', {name:/از کدوم شهر راه می‌افتی/});
+    const weather = page.getByRole('checkbox', {name:/بازدیدها رو به روشنایی روز/});
+    assert.equal(await weather.isChecked(), false);
+
+    if (days === 2) {
+      assert.equal(await cities.count(), 0);
+      await next.click();
+      await page.getByRole('alert').filter({hasText:'تمایلت به سفر رو مشخص کن'}).waitFor();
+      await page.getByRole('radio', {name:'نه، این بار سفر نمی‌خوام'}).check();
+      await page.getByRole('button', {name:'تغییر مدت',exact:true}).click();
+      await page.getByRole('radio', {name:'نیم ساعت',exact:true}).check();
+      await next.click();
+      assert.equal(await home.isEnabled(), true);
+      assert.equal(await cities.count(), 0);
+      await home.check();
+      await page.getByRole('button', {name:'قدم قبلی'}).click();
+      await duration.check();
+      await next.click();
+      await page.getByRole('radio', {name:'آره، مبدأ رو انتخاب می‌کنم'}).check();
+    }
+
+    await page.getByRole('alert').filter({hasText:'فهرست شهرها دریافت نشد'}).waitFor();
+    state.outingOriginsStatus = 200;
+    await page.getByRole('button', {name:'دریافت دوبارهٔ شهرها'}).click();
+    await cities.waitFor();
+    assert.deepEqual(await cities.locator('option').evaluateAll(options => options.slice(1).map(option => option.value)),
+      ['تهران','مشهد','اصفهان','شیراز','تبریز']);
+    await next.click();
+    await page.getByRole('alert').filter({hasText:'شهر مبدأ رو انتخاب کن'}).waitFor();
+    assert.equal(await cities.getAttribute('aria-invalid'), 'true');
+    assert.equal(state.checkin, null);
+    await cities.selectOption('اصفهان');
+    await weather.check();
+    if (days === 2) {
+      const previous = page.getByRole('button', {name:'قدم قبلی'});
+      await previous.click();
+      await page.getByRole('radio', {name:'یک روز کامل',exact:true}).check();
+      await next.click();
+      assert.equal(await cities.inputValue(), 'اصفهان');
+      assert.equal(await weather.isChecked(), false);
+      await previous.click();
+      await duration.check();
+      await next.click();
+      assert.equal(await cities.count(), 0);
+      await page.getByRole('radio', {name:'آره، مبدأ رو انتخاب می‌کنم'}).check();
+      assert.equal(await cities.inputValue(), 'اصفهان');
+      await weather.check();
+    }
+    if (days === 2) {
+      await page.evaluate(() => window.scrollTo({top:0,behavior:'instant'}));
+      await screen(page,'questionnaire-two-days');
+    }
+    await next.click();
+    assert.equal(await page.getByRole('radio', {name:'رایگان باشه'}).isChecked(), true);
+    await page.getByRole('radio', {name:'منعطفم'}).check();
+    await next.click();
+    await page.getByRole('button', {name:'پیشنهادم رو ببینم'}).click();
+    await page.waitForURL('**/individual/results?slate=*');
+    await visible(page,'.single-suggestion');
+    assert.deepEqual(state.checkin, {
+      available_minutes:days * 1440, outing_days:days, energy:'low', social_mode:'solo', party_size:1,
+      venue:'away_from_home', budget:{mode:'flexible',cap_toman:null}, activity_intent:'any',
+      allow_venue_planning:true, city:'اصفهان', weather:'fair', daylight:'day',
+    });
+    await app.finish();
+  }
+
+  const app = await setup(browser, {outingOriginsStatus:401});
+  await app.page.goto(origin + '/individual');
+  await app.page.getByRole('radio', {name:'دو روز',exact:true}).check();
+  await app.page.waitForURL('**/login?next=%2Findividual');
+  await app.finish();
+  console.log('PASS full-day questionnaire: duration, travel consent, rejected inputs, cities, retry, session expiry, and payload.');
+}
+
 async function main() {
   const browserType=process.env.WEB_TEST_BROWSER === 'firefox' ? firefox : chromium;
   const browser=await browserType.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
   try {
+    if (process.argv.includes('--dashboard')) {
+      await dashboardFlow(browser);
+      return;
+    }
     if (process.argv.includes('--questionnaire')) {
       await questionnaireFromDiscover(browser);
+      await fullDayQuestionnaire(browser);
       return;
     }
     await catalogFlow(browser);
     if (process.argv.includes('--discover')) return;
     await questionnaireFromDiscover(browser);
+    await fullDayQuestionnaire(browser);
+    await dashboardFlow(browser);
     {
       const app=await setup(browser,{authenticated:false});
       const {page}=app;
       await page.goto(origin);
       await visible(page,'.hero');
       await screen(page,'home');
-      await page.getByRole('button',{name:'نصب فانیلو روی دستگاه'}).click();
-      await visible(page,'dialog[open]');
-      await page.keyboard.press('Escape');
       await page.getByRole('button',{name:'ببینیم چی می‌چسبه'}).click();
       await page.getByLabel('ایمیل',{exact:true}).fill('test@example.com');
       await page.getByLabel('رمز عبور',{exact:false}).fill('a-test-password');
       await page.getByRole('button',{name:'وارد بشم',exact:true}).click();
       await visible(page,'.question-layout');
+      await page.getByRole('button',{name:'نصب مودیگو روی دستگاه'}).click();
+      await visible(page,'dialog[open]');
+      await page.keyboard.press('Escape');
       await screen(page,'questions');
       await page.locator('.number-input').fill('۴');
       await page.getByRole('button',{name:'بریم بعدی'}).click();
@@ -271,16 +456,18 @@ async function main() {
       await page.getByRole('button',{name:'چسبید',exact:true}).click();
       await page.getByRole('button',{name:'مسیرم رو ببینم'}).click();
       await visible(page,'.journey-stats');
-      await page.getByRole('button',{name:'تنظیمات حساب',exact:true}).click();
+      await page.getByRole('link',{name:'پنل کاربری',exact:true}).click();
+      await page.getByRole('link',{name:'تنظیمات',exact:true}).click();
       await page.getByRole('checkbox',{name:'یه تجربهٔ ساکت می‌خوام.'}).check();
       await page.getByRole('button',{name:'انتخاب‌هام رو نگه دار'}).click();
       await page.getByText('انتخاب‌هات نگه داشته شد.',{exact:true}).waitFor();
       assert.equal(app.state.preferences.preferences.requires_quiet,true);
-      await page.getByRole('button',{name:'ذخیره‌ها',exact:true}).click();
+      await page.getByRole('link',{name:'ذخیره‌ها',exact:true}).click();
       await visible(page,'.saved-card');
       await page.getByRole('button',{name:'بردار',exact:true}).click();
       await page.getByRole('heading',{name:'اینجا هنوز خلوت و آرومه.'}).waitFor();
-      await page.getByRole('button',{name:'تنظیمات حساب',exact:true}).click();
+      await page.getByRole('link',{name:'پنل کاربری',exact:true}).click();
+      await page.getByRole('link',{name:'تنظیمات',exact:true}).click();
       await page.getByRole('button',{name:'خروج از حساب',exact:true}).click();
       await visible(page,'.hero');
       await app.finish();
@@ -290,8 +477,8 @@ async function main() {
       const app=await setup(browser,{role:'admin'});
       const {page}=app;
       await page.goto(origin);
-      await visible(page,'.question-layout');
-      await page.getByRole('button',{name:'کارگاه محتوا',exact:true}).click();
+      await page.getByRole('heading',{name:'پنل کاربری',level:1}).waitFor();
+      await page.getByRole('link',{name:'کارگاه محتوا',exact:true}).click();
       await page.getByRole('button',{name:/بذر آزمایشی/}).click();
       await visible(page,'.json-editor');
       await page.locator('#content-json').fill(JSON.stringify({...content,title:'ویرایش تازه'}));

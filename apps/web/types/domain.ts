@@ -11,8 +11,12 @@ export type Budget = {
   cap_toman: number | null;
 };
 
+export type OutingDays = 1 | 2;
+export type OutingOrigin = "تهران" | "مشهد" | "اصفهان" | "شیراز" | "تبریز";
+
 export type Context = {
   available_minutes: number;
+  outing_days?: OutingDays | null;
   energy: "low" | "medium" | "high" | "unknown";
   social_mode: "solo" | "together" | "either";
   party_size: number;
@@ -79,7 +83,7 @@ export type Slate = ReplacementState & {
   context_summary: Pick<
     Context,
     "available_minutes" | "social_mode" | "party_size" | "venue" | "budget"
-  > & Pick<Context, "city" | "allow_venue_planning">;
+  > & Pick<Context, "city" | "allow_venue_planning" | "outing_days">;
 };
 
 export type Content = {

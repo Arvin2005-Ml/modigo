@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import type { Context } from "@/types";
+import { useEffect, useId, useRef, useState } from "react";
+import type { Context, OutingOrigin } from "@/types";
 import { digits, number } from "@/lib/api";
 import { Button, Choices } from "./ui";
 import Icon from "./Icon";
@@ -24,6 +24,7 @@ const stepIntros = [
   "بی‌خرج‌بودن هم یه انتخاب خوبه.",
   "با این جواب، اولین پیشنهاد رو به خواستهٔ الانت نزدیک‌تر می‌کنیم.",
 ];
+const originRequired = "شهر مبدأ رو انتخاب کن.";
 
 export default function Questionnaire({
   value,
@@ -31,32 +32,68 @@ export default function Questionnaire({
   submit,
   busy,
   defaults,
+  origins,
+  originsUnavailable,
+  retryOrigins,
 }: {
   value: Context;
   change: (v: Context) => void;
   submit: () => void;
   busy: boolean;
+  origins?: readonly OutingOrigin[];
+  originsUnavailable: boolean;
+  retryOrigins: () => void;
   defaults?: {
     owned_items: string[];
     liked_tags: string[];
   };
 }) {
   const [step, setStep] = useState(0);
-  const [minutes, setMinutes] = useState(String(value.available_minutes));
+  const [minutes, setMinutes] = useState(value.outing_days ? "30" : String(value.available_minutes));
   const [cap, setCap] = useState(
     value.budget.cap_toman ? String(value.budget.cap_toman) : "",
   );
   const [party, setParty] = useState(String(value.party_size));
   const [error, setError] = useState("");
   const heading = useRef<HTMLHeadingElement>(null);
+  const originHintId = useId();
+  const originErrorId = useId();
+  const { outing_days: outingDays } = value;
+  const showOrigins = outingDays === 1 || (outingDays === 2 && value.allow_venue_planning);
+  const originInvalid = error === originRequired;
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
+    heading.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
   }, [step]);
   const set = <K extends keyof Context>(key: K, next: Context[K]) =>
     change({ ...value, [key]: next });
+  const selectDuration = (availableMinutes: number) => {
+    setError("");
+    const days = availableMinutes === 1440 ? 1 : availableMinutes === 2880 ? 2 : undefined;
+    if (days) {
+      if (days === outingDays) return;
+      change({
+        ...value,
+        available_minutes: availableMinutes,
+        outing_days: days,
+        venue: "away_from_home",
+        allow_venue_planning: days === 1 ? true : undefined,
+        city: outingDays ? value.city : null,
+        weather: "unknown",
+        daylight: "unknown",
+      });
+      return;
+    }
+    setMinutes(String(availableMinutes));
+    change(outingDays
+      ? { ...value, available_minutes: availableMinutes, outing_days: undefined,
+          city: null, allow_venue_planning: false, weather: "unknown", daylight: "unknown" }
+      : { ...value, available_minutes: availableMinutes });
+  };
   const advance = () => {
     if (
       step === 0 &&
+      !outingDays &&
       (!/^\d+$/.test(digits(minutes)) ||
         +digits(minutes) < 5 ||
         +digits(minutes) > 480)
@@ -84,7 +121,18 @@ export default function Questionnaire({
       setError("یه سقف هزینهٔ معتبر به تومان بنویس.");
       return;
     }
-    if (step === 1 && value.venue !== "home" && value.allow_venue_planning && !value.city?.trim()) {
+    if (outingDays && (step === 1 || step === stepLabels.length - 1)) {
+      if (!value.allow_venue_planning || !origins?.some((city) => city === value.city)) {
+        setStep(1);
+        setError(!value.allow_venue_planning
+          ? "برای ادامه، تمایلت به سفر رو مشخص کن یا مدت رو تغییر بده."
+          : !origins
+            ? "برای ادامه، اول باید فهرست شهرها دریافت بشه."
+            : originRequired);
+        return;
+      }
+    }
+    if (step === 1 && !outingDays && value.venue !== "home" && value.allow_venue_planning && !value.city?.trim()) {
       setError("برای پیشنهاد جای مشخص، اسم شهرت رو وارد کن.");
       return;
     }
@@ -127,7 +175,7 @@ export default function Questionnaire({
           </span>
         </div>
       </aside>
-      <section className="question-column" aria-labelledby="question-title">
+      <fieldset className="question-column min-w-0" aria-labelledby="question-title" disabled={busy}>
         <div className="step-heading">
           <span>
             <Icon name="spark" size={17} />
@@ -158,20 +206,19 @@ export default function Questionnaire({
           <>
             <Choices
               legend="چقدر وقت آزادی؟"
-              value={value.available_minutes}
+              value={outingDays || value.available_minutes <= 480 ? value.available_minutes : null}
               options={[
                 [15, "یه ربع"],
                 [30, "نیم ساعت"],
                 [60, "یه ساعت"],
                 [120, "دو ساعت"],
                 [240, "چهار ساعت"],
+                [1440, "یک روز کامل"],
+                [2880, "دو روز"],
               ]}
-              onChange={(v) => {
-                set("available_minutes", v);
-                setMinutes(String(v));
-              }}
+              onChange={selectDuration}
             />
-            <label className="label">
+            {!outingDays && <label className="label">
               یا به دقیقه بنویس
               <input
                 inputMode="numeric"
@@ -182,7 +229,7 @@ export default function Questionnaire({
                   set("available_minutes", +digits(e.target.value));
                 }}
               />
-            </label>
+            </label>}
             <Choices
               legend="انرژیت چقدره؟"
               value={value.energy}
@@ -246,6 +293,8 @@ export default function Questionnaire({
             <Choices
               legend="کجا می‌خوای باشی؟"
               value={value.venue}
+              disabledValues={outingDays ? ["home", "any"] : undefined}
+              hint={outingDays ? "گردش یک‌روزه و دوروزه فقط بیرون از خونه‌ست." : undefined}
               options={[
                 ["home", "توی خونه"],
                 ["away_from_home", "بیرون از خونه"],
@@ -258,7 +307,65 @@ export default function Questionnaire({
                   : { ...value, venue });
               }}
             />
-            {value.venue !== "home" && (
+            {outingDays === 2 && (
+              <>
+                <Choices<"yes" | "no">
+                  legend="دوست داری برای این دو روز از یکی از شهرهای پیشنهادی راه بیفتی؟"
+                  value={value.allow_venue_planning === undefined ? null : value.allow_venue_planning ? "yes" : "no"}
+                  options={[
+                    ["yes", "آره، مبدأ رو انتخاب می‌کنم"],
+                    ["no", "نه، این بار سفر نمی‌خوام"],
+                  ]}
+                  onChange={(answer) => {
+                    setError("");
+                    change({
+                      ...value,
+                      allow_venue_planning: answer === "yes",
+                      city: answer === "yes" ? value.city : null,
+                    });
+                  }}
+                />
+                {value.allow_venue_planning === false && (
+                  <button type="button" className="text-button" onClick={() => {
+                    setError("");
+                    setStep(0);
+                  }}>
+                    تغییر مدت
+                  </button>
+                )}
+              </>
+            )}
+            {showOrigins && (
+              originsUnavailable ? (
+                <div>
+                  <p className="error" role="alert">فهرست شهرها دریافت نشد.</p>
+                  <Button type="button" secondary onClick={retryOrigins}>دریافت دوبارهٔ شهرها</Button>
+                </div>
+              ) : !origins ? (
+                <p className="hint" role="status">در حال دریافت شهرها…</p>
+              ) : (
+                <label className="label">
+                  از کدوم شهر راه می‌افتی؟
+                  <select
+                    className="input"
+                    value={origins.some((city) => city === value.city) ? value.city ?? "" : ""}
+                    aria-required="true"
+                    aria-invalid={originInvalid}
+                    aria-describedby={originInvalid ? `${originHintId} ${originErrorId}` : originHintId}
+                    onChange={(event) => {
+                      setError("");
+                      set("city", event.target.value || null);
+                    }}
+                  >
+                    <option value="" disabled>شهر مبدأ رو انتخاب کن</option>
+                    {origins.map((city) => <option key={city} value={city}>{city}</option>)}
+                  </select>
+                  <span className="hint" id={originHintId}>ممکنه برنامه داخل شهر مبدأ یا در یک مقصد نزدیک باشه.</span>
+                  {originInvalid && <span className="error" role="alert" id={originErrorId}>{error}</span>}
+                </label>
+              )
+            )}
+            {!outingDays && value.venue !== "home" && (
               <fieldset className="field">
                 <legend>دوست داری یه جای مشخص هم پیشنهاد بدیم؟</legend>
                 <label className="choice">
@@ -309,8 +416,13 @@ export default function Questionnaire({
                     daylight: e.target.checked ? "day" : "unknown",
                   })}
                 />
-                <span>هوا روشنه و برای قدم‌زدن مناسبه</span>
+                <span>{outingDays
+                  ? "می‌تونم بازدیدها رو به روشنایی روز و هوای مناسب موکول کنم"
+                  : "هوا روشنه و برای قدم‌زدن مناسبه"}</span>
               </label>
+            )}
+            {outingDays && (
+              <p className="hint">اگه این شرایط رو نداری یا هنوز مطمئن نیستی، ممکنه پیشنهادی پیدا نشه. قبل از حرکت دوباره هوا رو بررسی کن.</p>
             )}
           </>
         )}
@@ -331,7 +443,11 @@ export default function Questionnaire({
                 })
               }
             />
-            {value.allow_venue_planning && value.budget.mode !== "flexible" && (
+            {outingDays ? (
+              <p className="hint">
+                هزینهٔ رفت‌وآمد، ورودی و اقامت رو قبل از حرکت بررسی کن. برای دیدن گردش‌های با هزینهٔ نامعلوم، بودجهٔ «منعطفم» رو انتخاب کن.
+              </p>
+            ) : value.allow_venue_planning && value.budget.mode !== "flexible" && (
               <p className="hint">
                 جاهایی که هزینه‌شون مشخص نیست فقط با بودجهٔ منعطف پیشنهاد می‌شن.
               </p>
@@ -354,9 +470,9 @@ export default function Questionnaire({
                 <span className="hint">تا جای ممکن گزینه‌ای نزدیک به این مبلغ پیشنهاد می‌دیم.</span>
               </label>
             )}
-            <p className="hint">
+            {!outingDays && <p className="hint">
               برای پیشنهادهای رایگان،خرید و رفت‌وآمد پولی لازم نیست.
-            </p>
+            </p>}
           </>
         )}
         {step === 3 && (
@@ -382,7 +498,7 @@ export default function Questionnaire({
             </details>
           </>
         )}
-        {error && (
+        {error && !originInvalid && (
           <p role="alert" className="error">
             {error}
           </p>
@@ -409,7 +525,7 @@ export default function Questionnaire({
             </button>
           )}
         </div>
-      </section>
+      </fieldset>
     </div>
   );
 }

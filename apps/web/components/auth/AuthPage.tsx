@@ -44,7 +44,7 @@ export default function AuthPage() {
   const resetToken =
     pathname === paths.reset ? searchParams.get("token") : null;
 
-  const next = safeNextPath(searchParams.get("next")) ?? paths.discover;
+  const next = safeNextPath(searchParams.get("next")) ?? paths.dashboard;
 
   const execute = async (action: () => Promise<void>): Promise<boolean> => {
     if (busy) return false;

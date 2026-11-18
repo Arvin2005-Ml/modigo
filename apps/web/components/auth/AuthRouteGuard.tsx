@@ -66,7 +66,7 @@ export default function AuthRouteGuard({ children }: Props) {
     if (loggedInOnAuthPage) {
       const next = safeNextPath(searchParams.get("next"));
 
-      router.replace(next ?? paths.discover);
+      router.replace(next ?? paths.dashboard);
       return;
     }
 

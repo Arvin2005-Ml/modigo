@@ -99,6 +99,8 @@ export function ContentDetails({
 }) {
   const total =
     content.active_minutes + content.setup_minutes + content.travel_minutes;
+  const program = content.place?.program;
+  const showProgram = program && program.url.startsWith("https://");
   return (
     <>
       <span className="eyebrow">یه تجربهٔ کوچیک،با ریتم خودت</span>
@@ -116,12 +118,18 @@ export function ContentDetails({
           </a>
         </p>
       )}
-      {content.place?.program && (
-        <p>
-          <a className="underline underline-offset-4" href={content.place.program.url} target="_blank" rel="noopener noreferrer">
-            {content.place.program.label}
+      {showProgram && (
+        <div>
+          <a
+            className="text-button text-start underline underline-offset-4"
+            href={program.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {program.label}
           </a>
-        </p>
+          <p className="hint">سانس و امکان خرید بلیت رو در سایت مقصد بررسی کن.</p>
+        </div>
       )}
       {content.requires_venue_check && (
         <p className="hint">

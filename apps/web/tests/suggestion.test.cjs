@@ -29,6 +29,7 @@ function load(filename) {
   return loaded.exports;
 }
 const SingleSuggestion = load('components/SingleSuggestion.tsx').default;
+const {ContentDetails} = load('components/Activity.tsx');
 const item = {slot_id:'slot',activity_id:'activity',revision_id:'revision',title:'پیشنهاد اول',
   teaser:'یک تجربهٔ کوتاه و قابل انجام',total_minutes:10,cost_label:'رایگان',explanation:'متناسب با شرایطت',unavailable:false};
 const slate = {id:'session',check_in_id:'check',version:1,items:[item],result_count:1,partial:false,
@@ -55,6 +56,19 @@ test('a named outing shows its city and the venue check before opening the activ
     venue_check_message:'پیش از رفتن، باز بودن و رزرو را بررسی کن.'}]});
   assert.match(html, /پردیس تماشا.*تهران/);
   assert.match(html, /پیش از رفتن، باز بودن و رزرو را بررسی کن/);
+});
+
+test('program links stay in activity details and are omitted without an HTTPS destination', () => {
+  const program = {url:'https://cinematicket.org/cinema/detail/42', label:'دیدن سانس‌های این سینما'};
+  const place = {name:'پردیس تماشا', city:'تهران', source_url:'https://example.com/', source_name:'معرفی سالن'};
+  const details = (program) => renderToStaticMarkup(React.createElement(ContentDetails, {
+    content:{...item, place:{...place, program}, cost:{kind:'unknown'}, steps:[], safety_notes:[]},
+  }));
+  assert.match(details(program), /href="https:\/\/cinematicket\.org\/cinema\/detail\/42" target="_blank" rel="noopener noreferrer"/);
+  for (const unavailable of [undefined, {...program,url:'http://cinematicket.org/'}]) {
+    assert.doesNotMatch(details(unavailable), /دیدن سانس‌ها|امکان خرید بلیت/);
+  }
+  assert.doesNotMatch(render({items:[{...item, place:{...place, program}}]}), /cinematicket\.org/);
 });
 
 test('after six changes the replace action is disabled while the current card remains usable', () => {

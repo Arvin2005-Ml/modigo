@@ -4,12 +4,13 @@ import Icon from './Icon';
 export function Button({children, secondary, className = '', ...props}: ButtonHTMLAttributes<HTMLButtonElement> & {secondary?: boolean}) {
   return <button className={`${secondary ? 'button-secondary' : 'button-primary'} ${className}`} {...props}>{children}</button>;
 }
-export function Choices<T extends string | number>({legend, value, options, onChange, hint}: {
-  legend: string; value: T; options: readonly (readonly [T, string])[]; onChange: (v: T) => void; hint?: string;
+export function Choices<T extends string | number>({legend, value, options, onChange, hint, disabledValues}: {
+  legend: string; value: T | null; options: readonly (readonly [T, string])[]; onChange: (v: T) => void; hint?: string;
+  disabledValues?: readonly T[];
 }) {
   return <fieldset className="field"><legend>{legend}</legend>{hint && <p className="hint">{hint}</p>}
     <div className="choices">{options.map(([key, label]) => <label className="choice" key={key}>
-      <input type="radio" name={legend} value={key} checked={value === key} onChange={() => onChange(key)} /><span>{label}</span>
+      <input type="radio" name={legend} value={key} checked={value === key} disabled={disabledValues?.includes(key)} onChange={() => onChange(key)} /><span>{label}</span>
     </label>)}</div></fieldset>;
 }
 export function Empty({title, children}: {title: string; children: ReactNode}) {

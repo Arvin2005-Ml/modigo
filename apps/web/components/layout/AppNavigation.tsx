@@ -13,8 +13,7 @@ export default function AppNavigation() {
 
   const user = useAppSelector((state) => state.auth.user);
 
-  // Guests do not have private navigation.
-  if (!user) {
+  if (!user || pathname === paths.dashboard) {
     return null;
   }
 

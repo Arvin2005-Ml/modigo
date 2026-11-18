@@ -1,7 +1,9 @@
 import type {CSSProperties} from 'react';
 
-export type IconName = 'spark' | 'arrow' | 'bookmark' | 'journey' | 'user' | 'download' | 'close' | 'check' | 'clock' | 'leaf' | 'sun' | 'shuffle' | 'shield' | 'wifi' | 'heart' | 'coffee' | 'headphones' | 'plus';
+export type IconName = 'spark' | 'arrow' | 'bookmark' | 'journey' | 'user' | 'download' | 'close' | 'check' | 'clock' | 'leaf' | 'sun' | 'shuffle' | 'shield' | 'wifi' | 'heart' | 'coffee' | 'headphones' | 'plus' | 'dashboard' | 'settings';
 const paths: Record<IconName, React.ReactNode> = {
+  dashboard: <><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="15" y="3" width="6" height="8" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/></>,
+  settings: <><path d="M4 6h8m4 0h4M4 12h3m4 0h9M4 18h10m4 0h2"/><circle cx="14" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></>,
   spark: <><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/><path d="m20 2 .6 1.4L22 4l-1.4.6L20 6l-.6-1.4L18 4l1.4-.6L20 2Z"/></>,
   arrow: <path d="M20 12H4m6-6-6 6 6 6"/>,
   bookmark: <path d="M7 3.5h10a1 1 0 0 1 1 1v16l-6-4-6 4v-16a1 1 0 0 1 1-1Z"/>,

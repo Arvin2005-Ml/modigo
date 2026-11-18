@@ -34,6 +34,8 @@
 
 ## transaction پایان تجربه
 
+داده‌های منطقهٔ زمانی IANA از `tzdata` قفل‌شده در وابستگی‌های API در دسترس‌اند. در ویندوز، `zoneinfo` برای محاسبهٔ تاریخ پایان و سقف روزانه با `Asia/Tehran` به این بسته نیاز دارد.
+
 ۱. مالکیت و active و user.status را بخوان. active بالای۲۴ساعت→expired، completion409؛ اگر completed است award_result ذخیره‌شده را برگردان، حتی پس از expiry receipt.
 ۲. write روی user_progress همان user انجام بده تا تراکنش‌های هم‌زمان روی نقطهٔ مشترک serialize شوند. daily/rolling caps و فعالیت۷روز اخیر را از reward_ledger **با points>0** و زمان server بررسی کن؛سطرهای صفر در شمارنده و پنجرهٔ تکرار اثر ندارند.
 ۳. experience را completed کن؛ completion_local_date و award_result را ذخیره کن. برای **همهٔ** completedها ledger با points=10 یا0 و reason ثبت کن؛ قید experience_id unique.
