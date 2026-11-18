@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 PRODUCTION_ORIGIN = 'https://moodigo.ir'
+DEFAULT_GAPGPT_IMAGE_HOSTS = ('api.gapgpt.app', 'gapgpt.app', 'aigap.app')
 
 
 def normalize_app_origin(value):
@@ -84,6 +85,9 @@ class Settings:
     gapgpt_api_key: str = field(default='', repr=False)
     gapgpt_base_url: str = 'https://api.gapgpt.app/v1'
     gapgpt_model: str = 'gapgpt-deepseek-v4.1-flash'
+    gapgpt_assistant_model: str = 'gdeepseek-v4.1-flash'
+    gapgpt_image_model: str = 'gemini-2.5-flash-image'
+    gapgpt_image_hosts: tuple[str, ...] = DEFAULT_GAPGPT_IMAGE_HOSTS
 
     @classmethod
     def load(cls):
@@ -102,7 +106,11 @@ class Settings:
                        provider=environ.get('LLM_PROVIDER', environ.get('AI_PROVIDER', 'demo')),
                        gapgpt_api_key=environ.get('GAPGPT_API_KEY', ''),
                        gapgpt_base_url=environ.get('GAPGPT_BASE_URL', 'https://api.gapgpt.app/v1'),
-                       gapgpt_model=environ.get('GAPGPT_MODEL', 'gapgpt-deepseek-v4.1-flash'))
+                       gapgpt_model=environ.get('GAPGPT_MODEL', 'gapgpt-deepseek-v4.1-flash'),
+                       gapgpt_assistant_model=environ.get('GAPGPT_ASSISTANT_MODEL', 'gpt-4.1-mini').strip(),
+                       gapgpt_image_model=environ.get('GAPGPT_IMAGE_MODEL', 'gemini-2.5-flash-image').strip(),
+                       gapgpt_image_hosts=DEFAULT_GAPGPT_IMAGE_HOSTS + tuple(
+                           host.strip().lower() for host in environ.get('GAPGPT_IMAGE_HOSTS', '').split(',') if host.strip()))
         settings.validate()
         return settings
 
@@ -131,6 +139,12 @@ class Settings:
         if self.provider == 'gapgpt' and (not self.gapgpt_api_key or
                 self.gapgpt_base_url != 'https://api.gapgpt.app/v1' or not self.gapgpt_model):
             raise ValueError('GapGPT requires a server-side key and the configured GapGPT endpoint')
+        if not self.gapgpt_assistant_model or not self.gapgpt_image_model:
+            raise ValueError('GapGPT assistant and image model identifiers must be set')
+        if any(len(host) > 253 or not re.fullmatch(
+                r'(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z][a-z0-9-]{0,62}', host)
+               for host in self.gapgpt_image_hosts):
+            raise ValueError('GAPGPT_IMAGE_HOSTS must contain exact DNS names without ports or wildcards')
 
     @property
     def allowed_origins(self):

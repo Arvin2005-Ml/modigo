@@ -1,10 +1,11 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Request, Response, Query
+from fastapi import APIRouter, BackgroundTasks, Depends, Request, Response, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from app.core.schemas import AccountEmail, ResetPassword, PasswordConfirm, ChangePassword, Signup, Credentials, Empty, Context, SlateInput, ReplaceInput, NavigateInput, StartInput, Feedback, PreferencesUpdate
 from app.core.errors import DomainError
 from app.modules.catalog.schemas import DraftUpdate, ReviewInput, WithdrawInput, CloneInput, CookInput
+from app.modules.activity_assistant.schemas import AssetKind, AssistantState, ChatInput, ChatReply
 from app.modules.catalog.activation import ActivationStatus, activation_queue
 from app.modules.recommendations.eligibility import VENUE_POLICY_VERSION
 from app.modules.recommendations.ranking import ALGORITHM_VERSION
@@ -142,6 +143,33 @@ def navigate_suggestion(session_id: str, data: NavigateInput, actor: User, reque
 @router.get('/activity-revisions/{revision_id}')
 def revision(revision_id: str, actor: User, request: Request):
     return services(request).catalog.visible_revision(revision_id)
+
+
+@router.get('/activity-revisions/{revision_id}/assistant', response_model=AssistantState)
+def assistant_state(revision_id: str, actor: User, request: Request):
+    return services(request).activity_assistant.get(revision_id)
+
+
+@router.post('/activity-revisions/{revision_id}/assistant/assets/{kind}', response_model=AssistantState,
+             responses={202: {'model': AssistantState, 'description': 'Generation pending'}})
+def request_assistant_asset(revision_id: str, kind: AssetKind, data: Empty, actor: User,
+                            request: Request, response: Response, background: BackgroundTasks):
+    response.status_code, result = services(request).activity_assistant.request(
+        actor['id'], revision_id, kind, background.add_task)
+    return result
+
+
+@router.get('/activity-revisions/{revision_id}/assistant/image', response_class=Response,
+            responses={200: {'content': {kind: {'schema': {'type': 'string', 'format': 'binary'}}
+                                         for kind in ('image/png', 'image/jpeg', 'image/webp')}}})
+def assistant_image(revision_id: str, actor: User, request: Request):
+    data, media_type = services(request).activity_assistant.image(revision_id)
+    return Response(content=data, media_type=media_type)
+
+
+@router.post('/activity-revisions/{revision_id}/assistant/chat', response_model=ChatReply)
+def assistant_chat(revision_id: str, data: ChatInput, actor: User, request: Request):
+    return services(request).activity_assistant.chat(actor['id'], revision_id, data)
 
 
 @router.get('/activity-cities')

@@ -42,6 +42,8 @@ INDEXES = {
     'user_progress': [([('user_id', ASCENDING)], {'unique': True})],
     'content_jobs': [([('activity_id', ASCENDING)], {'unique': True,
         'partialFilterExpression': {'state': {'$in': ['queued', 'running']}}})],
+    'activity_assistant_assets': [([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
+    'activity_assistant_images': [([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
     'idempotency_receipts': [([('user_id', ASCENDING), ('scope', ASCENDING), ('key', ASCENDING)], {'unique': True}),
                              ([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
     'rate_limit_buckets': [([('window_end', ASCENDING)], {'expireAfterSeconds': 0})],

@@ -29,6 +29,7 @@ def create_app(settings=None, clock=utcnow, store_factory=None):
             yield
         finally:
             app.state.services.jobs.stop()
+            app.state.services.activity_assistant.close()
             app.state.services.store.close()
             app.state.services = None
 
@@ -39,16 +40,16 @@ def create_app(settings=None, clock=utcnow, store_factory=None):
         allow_methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         allow_headers=['Content-Type', 'X-CSRF-Token', 'Idempotency-Key'])
 
-    def error(request, code, message, status, fields=None):
+    def error(request, code, message, status, fields=None, *, retry_after=None):
         headers = {'Cache-Control': 'no-store'}
-        if status == 429:
-            headers['Retry-After'] = '60'
+        if retry_after is not None or status == 429:
+            headers['Retry-After'] = str(retry_after if retry_after is not None else 60)
         return JSONResponse({'error': dict(code=code, message=message, fields=fields or {},
             request_id=getattr(request.state, 'request_id', uid()))}, status_code=status, headers=headers)
 
     @app.exception_handler(DomainError)
     async def domain_error(request, exc):
-        return error(request, exc.code, exc.message, exc.status, exc.fields)
+        return error(request, exc.code, exc.message, exc.status, exc.fields, retry_after=exc.retry_after)
 
     @app.exception_handler(StorageUnavailable)
     async def storage_error(request, exc):

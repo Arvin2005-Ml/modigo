@@ -1,4 +1,5 @@
 from datetime import timedelta
+from math import ceil
 from app.core.errors import DomainError
 from app.core.values import digest, replace
 
@@ -14,7 +15,8 @@ class RateLimiter:
             record = self.store.get('rate_limit_buckets', key)
             if record and record['window_end'] > now:
                 if record['count'] >= limit:
-                    raise DomainError('RATE_LIMITED', 'یه کم مکث کن و دوباره امتحان کن.', 429)
+                    raise DomainError('RATE_LIMITED', 'یه کم مکث کن و دوباره امتحان کن.', 429,
+                                      retry_after=ceil((record['window_end'] - now).total_seconds()))
                 record['count'] += 1
                 replace(self.store, 'rate_limit_buckets', record)
             else:

@@ -9,6 +9,7 @@ from app.modules.catalog.bootstrap import seed_bank, seed_demo
 from app.modules.recommendations.service import Recommendations
 from app.modules.experiences.service import Experiences
 from app.modules.content_jobs import ContentJobs
+from app.modules.activity_assistant.service import ActivityAssistant
 
 logger = logging.getLogger('uvicorn.error')
 
@@ -57,3 +58,4 @@ class Services:
                 import_unified(self.store, clock)
         logger.info('API startup: preparing the in-process content runner')
         self.jobs = ContentJobs(self.store, self.catalog, settings, clock)
+        self.activity_assistant = ActivityAssistant(self.store, self.catalog, self.limiter, settings, clock)
