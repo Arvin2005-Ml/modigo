@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
-PRODUCTION_ORIGIN = 'https://shadophena.liara.run'
+PRODUCTION_ORIGIN = 'https://moodigo.ir'
 
 
 def normalize_app_origin(value):

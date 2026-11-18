@@ -36,6 +36,7 @@
 !content/iran-catalog.json
 !content/dramma-legacy-checksums.json
 !content/short-now.txt
+!content/long-now.txt
 !DRAMMA_450_activities_fa.json
 **/.env
 **/.env.*

@@ -8,16 +8,18 @@ from app.modules.catalog.short_activities import import_short_activities
 from app.modules.catalog.home_short import import_home_short
 from app.modules.catalog.everyday_activities import import_everyday
 from app.modules.catalog.short_now import import_short_now, short_now_catalog
+from app.modules.catalog.long_now import import_long_now, long_now_catalog
 from app.modules.catalog.unified import unified_catalog
 from app.modules.catalog.deduplication import duplicate_records
 
 IMPORTERS = (import_catalog, import_cinemas, import_food, import_visits,
-             import_short_activities, import_home_short, import_everyday, import_short_now)
+             import_short_activities, import_home_short, import_everyday, import_short_now, import_long_now)
 
 
 def import_unified(store, clock):
     unified_catalog()  # validate all keys before any database writes
     short_now_catalog()
+    long_now_catalog()
     results = [importer(store, clock) for importer in IMPORTERS]
     return {'releases': results, 'inserted': sum(r['inserted'] for r in results),
             'duplicates_skipped': [key for r in results for key in r.get('duplicate_keys', [])],
@@ -32,11 +34,13 @@ def main():
     from app.core.values import utcnow
     parser = argparse.ArgumentParser(description='Validate or import unified activity catalog')
     parser.add_argument('--apply', action='store_true')
-    parser.add_argument('--short-now-only', action='store_true', help='Validate or import only the same-place release')
+    scope = parser.add_mutually_exclusive_group()
+    scope.add_argument('--short-now-only', action='store_true', help='Validate or import only the short same-place release')
+    scope.add_argument('--long-now-only', action='store_true', help='Validate or import only the longer same-place release')
     args = parser.parse_args()
     if not args.apply:
-        releases = [short_now_catalog()] if args.short_now_only else [*unified_catalog()['releases'].values(),
-                                                                      short_now_catalog()]
+        releases = ([short_now_catalog()] if args.short_now_only else [long_now_catalog()] if args.long_now_only
+                    else [*unified_catalog()['releases'].values(), short_now_catalog(), long_now_catalog()])
         from app.modules.catalog.schemas import Content
         for release in releases:
             for entry in release['entries']:
@@ -48,7 +52,8 @@ def main():
     try:
         settings = Settings.load()
         store = create_store({'DATA_BACKEND':settings.data_backend,'MONGODB_URI':settings.mongodb_uri})
-        result = (import_short_now(store, utcnow) if args.short_now_only else import_unified(store, utcnow))
+        importer = import_short_now if args.short_now_only else import_long_now if args.long_now_only else import_unified
+        result = importer(store, utcnow)
         print(json.dumps({'mode':'real_mongodb', **result},ensure_ascii=False,default=str))
         return 0
     except StorageUnavailable as exc:

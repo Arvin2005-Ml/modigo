@@ -6,6 +6,8 @@ publication state and ownership are checked here only as candidate eligibility.
 from datetime import datetime
 from app.core.schemas import city_key
 
+VENUE_POLICY_VERSION = 'explicit_opt_in_and_exact_city_v1'
+
 MOBILITY = {'seated': 0, 'light': 1, 'active': 2}
 VENUE_MATCHES = {
     'home': ('home',),
@@ -14,6 +16,10 @@ VENUE_MATCHES = {
     'outdoor': ('outdoor',),
     'indoor_public': ('indoor_public',),
 }
+
+def total_minutes(content: dict) -> int:
+    return sum(content[key] for key in ('active_minutes', 'setup_minutes', 'travel_minutes'))
+
 
 def venue_allowed(context: dict, content: dict) -> bool:
     place = content.get('place')
@@ -36,8 +42,7 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
             or activity['id'] in (excluded or set())):
         return None
     content = activity['content']
-    duration = sum(content[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes'))
-    if duration > context['available_minutes']:
+    if total_minutes(content) > context['available_minutes']:
         return None
     if content['venue'] not in VENUE_MATCHES.get(context['venue'], ()):
         return None

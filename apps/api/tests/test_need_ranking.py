@@ -96,6 +96,28 @@ class NeedRankingTests(unittest.TestCase):
         preferred['active'] = False
         self.assertEqual(self.first(context, history), 'relaxation')
 
+    def test_long_session_prioritizes_a_good_time_fit_over_short_familiar_games(self):
+        by_dimension = {a['id']: a for a in self.candidates}
+        game = by_dimension['mastery']
+        walk = by_dimension['detachment']
+        walk['content'].update(active_minutes=90, tags=['walking', 'nature'])
+        too_long = by_dimension['meaning']
+        too_long['content'].update(active_minutes=115, travel_minutes=10)
+        context = {**self.context, 'available_minutes': 120, 'activity_intent': 'learn'}
+        history = [self.choice('mastery', i) for i in range(10)]
+        self.assertEqual(self.first(context, history, [game, walk, too_long]), 'detachment')
+        self.assertEqual(self.first(context, history, [game, too_long]), 'mastery')
+
+    def test_replacement_prefers_an_unseen_kind_of_activity_at_the_same_time_fit(self):
+        first, second, different = self.candidates[:3]
+        for activity in (first, second, different):
+            activity['content']['active_minutes'] = 90
+        different['content']['tags'] = ['music', 'listening']
+        history = [self.choice(second['id'], i) for i in range(10)]
+        result = rank([first, second, different], {**self.context, 'available_minutes': 120},
+            NOW, {first['id']}, 'fixed-seed', history, [], [], seen=[first])
+        self.assertEqual(result[0]['activity']['id'], different['id'])
+
 
 if __name__ == '__main__':
     unittest.main()

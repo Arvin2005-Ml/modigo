@@ -122,7 +122,7 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
 | profiles | user_id unique، preferences شامل goal/tags/owned_items/constraints، updated_at |
 | activities | seed_key unique sparse، active، primary_dimension، published_revision_id |
 | activity_revisions | unique(activity_id,version)، index state و activity_id |
-| check_ins | user_id، context،recommendation_session_id=null،created_slate_count=0،shown_activity_ids=[]،version، created_at، expires_at؛ index(user_id,created_at)، TTL expires_at=۹۰روز |
+| check_ins | user_id، context، context_input (پاسخ‌های صریحِ نرمال‌شده؛ در رکوردهای جدید، فقط داخلی)، recommendation_session_id=null،created_slate_count=0،shown_activity_ids=[]،version، created_at، expires_at؛ index(user_id,created_at)، TTL expires_at=۹۰روز |
 | recommendation_sessions | user_id، check_in_id، context_snapshot، items، suggestion_history،suggestion_index=0،replacement_count=0،replacement_limit=6،shown_activity_ids، version، algorithm_version، seed، created_at، expires_at=۲۴ساعت،purge_at=۹۰روز؛ index(user_id,created_at) |
 | experiences | user_id، activity_id، revision_id، recommendation_session_id، slot_id، content_snapshot، context_snapshot، status active/completed/cancelled/expired، started_at، completed_at، completion_local_date، timezone_at_start، award_result؛ unique partial(user_id) where status=active |
 | feedback | experience_id unique، user_id، rating، reason|null، updated_at؛ index(user_id,updated_at) |

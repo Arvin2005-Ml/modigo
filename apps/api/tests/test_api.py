@@ -121,6 +121,7 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         ready = await self.a.get('/api/v1/health/ready')
         self.assertEqual(ready.status_code, 200)
         self.assertEqual(ready.json()['data_backend'], 'mongo')
+        self.assertEqual(ready.json()['venue_policy'], 'explicit_opt_in_and_exact_city_v1')
         with patch.object(self.s.store, 'ping', side_effect=StorageUnavailable('database unavailable')):
             failed = await self.a.get('/api/v1/health/ready')
             self.assertEqual(failed.status_code, 503)
@@ -535,16 +536,106 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.s.store.get('check_ins', check_id)['created_slate_count'], 1)
 
     async def test_start_rechecks_latest_persistent_constraints(self):
-        slate = await self.slate()
+        check_in = await self.post(self.a, '/check-ins', CONTEXT)
+        key = str(uuid4())
+        payload = {'check_in_id': check_in.json()['id']}
+        slate = (await self.post(self.a, '/recommendation-sessions', payload, key)).json()
         first = slate['items'][0]
         revision = self.s.catalog.revision(first['revision_id'])
         p = self.s.identity.preferences(self.ua['id'])
         p['preferences']['blocked_tags'] = revision['content']['tags']
-        await self.a.put('/api/v1/me/preferences', json=p)
+        self.assertEqual((await self.a.put('/api/v1/me/preferences', json=p)).status_code, 200)
+        for response in (await self.a.get(f'/api/v1/recommendation-sessions/{slate["id"]}'),
+                         await self.post(self.a, '/recommendation-sessions', payload, key)):
+            self.assertEqual(response.json()['items'], [{'slot_id': first['slot_id'], 'unavailable': True}])
         r = await self.post(self.a, '/experiences', {'recommendation_session_id': slate['id'],
                             'slot_id': first['slot_id'], 'revision_id': first['revision_id']})
         self.assertEqual(r.status_code, 409)
         self.assertEqual(r.json()['error']['code'], 'INVALID_STATE')
+
+    async def test_session_preserves_an_explicit_override_but_reloads_inherited_items(self):
+        candidates = self.s.catalog.candidates()
+        paper = next(a for a in candidates if a['content']['venue'] == 'home'
+            and a['content']['required_items'] == ['paper'] and a['content']['cost']['kind'] == 'free'
+            and 'solo' in a['content']['supported_social_modes'])
+        for row in candidates:
+            if row['id'] != paper['id']:
+                activity = self.s.catalog.activity(row['id'])
+                replace(self.s.store, 'activities', {**activity, 'active': False})
+        async def set_items(items):
+            profile = self.s.identity.preferences(self.ua['id'])
+            profile['preferences']['owned_items'] = items
+            response = await self.a.put('/api/v1/me/preferences', json=profile)
+            self.assertEqual(response.status_code, 200, response.text)
+        context = {**CONTEXT, 'available_minutes': 120}
+        await set_items(['paper'])
+        inherited = await self.slate(context=context)
+        explicit = await self.slate(context={**context, 'owned_items': ['paper']})
+        explicit_empty = (await self.post(self.a, '/check-ins', {**context, 'owned_items': []})).json()
+        legacy = await self.slate(context=context)
+        check_in = self.s.store.get('check_ins', legacy['check_in_id'])
+        check_in.pop('context_input')
+        replace(self.s.store, 'check_ins', check_in)
+        await set_items([])
+        for slate in (inherited, legacy):
+            item = slate['items'][0]
+            response = await self.a.get(f'/api/v1/recommendation-sessions/{slate["id"]}')
+            self.assertTrue(response.json()['items'][0]['unavailable'])
+            start = await self.post(self.a, '/experiences', {'recommendation_session_id': slate['id'],
+                'slot_id': item['slot_id'], 'revision_id': item['revision_id']})
+            self.assertEqual(start.json()['error']['code'], 'INVALID_STATE')
+        started = await self.start(slate=explicit)
+        self.assertEqual(started['activity_id'], paper['id'])
+        self.assertEqual((await self.post(self.a, f'/experiences/{started["id"]}/cancel')).status_code, 200)
+        await set_items(['paper'])
+        omitted = (await self.post(self.a, '/recommendation-sessions',
+            {'check_in_id': explicit_empty['id']})).json()
+        self.assertEqual(omitted['result_count'], 0)
+
+    async def test_expired_capped_price_redacts_the_card_before_start(self):
+        row = next(a for a in self.s.catalog.candidates()
+            if eligible(Context.model_validate(CONTEXT).model_dump(), a, self.now))
+        for other in self.s.catalog.candidates():
+            if other['id'] != row['id']:
+                activity = self.s.catalog.activity(other['id'])
+                replace(self.s.store, 'activities', {**activity, 'active': False})
+        revision = self.s.catalog.revision(row['revision_id'])
+        revision['content']['cost'].update(kind='estimated', min_toman=1000, max_toman=2000,
+            verified_at=self.now - timedelta(days=1), valid_until=self.now + timedelta(minutes=5))
+        replace(self.s.store, 'activity_revisions', revision)
+        slate = await self.slate(context={**CONTEXT, 'budget': {'mode': 'cap', 'cap_toman': 2000}})
+        item = slate['items'][0]
+        self.now += timedelta(minutes=5)
+        current = await self.a.get(f'/api/v1/recommendation-sessions/{slate["id"]}')
+        self.assertTrue(current.json()['items'][0]['unavailable'])
+        start = await self.post(self.a, '/experiences', {'recommendation_session_id': slate['id'],
+            'slot_id': item['slot_id'], 'revision_id': item['revision_id']})
+        self.assertEqual(start.json()['error']['code'], 'INVALID_STATE')
+
+    async def test_withdrawn_current_card_remains_replaceable_on_create_replay(self):
+        check_in = await self.post(self.a, '/check-ins', CONTEXT)
+        payload = {'check_in_id': check_in.json()['id']}
+        key = str(uuid4())
+        response = await self.post(self.a, '/recommendation-sessions', payload, key)
+        created = response.json()
+        item = created['items'][0]
+        activity = self.s.catalog.activity(item['activity_id'])
+        replace(self.s.store, 'activities', {**activity, 'active': False})
+        path = f'/recommendation-sessions/{created["id"]}'
+        current = (await self.a.get('/api/v1' + path)).json()
+        replay = (await self.post(self.a, '/recommendation-sessions', payload, key)).json()
+        self.assertEqual(replay, current)
+        self.assertEqual(replay['items'], [{'slot_id': item['slot_id'], 'unavailable': True}])
+        self.assertTrue(replay['replacement_available'])
+        self.assertEqual(replay['replacements_remaining'], 6)
+        response = await self.post(self.a, path + f'/slots/{item["slot_id"]}/replace',
+                                   {'expected_version': replay['version']})
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertTrue(response.json()['replaced'])
+        self.assertEqual(response.json()['replacements_remaining'], 5)
+        stale = (await self.post(self.a, '/recommendation-sessions', payload, key)).json()
+        self.assertEqual(stale['version'], replay['version'])
+        self.assertFalse(stale['replacement_available'])
 
     async def test_replace_exhaustion_does_not_increment_version(self):
         slate = await self.slate(context={**CONTEXT, 'venue': 'outdoor', 'available_minutes': 5})

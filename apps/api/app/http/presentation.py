@@ -28,7 +28,5 @@ def public_response(value, store):
         if 'items' in result and 'result_count' in result:
             n = sum(not v.get('unavailable', False) for v in result['items'])
             result.update(result_count=n, partial=n == 0, empty_reason=None if n else 'NO_MATCHES')
-            if not n:
-                result['replacement_available'] = False
         return result
     return walk(value)

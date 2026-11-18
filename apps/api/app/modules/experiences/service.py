@@ -1,9 +1,7 @@
 from datetime import timedelta
 from zoneinfo import ZoneInfo
 from app.core.errors import DomainError, conflict, missing
-from app.core.schemas import merge_constraints
 from app.core.values import uid, replace, owned
-from app.modules.recommendations.eligibility import eligible
 
 BADGES = [('first_step', 1), ('five_moments', 5), ('ten_moments', 10)]
 
@@ -49,12 +47,8 @@ class Experiences:
                 raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
             if activity['published_revision_id'] != data.revision_id:
                 conflict('نسخهٔ تازه‌ای آماده شده؛دوباره پیشنهاد بگیر.')
-            context = merge_constraints(session['context_snapshot'], self.identity.preferences(user_id)['preferences'])
-            parsed = self.catalog.checked_content(revision.get('content'), activity['primary_dimension'])
-            execution = (eligible(context, dict(id=activity['id'], active=True, state=revision['state'],
-                         revision_id=revision['id'], published_revision_id=activity['published_revision_id'],
-                         content=parsed.model_dump()), self.clock())
-                         if parsed is not None and revision['activity_id'] == activity['id'] else None)
+            context = self.recommendations.session_context(session)
+            _, execution = self.recommendations.card_execution(activity, revision, context)
             if not execution:
                 raise DomainError('INVALID_STATE', 'این پیشنهاد با شرایط الانت جور نیست؛یه پیشنهاد تازه بگیر.')
             active = self._active(user_id)

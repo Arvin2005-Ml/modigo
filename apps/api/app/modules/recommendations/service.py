@@ -1,9 +1,9 @@
 from datetime import timedelta
 from app.core.errors import DomainError, conflict, missing
-from app.core.schemas import merge_constraints
+from app.core.schemas import Context, merge_constraints
 from app.core.values import uid, replace, owned
 from app.modules.recommendations.ranking import rank, GOALS, ALGORITHM_VERSION
-from app.modules.recommendations.eligibility import eligible, venue_allowed
+from app.modules.recommendations.eligibility import eligible, total_minutes
 
 REPLACEMENT_LIMIT = 6
 VENUE_CHECK_MESSAGE = 'پیش از رفتن، باز بودن، هزینه، رزرو و شرایط دسترسی را از محل بررسی کن.'
@@ -19,19 +19,39 @@ class Recommendations:
             preferences = self.identity.preferences(user_id)['preferences']
             context = merge_constraints(data.model_dump(), preferences, data.model_fields_set)
             record = self.store.insert('check_ins', dict(id=uid(), user_id=user_id, context=context,
+                context_input=data.model_dump(exclude_unset=True),
                 created_slate_count=0, recommendation_session_id=None, shown_activity_ids=[],
                 created_at=self.clock(), expires_at=self.clock() + timedelta(days=90)))
             return {k: record[k] for k in ('id', 'context', 'created_at')}
 
-    def _rank(self, user_id, context, excluded, seed, candidates=None):
+    def _effective_context(self, user_id, check_in, snapshot):
+        preferences = self.identity.preferences(user_id)['preferences']
+        if 'context_input' in check_in:
+            data = Context.model_validate(check_in['context_input'])
+            return merge_constraints(data.model_dump(), preferences, data.model_fields_set)
+        # Old rows cannot tell an explicit per-turn choice from an inherited
+        # setting. Keep existing restrictions; don't grant removed items/contact.
+        context = merge_constraints(snapshot, preferences)
+        context['owned_items'] = sorted(set(context['owned_items']) & set(preferences['owned_items']))
+        context['allow_async_contact'] = context['allow_async_contact'] and preferences['allow_async_contact']
+        return context
+
+    def session_context(self, session, check_in=None):
+        if check_in is None:
+            check_in = owned(self.store, 'check_ins', session['check_in_id'], session['user_id'])
+        return self._effective_context(session['user_id'], check_in, session['context_snapshot'])
+
+    def _rank(self, user_id, context, excluded, seed, candidates=None, seen=()):
         history = [e for e in self.store.list('experiences') if e['user_id'] == user_id]
+        now = self.clock()
         active = {e['activity_id'] for e in history
-                  if e['status'] == 'active' and e['started_at'] + timedelta(hours=24) > self.clock()}
+                  if e['status'] == 'active' and e['started_at'] + timedelta(hours=24) > now}
         return rank(self.catalog.candidates() if candidates is None else candidates,
-            context, self.clock(), set(excluded) | active, seed,
+            context, now, set(excluded) | active, seed,
             history,
             [f for f in self.store.list('feedback') if f['user_id'] == user_id],
-            [s for s in self.store.list('recommendation_sessions') if s['user_id'] == user_id], 1)
+            [s for s in self.store.list('recommendation_sessions') if s['user_id'] == user_id],
+            seen=seen)
 
     def _slot(self, item, index, context, slot_id=None):
         activity = item['activity']
@@ -69,8 +89,7 @@ class Recommendations:
                 raise DomainError('SESSION_EXPIRED', 'برای شرایط الانت یه پیشنهاد تازه بگیر.', 410)
             if check_in['recommendation_session_id']:
                 return self.present(self.load(user_id, check_in['recommendation_session_id']))
-            preferences = self.identity.preferences(user_id)['preferences']
-            context = merge_constraints(check_in['context'], preferences)
+            context = self._effective_context(user_id, check_in, check_in['context'])
             seed = uid()
             candidates = self.catalog.candidates()
             ranked = self._rank(user_id, context, check_in['shown_activity_ids'], seed, candidates)
@@ -87,7 +106,7 @@ class Recommendations:
             check_in['created_slate_count'] += 1
             check_in['recommendation_session_id'] = session['id']
             replace(self.store, 'check_ins', check_in)
-            return self.present(session, candidates)
+            return self.present(session, candidates, check_in=check_in, context=context)
 
     def load(self, user_id, session_id):
         session = owned(self.store, 'recommendation_sessions', session_id, user_id)
@@ -95,25 +114,39 @@ class Recommendations:
             raise DomainError('SESSION_EXPIRED', 'این پیشنهادها قدیمی شدن؛شرایط الانت رو دوباره بگو.', 410)
         return session
 
+    def card_execution(self, activity, revision, context):
+        if revision['activity_id'] != activity['id']:
+            return None, None
+        parsed = self.catalog.checked_content(revision.get('content'), activity['primary_dimension'])
+        if parsed is None:
+            return None, None
+        content = parsed.model_dump()
+        execution = eligible(context, {**activity, 'state': revision['state'],
+            'revision_id': revision['id'], 'content': content}, self.clock())
+        return content, execution
+
     def present_item(self, item, context):
+        unavailable = dict(slot_id=item['slot_id'], unavailable=True)
+        if not item.get('revision_id') or not item.get('activity_id'):
+            return unavailable
         revision = self.catalog.revision(item['revision_id'])
         activity = self.catalog.activity(item['activity_id'])
-        if (not activity['active'] or revision['activity_id'] != activity['id']
-                or revision['state'] not in ('published', 'superseded')):
-            return dict(slot_id=item['slot_id'], unavailable=True)
-        content = self.catalog.checked_content(revision.get('content'), activity['primary_dimension'])
-        if content is None or not venue_allowed(context, content.model_dump(include={'place', 'requires_venue_check'})):
-            return dict(slot_id=item['slot_id'], unavailable=True)
-        c = content.model_dump()
+        c, execution = self.card_execution(activity, revision, context)
+        if not execution:
+            return unavailable
         return {**{k: v for k, v in item.items() if k != 'score_internal'},
             'title': c['title'], 'teaser': c['teaser'],
-            'total_minutes': sum(c[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes')),
+            'execution_social_mode': execution[0], 'execution_people': execution[1],
+            'total_minutes': total_minutes(c),
             'cost_label': 'رایگان' if c['cost']['kind'] == 'free' else 'هزینهٔ متغیر', 'unavailable': False,
             'requires_venue_check': c['requires_venue_check'], 'place': c['place'],
             'venue_check_message': VENUE_CHECK_MESSAGE if c['requires_venue_check'] else None}
 
-    def present(self, session, candidates=None):
-        context = session['context_snapshot']
+    def present(self, session, candidates=None, *, check_in=None, context=None):
+        if check_in is None:
+            check_in = owned(self.store, 'check_ins', session['check_in_id'], session['user_id'])
+        if context is None:
+            context = self.session_context(session, check_in)
         items = [self.present_item(item, context) for item in session['items']]
         n = sum(not i.get('unavailable') for i in items)
         return dict(id=session['id'], check_in_id=session['check_in_id'], version=session['version'],
@@ -121,15 +154,13 @@ class Recommendations:
             context_summary={**{k: context[k] for k in ('available_minutes','social_mode','party_size','venue','budget')},
                 'city': context.get('city'), 'allow_venue_planning': context.get('allow_venue_planning', False)},
             items=items, result_count=n, partial=n == 0,
-            empty_reason=None if n else 'NO_MATCHES', **self.replacement_state(session, candidates))
+            empty_reason=None if n else 'NO_MATCHES',
+            **self.replacement_state(session, check_in, context, candidates))
 
-    def replacement_state(self, session, candidates=None):
+    def replacement_state(self, session, check_in, context, candidates=None):
         remaining = max(0, session['replacement_limit'] - session['replacement_count'])
         available = False
         if remaining and session['items'] and session['suggestion_index'] == len(session['suggestion_history']) - 1:
-            check_in = owned(self.store, 'check_ins', session['check_in_id'], session['user_id'])
-            context = merge_constraints(session['context_snapshot'],
-                self.identity.preferences(session['user_id'])['preferences'])
             excluded = set(check_in['shown_activity_ids']) | {
                 e['activity_id'] for e in self.store.list('experiences')
                 if e['user_id'] == session['user_id'] and e['status'] == 'active'
@@ -141,6 +172,27 @@ class Recommendations:
             replacement_limit=session['replacement_limit'], replacements_remaining=remaining,
             replacement_available=available, suggestion_index=session['suggestion_index'],
             suggestion_count=len(session['suggestion_history']))
+
+    def replay(self, user_id, session_id, receipt):
+        session = self.load(user_id, session_id)
+        check_in = owned(self.store, 'check_ins', session['check_in_id'], user_id)
+        context = self.session_context(session, check_in)
+        replacement_receipt = 'session_version' in receipt
+        version = receipt['session_version' if replacement_receipt else 'version']
+        if version == session['version']:
+            if replacement_receipt:
+                return {**receipt, 'item': self.present_item(session['items'][0], context),
+                        **self.replacement_state(session, check_in, context)}
+            return self.present(session, check_in=check_in, context=context)
+        # Keep the outcome/version of the original action. An older receipt
+        # cannot authorize a new mutation or expose a card invalidated since.
+        if replacement_receipt:
+            return {**receipt, 'item': self.present_item(receipt['item'], context),
+                    'replacement_available': False}
+        items = [self.present_item(item, context) for item in receipt['items']]
+        n = sum(not item['unavailable'] for item in items)
+        return {**receipt, 'items': items, 'result_count': n, 'partial': n == 0,
+                'empty_reason': None if n else 'NO_MATCHES', 'replacement_available': False}
 
     def get(self, user_id, session_id):
         with self.store.atomic():
@@ -177,12 +229,14 @@ class Recommendations:
                 raise DomainError('REPLACEMENT_LIMIT',
                     'شش بار پیشنهاد رو عوض کردی؛ می‌تونی پیشنهادهای قبلی رو ببینی یا شرایط تازه‌ای بگی.')
             check_in = owned(self.store, 'check_ins', session['check_in_id'], user_id)
-            context = merge_constraints(session['context_snapshot'], self.identity.preferences(user_id)['preferences'])
+            context = self.session_context(session, check_in)
             candidates = self.catalog.candidates()
-            ranked = self._rank(user_id, context, check_in['shown_activity_ids'], session['seed'], candidates)
+            excluded = set(check_in['shown_activity_ids'])
+            seen = [a for a in candidates if a['id'] in excluded]
+            ranked = self._rank(user_id, context, excluded, session['seed'], candidates, seen)
             if not ranked:
                 return dict(session_version=session['version'], item=self.present_item(item, context),
-                    replaced=False, **self.replacement_state(session, candidates))
+                    replaced=False, **self.replacement_state(session, check_in, context, candidates))
             new_item = self._slot(ranked[0], item['rank'], context, slot_id)
             session['items'] = [new_item if s['slot_id'] == slot_id else s for s in session['items']]
             session['suggestion_history'].append(new_item)
@@ -193,4 +247,4 @@ class Recommendations:
             check_in['shown_activity_ids'] = sorted(set(check_in['shown_activity_ids']) | {new_item['activity_id']})
             replace(self.store, 'check_ins', check_in)
             return dict(session_version=session['version'], item=self.present_item(new_item, context),
-                replaced=True, **self.replacement_state(session, candidates))
+                replaced=True, **self.replacement_state(session, check_in, context, candidates))

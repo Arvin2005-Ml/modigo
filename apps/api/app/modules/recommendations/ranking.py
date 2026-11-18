@@ -2,12 +2,38 @@
 from datetime import timedelta
 from hashlib import sha256
 from collections import Counter
-from app.modules.recommendations.eligibility import eligible
+from app.modules.recommendations.eligibility import eligible, total_minutes
 
 GOALS = {'unwind': 'relaxation', 'switch_off': 'detachment', 'learn': 'mastery',
          'connect': 'affiliation', 'meaning': 'meaning', 'choose': 'autonomy'}
 ENERGY = {'low': 0, 'medium': 1, 'high': 2}
-ALGORITHM_VERSION = 'needs_history_v3'
+ALGORITHM_VERSION = 'time_and_variety_v4'
+
+
+def activity_family(content):
+    tags = set(content['tags'])
+    if content.get('place') and {'culture', 'storytelling'} <= tags:
+        return 'screen_and_stage'
+    for name, markers in (
+        ('hands_on', {'craft', 'gardening', 'food', 'drawing', 'design'}),
+        ('moving', {'walking', 'movement', 'dance'}),
+        ('looking', {'observation', 'photography', 'nature'}),
+        ('with_others', {'conversation', 'cooperation', 'community'}),
+        ('stories_and_music', {'reading', 'music', 'writing', 'storytelling', 'culture'}),
+        ('games', {'games', 'puzzles', 'imagination', 'play'}),
+        ('resting', {'rest', 'mindfulness', 'reflection'}),
+    ):
+        if markers & tags:
+            return name
+    return 'other'
+
+
+def time_tier(minutes, available, matches_interest):
+    if available < 60:
+        return 0
+    if minutes * 5 >= available * 3 or (matches_interest and minutes * 2 >= available):
+        return 2
+    return 1 if minutes * 3 >= available else 0
 
 
 def current_needs(context):
@@ -48,10 +74,12 @@ def jaccard(a, b):
     return len(a & b) / len(a | b) if a | b else 0
 
 
-def rank(candidates, context, now, excluded, seed, history, feedback, shown, count=1, selected=None):
+def rank(candidates, context, now, excluded, seed, history, feedback, shown, count=1, selected=None, *, seen=()):
     selected = list(selected or [])
+    seen_families = Counter(activity_family(a['content']) for a in seen)
     scored = []
     needs = current_needs(context)
+    likes = set(context['liked_tags'])
     mood_answer = context.get('mood', 'skip') if context.get('activity_intent') is None else 'skip'
     preferences = dimension_preferences(history)
     completed = [e for e in history if e['status'] == 'completed']
@@ -70,10 +98,12 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
         else:
             difference = ENERGY[c['energy_required']] - ENERGY[context['energy']]
             energy = 1 if difference == 0 else .8 if difference < 0 else .2 if difference == 1 else 0
-        likes = set(context['liked_tags'])
-        interest = len(likes & set(c['tags'])) / len(likes) if likes else .5
-        ratio = sum(c[k] for k in ('active_minutes', 'setup_minutes', 'travel_minutes')) / context['available_minutes']
-        time = .6 if ratio <= .2 else 1 if ratio <= .8 else .8
+        liked_count = len(likes.intersection(c['tags']))
+        interest = liked_count / len(likes) if likes else .5
+        minutes = total_minutes(c)
+        ratio = minutes / context['available_minutes']
+        time = min(1, ratio / .85) if context['available_minutes'] >= 60 else (
+            .6 if ratio <= .2 else 1 if ratio <= .8 else .8)
         mood = .5
         if mood_answer == 'tired' and (c['primary_dimension'] == 'relaxation' or c['energy_required'] == 'low'):
             mood = 1
@@ -99,6 +129,8 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
         score = max(0, min(1, .22 * goal + .20 * energy + .16 * interest + .14 * time + .10 * mood + .10 * fb + .08 * novelty - penalty))
         tie = sha256(f'{seed}:{activity["id"]}'.encode()).hexdigest()
         scored.append(dict(activity=activity, execution=execution, score=score, tie=tie,
+            time_tier=time_tier(minutes, context['available_minutes'], liked_count > 0),
+            family=activity_family(c),
             need_fit=needs.get(c['primary_dimension'], 0),
             dimension_preference=preferences.get(c['primary_dimension'], 0)))
     output = []
@@ -114,8 +146,14 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
                 if n >= cap:
                     continue
                 similarity = max((jaccard(c['tags'], a['content']['tags']) for a in others), default=0)
-                options.append((item['need_fit'], item['dimension_preference'],
-                    item['score'] - .12 * similarity - .08 * n, item['tie'], item))
+                family_count = seen_families[item['family']] + sum(
+                    activity_family(a['content']) == item['family'] for a in others)
+                base = item['score'] - .12 * similarity - .08 * n
+                long_window = context['available_minutes'] >= 60
+                preference = item['dimension_preference']
+                options.append((item['time_tier'], item['need_fit'], -family_count,
+                    0 if long_window else preference, base + (.12 * preference if long_window else 0),
+                    item['tie'], item))
             if not options:
                 break
             output.append(max(options, key=lambda x: x[:-1])[-1])

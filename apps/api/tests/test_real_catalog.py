@@ -187,7 +187,7 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
             async with app.router.lifespan_context(app):
                 catalog_counts = counts(app.state.services.store)
                 self.assertEqual(catalog_counts['curated_recommendable'],700)
-                self.assertEqual(catalog_counts['recommendable'],1003)
+                self.assertEqual(catalog_counts['recommendable'],1015)
                 async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app),base_url=origin,
                         headers={'Origin':origin}) as client:
                     csrf=(await client.get('/api/v1/auth/csrf')).json()['csrf_token'];client.headers['X-CSRF-Token']=csrf
@@ -277,7 +277,7 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(queue.status_code, 200, queue.text)
                     self.assertEqual(queue.json()['total'], 450)
                     self.assertEqual(len(queue.json()['items']), 3)
-                    self.assertEqual(queue.json()['counts']['active'], 1003)
+                    self.assertEqual(queue.json()['counts']['active'], 1015)
 
                     # At the five-minute floor, the initial home card and all six
                     # replacements must be distinct and stay free and equipment-free.
@@ -299,4 +299,37 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                         seen.add(result['item']['activity_id'])
                         version = result['session_version']
                     self.assertEqual(len(seen), 7)
+
+                    outside = {**payload, 'available_minutes': 120, 'venue': 'away_from_home',
+                        'weather': 'fair', 'daylight': 'day', 'activity_intent': 'any'}
+                    check = await post('/check-ins', outside)
+                    result = await post('/recommendation-sessions', {'check_in_id': check.json()['id']})
+                    self.assertEqual(result.status_code, 201, result.text)
+                    self.assertIn(result.json()['items'][0]['total_minutes'], (75, 90))
+                    self.assertIsNone(result.json()['items'][0]['place'])
+
+                    check = await post('/check-ins', {**outside, 'available_minutes': 240})
+                    result = await post('/recommendation-sessions', {'check_in_id': check.json()['id']})
+                    self.assertEqual(result.status_code, 201, result.text)
+                    long_outing = result.json()
+                    card, version = long_outing['items'][0], long_outing['version']
+                    from app.modules.catalog.cinema_expansion import cinema_catalog
+                    cinema_titles = {e['content']['title'] for e in cinema_catalog()['entries']}
+                    cinema_titles.update(e['content']['title'] for e in real_catalog()['entries']
+                        if e.get('category') == 'cinema')
+                    for attempt in range(7):
+                        self.assertLessEqual(card['total_minutes'], 240)
+                        if card['title'] in cinema_titles:
+                            self.assertTrue(card['requires_venue_check'])
+                            self.assertEqual(card['place']['city'], 'تهران')
+                            self.assertGreater(card['total_minutes'], 120)
+                            break
+                        if attempt == 6:
+                            self.fail('An eligible cinema should appear among the seven distinct outings.')
+                        replaced = await post(
+                            f'/recommendation-sessions/{long_outing["id"]}/slots/{card["slot_id"]}/replace',
+                            {'expected_version': version})
+                        self.assertEqual(replaced.status_code, 200, replaced.text)
+                        self.assertTrue(replaced.json()['replaced'])
+                        card, version = replaced.json()['item'], replaced.json()['session_version']
         finally:ticker.cancel()

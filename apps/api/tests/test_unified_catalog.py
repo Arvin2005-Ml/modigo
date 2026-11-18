@@ -15,13 +15,13 @@ class UnifiedCatalogTests(unittest.TestCase):
     def test_combined_import_is_idempotent_and_skips_reviewed_duplicates(self):
         data=unified_catalog();self.assertEqual(len(data['releases']),7)
         s=MemoryTestStore();first=import_unified(s,lambda:NOW)
-        self.assertEqual(first['inserted'],1003)
+        self.assertEqual(first['inserted'],1015)
         self.assertEqual(set(first['duplicates_skipped']), {'real:everyday-group-'+i for i in ('005','007','012','015','016','019')})
-        self.assertEqual(len(s.list('activities')),1003)
+        self.assertEqual(len(s.list('activities')),1015)
         second=import_unified(s,lambda:NOW)
         self.assertEqual(second['inserted'],0)
         self.assertEqual(set(second['duplicates_skipped']), {'real:everyday-group-'+i for i in ('005','007','012','015','016','019')})
-        self.assertEqual(len(s.list('activities')),1003)
+        self.assertEqual(len(s.list('activities')),1015)
 
     def test_reverse_import_order_preserves_existing_and_reuses_identity(self):
         existing=next(e for e in everyday_catalog()['entries'] if e['key']=='real:everyday-group-007')
