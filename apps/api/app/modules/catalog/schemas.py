@@ -1,7 +1,10 @@
-from datetime import datetime
+from datetime import date, datetime
+import ipaddress
+import re
 from typing import Literal
+from urllib.parse import urlsplit
 from pydantic import Field, field_validator, model_validator
-from app.core.schemas import Input, Constraints, Dimension, Integer, DIMENSIONS
+from app.core.schemas import Input, Dimension, Integer, normalize_city
 
 
 class Cost(Input):
@@ -28,6 +31,69 @@ class Cost(Input):
                     or not 0 < (self.valid_until - self.verified_at).total_seconds() <= 30 * 86400):
                 raise ValueError('invalid_estimate')
         return self
+
+
+class Place(Input):
+    name: str = Field(min_length=2, max_length=160)
+    city: str = Field(min_length=2, max_length=100)
+    source_url: str = Field(max_length=500)
+    source_name: str = Field(min_length=2, max_length=160)
+    researched_on: str
+    evidence_scope: Literal['place_and_activity_type_only']
+
+    @field_validator('city', mode='before')
+    @classmethod
+    def clean_city(cls, value):
+        return normalize_city(value) if isinstance(value, str) else value
+
+    @field_validator('source_url', mode='before')
+    @classmethod
+    def public_https(cls, value):
+        if not isinstance(value, str) or not value or '\\' in value or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in value):
+            raise ValueError('invalid_source_url')
+        parts = urlsplit(value)
+        host = (parts.hostname or '').lower().rstrip('.')
+        if (parts.scheme != 'https' or parts.username is not None or parts.password is not None
+                or parts.port not in (None, 443) or not host or parts.netloc.endswith(':')):
+            raise ValueError('invalid_source_url')
+        try:
+            address = ipaddress.ip_address(host)
+        except ValueError:
+            labels = host.encode('idna').decode('ascii').split('.')
+            if (len(labels) < 2 or not labels[-1][0:1].isalpha()
+                    or labels[-1] in {'localhost', 'local', 'internal', 'test', 'invalid', 'example', 'onion', 'lan'}
+                    or any(not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?', label) for label in labels)):
+                raise ValueError('invalid_source_url')
+        else:
+            if not address.is_global or address.is_multicast:
+                raise ValueError('invalid_source_url')
+        return value
+
+    @field_validator('researched_on')
+    @classmethod
+    def research_date(cls, value):
+        if not re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}', value):
+            raise ValueError('invalid_research_date')
+        date.fromisoformat(value)
+        return value
+
+
+class Mechanism(Input):
+    dimension: Dimension
+    intent: str = Field(min_length=15, max_length=240)
+    step_indexes: list[Integer] = Field(min_length=1, max_length=5)
+
+    @field_validator('intent')
+    @classmethod
+    def persian(cls, value):
+        if not re.search(r'[\u0621-\u063a\u0641-\u064a\u067e\u0686\u0698\u06a9\u06af\u06cc]', value):
+            raise ValueError('dramma_persian_intent_required')
+        return value
+
+
+class Dramma(Input):
+    version: Literal['dramma_v1']
+    mechanisms: list[Mechanism] = Field(min_length=1, max_length=4)
 
 
 class Content(Input):
@@ -59,6 +125,9 @@ class Content(Input):
     daylight_requirement: Literal['any', 'day']
     cost: Cost
     safety_notes: list[str] = Field(max_length=3)
+    place: Place | None = None
+    requires_venue_check: bool = Field(default=False, strict=True)
+    dramma: Dramma
 
     @field_validator('steps', 'safety_notes')
     @classmethod
@@ -83,6 +152,18 @@ class Content(Input):
             raise ValueError('invalid_people')
         if self.primary_dimension in self.secondary_dimensions or len(set(self.secondary_dimensions)) != len(self.secondary_dimensions):
             raise ValueError('invalid_secondary_dimensions')
+        if ((self.venue == 'home' and (self.place or self.requires_venue_check))
+                or (self.place is not None and not self.requires_venue_check)):
+            raise ValueError('invalid_venue_attributes')
+        dimensions = [m.dimension for m in self.dramma.mechanisms]
+        if len(set(dimensions)) != len(dimensions) or set(dimensions) != {self.primary_dimension, *self.secondary_dimensions}:
+            raise ValueError('dramma_dimensions_mismatch')
+        if 'affiliation' in dimensions and modes != {'together'}:
+            raise ValueError('dramma_affiliation_requires_together')
+        for mechanism in self.dramma.mechanisms:
+            indexes = mechanism.step_indexes
+            if len(set(indexes)) != len(indexes) or any(not 1 <= i <= len(self.steps) for i in indexes):
+                raise ValueError('dramma_step_index_invalid')
         if not any('\u0600' <= c <= '\u06ff' for c in self.title):
             raise ValueError('persian_title_required')
         return self

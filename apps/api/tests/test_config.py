@@ -51,8 +51,8 @@ class ConfigurationTests(unittest.TestCase):
         environment = {'APP_ENV': 'production', 'MONGODB_URI': URI, 'CSRF_HMAC_SECRET': SECRET}
         with patch('app.core.config.load_environment', return_value=environment):
             settings = Settings.load()
-        self.assertEqual(settings.app_origin, 'https://shadophena.liara.run')
-        self.assertEqual(settings.allowed_origins, ['https://shadophena.liara.run'])
+        self.assertEqual(settings.app_origin, 'https://moodigo.ir')
+        self.assertEqual(settings.allowed_origins, ['https://moodigo.ir'])
         self.assertTrue(settings.secure_cookies)
         environment['APP_ENV'] = 'development'
         with patch('app.core.config.load_environment', return_value=environment):

@@ -22,7 +22,8 @@ from app.core.mongo_connection import create_mongo_client, mongo_failure
 INDEXES = {
     'users': [([('email', ASCENDING)], {'unique': True})],
     'profiles': [([('user_id', ASCENDING)], {'unique': True})],
-    'activities': [([('seed_key', ASCENDING)], {'unique': True, 'sparse': True})],
+    'activities': [([('seed_key', ASCENDING)], {'unique': True, 'sparse': True}),
+                   ([('active', ASCENDING), ('published_revision_id', ASCENDING)], {})],
     'activity_revisions': [([('activity_id', ASCENDING), ('revision_number', ASCENDING)], {'unique': True})],
     'auth_sessions': [([('user_id', ASCENDING)], {}), ([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
     'preauth': [([('expires_at', ASCENDING)], {'expireAfterSeconds': 0})],
@@ -46,6 +47,18 @@ INDEXES = {
     'rate_limit_buckets': [([('window_end', ASCENDING)], {'expireAfterSeconds': 0})],
     'admin_audit': [([('target_id', ASCENDING), ('created_at', ASCENDING)], {})],
 }
+
+PUBLISHED_CATALOG = [
+    {'$match': {'active': True, 'published_revision_id': {'$type': 'string'}}},
+    {'$project': {'id': 1, 'active': 1, 'primary_dimension': 1, 'published_revision_id': 1}},
+    {'$lookup': {'from': 'activity_revisions', 'localField': 'published_revision_id',
+                 'foreignField': '_id', 'as': 'revision'}},
+    {'$unwind': '$revision'},
+    {'$match': {'revision.state': 'published', '$expr': {'$eq': ['$id', '$revision.activity_id']}}},
+    {'$project': {'_id': 0, 'id': 1, 'active': 1, 'primary_dimension': 1,
+                  'published_revision_id': 1, 'revision_id': '$revision.id',
+                  'state': '$revision.state', 'content': '$revision.content'}},
+]
 
 
 class MongoDocumentStore:
@@ -158,6 +171,13 @@ class MongoDocumentStore:
             return list(self._db[collection].find({}, {'_id': False}, session=self._session))
         except PyMongoError:
             raise StorageUnavailable('MongoDB read failed') from None
+
+    def published_catalog(self):
+        try:
+            return list(self._db.activities.aggregate(PUBLISHED_CATALOG, session=self._session,
+                                                     batchSize=2000))
+        except PyMongoError:
+            raise StorageUnavailable('MongoDB catalog read failed') from None
 
     @staticmethod
     def _candidate(document):

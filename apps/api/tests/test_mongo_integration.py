@@ -28,7 +28,7 @@ def isolated_settings():
     parsed = urlsplit(uri)
     database_name = 'funilo_test_' + uuid4().hex
     uri = urlunsplit(parsed._replace(path='/' + database_name))
-    return replace(settings, mongodb_uri=uri, app_origin=api_fixture.ORIGIN), database_name
+    return replace(settings, mongodb_uri=uri, app_origin=api_fixture.ORIGIN, catalog_release='legacy'), database_name
 
 
 def drop_owned_database(store, database_name):
