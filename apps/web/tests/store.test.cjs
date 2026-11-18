@@ -14,6 +14,7 @@ function loadApp(fetch = async () => { throw new Error('Unexpected request'); })
     filename = path.resolve(filename);
     if (cache.has(filename)) return cache.get(filename).exports;
     const code = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+      fileName: filename,
       compilerOptions: {
         target: ts.ScriptTarget.ES2022,
         module: ts.ModuleKind.CommonJS,
@@ -76,7 +77,7 @@ test('the provider renders the application with its real Redux hooks', () => {
   const Funilo = load('components/Funilo.tsx').default;
   const html = renderToString(React.createElement(StoreProvider, null, React.createElement(Funilo)));
   assert.match(html, /id="main"/);
-  assert.match(html, /loading-state/);
+  assert.match(html, /role="status"[^>]*>در حال بررسی حساب/);
 });
 
 test('imperative queries use the API middleware and refresh cached data', async t => {

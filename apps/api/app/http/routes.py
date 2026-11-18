@@ -7,6 +7,7 @@ from app.core.errors import DomainError
 from app.modules.catalog.schemas import DraftUpdate, ReviewInput, WithdrawInput, CloneInput, CookInput
 from app.modules.catalog.activation import ActivationStatus, activation_queue
 from app.modules.recommendations.eligibility import VENUE_POLICY_VERSION
+from app.modules.recommendations.ranking import ALGORITHM_VERSION
 from app.http.presentation import public_response
 
 router = APIRouter()
@@ -43,6 +44,7 @@ def ready(request: Request):
     s.store.ping()
     return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider,
             'venue_policy': VENUE_POLICY_VERSION,
+            'recommendation_algorithm': ALGORITHM_VERSION,
             'local_demo_content': s.settings.demo_content and s.settings.catalog_release == 'legacy',
             'catalog_release': s.settings.catalog_release if s.settings.demo_content else None}
 

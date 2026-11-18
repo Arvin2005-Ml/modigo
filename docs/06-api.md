@@ -83,7 +83,7 @@ create slate در transaction با CAS روی check_ins.version،افزایش cr
     "slot_id":"slot-example","activity_id":"activity-example","revision_id":"revision-example",
     "rank":1,"execution_social_mode":"solo","execution_people":1,
     "title":"صدای خونه رو پیدا کن","teaser":"چند دقیقه فقط شنوندهٔ صداهای همین اطرافت باش.",
-    "total_minutes":10,"cost_label":"رایگان","explanation":"با وقت و انرژی الانت جور درمیاد."
+    "total_minutes":10,"cost_label":"رایگان","cost_range_toman":{"min":0,"max":0},"explanation":"با وقت و انرژی الانت جور درمیاد."
   }],
   "result_count":1,"partial":false,"empty_reason":null,
   "replacement_count":0,"replacement_limit":6,"replacements_remaining":6,"replacement_available":true,

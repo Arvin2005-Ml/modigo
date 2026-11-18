@@ -47,6 +47,7 @@
 | [Docker و لیارا](docs/25-liara-docker.md) | بستهٔ آپلود، پورت، محیط production، سلامت و عملیات |
 | [گزارش پوشش پیشنهادها](docs/22-catalog-coverage.md) | شمارش واقعی ترکیب‌های آنبوردینگ و محدودیت‌های پوشش |
 | [تک‌پیشنهاد، مرور و شخصی‌سازی](docs/23-single-suggestion.md) | رفتار جاری یک پیشنهاد، شش تعویض، دو سؤال نیاز و ترجیح تدریجی |
+| [پیشنهادهای عملی و متنوع‌تر](docs/42-practical-recommendations.md) | نوع پیشنهادها، ۲۴ فعالیت تازه، انتخاب شهر و بررسی نسخهٔ لیارا |
 | [کوتاه‌کردن پرسش‌نامهٔ فردی](docs/35-individual-questionnaire.md) | قرارداد بک‌اند و راه اعمال چهار قدم در فرانت؛ رابط فعلی هنوز شش قدم دارد |
 | [بانک اولیه](content/README.md) | تعریف و قواعد خواندن ۴۵۰ بذر |
 | [نمونه‌های پخته](content/cooked-examples.md) | شش خروجی نمونه برای تجربهٔ نهایی |
@@ -69,7 +70,7 @@ python3 scripts/package-deploy.py
 
 فایل **`dist/funilo-liara.zip`** را در برنامهٔ Docker لیارا آپلود کنید. قبل از اجرا `APP_ORIGIN` را روی دامنهٔ HTTPS بدون `/` انتهایی، `MONGODB_URI` را روی URI محرمانهٔ فعلی و `CSRF_HMAC_SECRET` را روی کلید ثابت سرور تنظیم کنید. رمزها وارد ZIP و ایمیج نمی‌شوند. **استقرار بدون اختلال را خاموش و تعداد نمونه را۱ نگه دارید**؛ اجرای محلی روی همان DB هم نباید هم‌زمان فعال باشد. health check پورت وب تا Mongo واقعی را می‌سنجد.
 
-دامنهٔ فعلی و پیش‌فرض production **`https://shadophena.liara.run`** است. اگر نسخهٔ آنلاین خطای ناهماهنگی آدرس صفحه می‌دهد، مقدار قدیمی runtime را با `liara env:set APP_ENV=production APP_ORIGIN=https://shadophena.liara.run --app shadophena --force` اصلاح کنید؛ متغیر موجود لیارا بر پیش‌فرض ZIP مقدم است. اطلاعات Mongo و کلید CSRF حفظ شوند.
+دامنهٔ اصلی و پیش‌فرض production **`https://moodigo.ir`** است. اگر خطای ناهماهنگی آدرس صفحه برگشت، مقدار runtime را با `liara env:set APP_ORIGIN=https://moodigo.ir --app shadophena --force` بررسی و اصلاح کنید؛ متغیر موجود لیارا بر پیش‌فرض ZIP مقدم است. اطلاعات Mongo و کلید CSRF حفظ شوند.
 
 برای CLI: `liara deploy --app shadophena --platform docker --port 3000`. شناسهٔ برنامه طبق انتخاب مالک در liara.json ثبت شده است. برای ادمین در کنسول خصوصی کانتینر: `python -m app.cli role EMAIL admin` و سپس ورود مجدد. build/run کامل ایمیج و اتصال زنده در این محیط هنوز تأیید نشده‌اند؛ جزئیات آزمون و محدودیت‌ها در سند25 است.
 

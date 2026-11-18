@@ -22,7 +22,7 @@ python3 scripts/package-deploy.py
 
 | متغیر | مقدار |
 | --- | --- |
-| `APP_ORIGIN` | `https://shadophena.liara.run`؛ دامنهٔ فعلی مورد تأیید مالک |
+| `APP_ORIGIN` | `https://moodigo.ir`؛ دامنهٔ اصلی مرورگر |
 | `MONGODB_URI` | URI محرمانهٔ فعلی مالک؛ هاست عمومی `olympus.liara.cloud`، پورت `34468`، دیتابیس `my-app` و `authSource=admin` |
 | `CSRF_HMAC_SECRET` | کلید تصادفی ثابت حداقل ۳۲نویسه‌ای؛ با restart/deploy عوض نشود |
 
@@ -36,7 +36,7 @@ python3 -c 'import secrets; print(secrets.token_hex(32))'
 
 ```dotenv
 APP_ENV=production
-APP_ORIGIN=https://shadophena.liara.run
+APP_ORIGIN=https://moodigo.ir
 PORT=3000
 DATA_BACKEND=mongo
 API_WORKERS=1
@@ -228,6 +228,12 @@ liara env:set APP_ENV=production APP_ORIGIN=https://shadophena.liara.run --app s
 تلاش برای خواندن و اصلاح مستقیم همین دو متغیر از محیط پیاده‌سازی، پیش از ارسال هر POST، در GET محیط لیارا با خطای DNS متوقف شد؛ مقدار زنده تغییر نکرده و موفقیت روی دامنهٔ واقعی تأیید نشده است. آزمون API با store تست تزریق‌شده روی **همین نام دامنهٔ HTTPS**، signup/login/logout، کوکی Secure/HttpOnly/host-only، canonicalشدن اسلش root و رد Originهای HTTP،localhost،دامنهٔ مشابه مهاجم،پورت دیگر،null و خالی را بررسی کرد؛ جعل headerهای proxy نیز مجوز نمی‌دهد. توکن CSRF نادرست حتی روی دامنهٔ درست رد می‌شود. ۱۱تست config و۱۰تست deployment موفق شدند. این نتایج smoke آنلاین یا اتصال زندهٔ Mongo نیستند.
 
 آزمون نهایی کل بک‌اند: `Ran 129 tests in 25.888s` و `OK (skipped=7)`؛ ۱۲۲تست موفق و هفت تست Mongo زنده بدون opt-in در این اجرای آفلاین skip شدند. ZIP سورس با۷۵فایل دوباره ساخته شد. فرانت تغییری نداشت؛ build کامل Docker و smoke دامنهٔ آنلاین در این نوبت اجرا نشدند.
+
+## اصلاح دامنه و بستهٔ استقرار — ۱۸ نوامبر ۲۰۲۶
+
+دامنهٔ اصلی اکنون `https://moodigo.ir` است. خطای CSRF سایت از مقدار قبلی `APP_ORIGIN` در محیط لیارا می‌آمد که بر پیش‌فرض ایمیج مقدم بود. در برنامهٔ `shadophena` فقط همین مقدار تغییر کرد؛ پس از راه‌اندازی مجدد، readiness پاسخ `200` داد، درخواست ناشناس به مسیر خروج با Origin و CSRF معتبر پاسخ `204` گرفت، و دامنهٔ قبلی و CSRF نامعتبر هر دو با `403` رد شدند. تعداد نمونه یک و استقرار بدون اختلال خاموش ماند.
+
+خطای `Cannot find module '@/types'` از حذف پوشهٔ `apps/web/types` در بستهٔ ارسالی بود. `.liaraignore`، `.dockerignore` و بسته‌ساز ZIP پوشه را در فهرست مجاز دارند. آرشیو CLI لیارا و ZIP محتوای یکسان داشتند؛ فایل‌های TypeScript لازم در هر دو وجود دارند و محیط و خروجی build در آن‌ها نیست. `npm ci` و `npm run build` از ZIP استخراج‌شده موفق شدند. از ۱۸۳ تست بک‌اند، ۱۷۶ تست موفق و هفت تست Mongo زنده skip شدند. تلاش برای build کامل Docker در دریافت ایمیج‌های پایه از Docker Hub با `403` متوقف شد. مقدار ثابت کلید GapGPT از سورس بسته حذف شد؛ provider واقعی کلید را از متغیر زمان اجرای `GAPGPT_API_KEY` می‌خواند.
 
 ## منابع رسمی بررسی‌شده
 

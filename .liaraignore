@@ -23,6 +23,8 @@
 !apps/web/components/**
 !apps/web/lib/
 !apps/web/lib/**
+!apps/web/types/
+!apps/web/types/**
 !apps/web/public/
 !apps/web/public/**
 !scripts/
@@ -37,6 +39,8 @@
 !content/dramma-legacy-checksums.json
 !content/short-now.txt
 !content/long-now.txt
+!content/practical-now.txt
+!content/northern-outings.txt
 !DRAMMA_450_activities_fa.json
 **/.env
 **/.env.*

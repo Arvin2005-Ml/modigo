@@ -2,7 +2,7 @@ export type User = {id: string; display_name: string; email: string; role: 'user
 export type Budget = {mode: 'free' | 'cap' | 'flexible'; cap_toman: number | null};
 export type Context = {
   available_minutes: number; energy: 'low' | 'medium' | 'high' | 'unknown'; social_mode: 'solo' | 'together' | 'either';
-  party_size: number; venue: 'home' | 'outdoor' | 'indoor_public' | 'any'; budget: Budget;
+  party_size: number; venue: 'home' | 'away_from_home' | 'outdoor' | 'indoor_public' | 'any'; budget: Budget;
   mood: 'tired' | 'restless' | 'bored' | 'low' | 'okay' | 'skip';
   owned_items?: string[];
   liked_tags?: string[];
@@ -15,10 +15,10 @@ export type Context = {
   daylight?: 'day' | 'night' | 'unknown';
 };
 export type Slot = {slot_id: string; activity_id?: string; revision_id?: string; title?: string; teaser?: string;
-  total_minutes?: number; cost_label?: string; explanation?: string; requires_venue_check?: boolean; unavailable: boolean};
+  total_minutes?: number; cost_label?: string; cost_range_toman?: {min: number; max: number} | null; explanation?: string; requires_venue_check?: boolean; unavailable: boolean};
 export type ReplacementState = {replacement_count: number; replacement_limit: number; replacements_remaining: number; replacement_available: boolean;
   suggestion_index: number; suggestion_count: number};
-export type Slate = ReplacementState & {id: string; check_in_id: string; version: number; items: Slot[]; result_count: number; partial: boolean; context_summary: Pick<Context, 'available_minutes'|'social_mode'|'party_size'|'venue'|'budget'>};
+export type Slate = ReplacementState & {id: string; check_in_id: string; version: number; items: Slot[]; result_count: number; partial: boolean; venue_alternative?: {title: string; venue: 'home'|'outdoor'|'indoor_public'; total_minutes: number} | null; budget_alternative?: {title: string; total_minutes: number} | null; context_summary: Pick<Context, 'available_minutes'|'social_mode'|'party_size'|'venue'|'budget'>};
 export type Content = {
   place?: {name: string; city: string; source_url: string; source_name: string; researched_on: string; evidence_scope: 'place_and_activity_type_only'} | null;
   dramma?: {version: 'dramma_v1'; mechanisms: {dimension: string; intent: string; step_indexes: number[]}[]};

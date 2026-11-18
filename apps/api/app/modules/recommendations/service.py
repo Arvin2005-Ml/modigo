@@ -3,10 +3,47 @@ from app.core.errors import DomainError, conflict, missing
 from app.core.schemas import Context, merge_constraints
 from app.core.values import uid, replace, owned
 from app.modules.recommendations.ranking import rank, GOALS, ALGORITHM_VERSION
-from app.modules.recommendations.eligibility import eligible, total_minutes
+from app.modules.recommendations.eligibility import eligible, total_minutes, verified_cost
 
 REPLACEMENT_LIMIT = 6
 VENUE_CHECK_MESSAGE = 'پیش از رفتن، باز بودن، هزینه، رزرو و شرایط دسترسی را از محل بررسی کن.'
+
+
+def cost_label(cost, estimate):
+    if cost['kind'] == 'free':
+        return 'رایگان'
+    if estimate is None:
+        return 'هزینهٔ نامعلوم'
+    low, high = (f'{amount:,}'.translate(str.maketrans('0123456789,', '۰۱۲۳۴۵۶۷۸۹٬')) for amount in estimate)
+    return f'برآورد کل: {low}' + (f' تا {high}' if low != high else '') + ' تومان'
+
+
+def planning_alternatives(context, candidates, now, blocked):
+    """Find previews that each change just one choice and cannot start a slot."""
+    available = context['available_minutes']
+    wider = ({**context, 'venue': 'any'} if available >= 60 and context['venue'] != 'any' else None)
+    flexible = ({**context, 'budget': {'mode': 'flexible'}} if context['budget']['mode'] == 'cap' else None)
+    best, paid, different_venue, different_budget = 0, False, None, None
+    for activity in candidates:
+        content = activity['content']
+        minutes = total_minutes(content)
+        execution = eligible(context, activity, now, blocked)
+        if execution:
+            best = max(best, minutes)
+            paid = paid or content['cost']['kind'] == 'estimated'
+        elif (wider and minutes * 4 >= available * 3
+                and eligible(wider, activity, now, blocked)
+                and (different_venue is None or minutes > different_venue['total_minutes'])):
+            different_venue = {'title': content['title'], 'venue': content['venue'], 'total_minutes': minutes}
+        if (not execution and flexible and not paid and content.get('place')
+                and (available < 60 or minutes * 4 >= available * 3)
+                and (different_budget is None or minutes > different_budget['total_minutes'])):
+            with_flexible = eligible(flexible, activity, now, blocked)
+            if with_flexible and verified_cost(content['cost'], with_flexible[1], now) is None:
+                different_budget = {'title': content['title'], 'total_minutes': minutes}
+    if different_venue and (different_venue['total_minutes'] - best) * 10 < available:
+        different_venue = None
+    return {'venue_alternative': different_venue, 'budget_alternative': None if paid else different_budget}
 
 
 class Recommendations:
@@ -134,11 +171,13 @@ class Recommendations:
         c, execution = self.card_execution(activity, revision, context)
         if not execution:
             return unavailable
+        estimate = verified_cost(c['cost'], execution[1], self.clock())
         return {**{k: v for k, v in item.items() if k != 'score_internal'},
             'title': c['title'], 'teaser': c['teaser'],
             'execution_social_mode': execution[0], 'execution_people': execution[1],
             'total_minutes': total_minutes(c),
-            'cost_label': 'رایگان' if c['cost']['kind'] == 'free' else 'هزینهٔ متغیر', 'unavailable': False,
+            'cost_label': cost_label(c['cost'], estimate), 'unavailable': False,
+            'cost_range_toman': None if estimate is None else {'min': estimate[0], 'max': estimate[1]},
             'requires_venue_check': c['requires_venue_check'], 'place': c['place'],
             'venue_check_message': VENUE_CHECK_MESSAGE if c['requires_venue_check'] else None}
 
@@ -149,12 +188,23 @@ class Recommendations:
             context = self.session_context(session, check_in)
         items = [self.present_item(item, context) for item in session['items']]
         n = sum(not i.get('unavailable') for i in items)
+        now = self.clock()
+        alternatives = {'venue_alternative': None, 'budget_alternative': None}
+        if ((context['available_minutes'] >= 60 and context['venue'] != 'any')
+                or context['budget']['mode'] == 'cap'):
+            if candidates is None:
+                candidates = self.catalog.candidates()
+            active = {e['activity_id'] for e in self.store.list('experiences')
+                      if e['user_id'] == session['user_id'] and e['status'] == 'active'
+                      and e['started_at'] + timedelta(hours=24) > now}
+            alternatives = planning_alternatives(context, candidates, now, active)
         return dict(id=session['id'], check_in_id=session['check_in_id'], version=session['version'],
             expires_at=session['expires_at'],
             context_summary={**{k: context[k] for k in ('available_minutes','social_mode','party_size','venue','budget')},
                 'city': context.get('city'), 'allow_venue_planning': context.get('allow_venue_planning', False)},
             items=items, result_count=n, partial=n == 0,
             empty_reason=None if n else 'NO_MATCHES',
+            **alternatives,
             **self.replacement_state(session, check_in, context, candidates))
 
     def replacement_state(self, session, check_in, context, candidates=None):
@@ -192,6 +242,7 @@ class Recommendations:
         items = [self.present_item(item, context) for item in receipt['items']]
         n = sum(not item['unavailable'] for item in items)
         return {**receipt, 'items': items, 'result_count': n, 'partial': n == 0,
+                'venue_alternative': None, 'budget_alternative': None,
                 'empty_reason': None if n else 'NO_MATCHES', 'replacement_available': False}
 
     def get(self, user_id, session_id):

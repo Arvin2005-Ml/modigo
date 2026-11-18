@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 from app.core.schemas import Context, DIMENSIONS
 from app.modules.catalog.bootstrap import demo_examples
 from app.modules.recommendations.ranking import rank, GOALS, current_needs, dimension_preferences
+from app.modules.recommendations.service import planning_alternatives
 
 NOW = datetime(2026, 11, 9, tzinfo=timezone.utc)
 
@@ -117,6 +118,56 @@ class NeedRankingTests(unittest.TestCase):
         result = rank([first, second, different], {**self.context, 'available_minutes': 120},
             NOW, {first['id']}, 'fixed-seed', history, [], [], seen=[first])
         self.assertEqual(result[0]['activity']['id'], different['id'])
+
+    def test_four_hour_slot_prefers_full_length_over_matching_interest_and_short_swap(self):
+        full, near, short, too_long = self.candidates[:4]
+        for row, duration, tags in ((full, 240, ['dance']), (near, 225, ['dance']),
+                                    (short, 105, ['games']), (too_long, 241, ['games'])):
+            row['content'].update(active_minutes=duration, tags=tags)
+        context = {**self.context, 'available_minutes': 240, 'liked_tags': ['games']}
+        result = rank(self.candidates, context, NOW, set(), 'fixed', [], [], [])
+        self.assertEqual(result[0]['activity']['id'], full['id'])
+        result = rank(self.candidates, context, NOW, {full['id']}, 'fixed', [], [], [], seen=[full])
+        self.assertEqual(result[0]['activity']['id'], near['id'])
+
+    def test_budget_target_uses_current_group_price_and_does_not_exceed_it(self):
+        expensive, closest, cheaper, stale, free = self.candidates[:5]
+        for row, low, high in ((expensive, 200, 260), (closest, 235, 245), (cheaper, 60, 100), (stale, 248, 250)):
+            row['content']['cost'] = {'kind':'estimated', 'min_toman':low, 'max_toman':high,
+                'basis':'per_person', 'verified_at':NOW - timedelta(days=1), 'valid_until':NOW + timedelta(days=1)}
+        stale['content']['cost']['valid_until'] = NOW
+        context = {**self.context, 'social_mode':'together', 'party_size':2,
+                   'budget':{'mode':'cap', 'cap_toman':500}}
+        result = rank([free, stale, expensive, cheaper, closest], context, NOW, set(), 'fixed', [], [], [], count=5)
+        self.assertEqual([item['activity']['id'] for item in result], [closest['id'], cheaper['id'], free['id']])
+
+    def test_longer_alternative_only_relaxes_setting(self):
+        at_home, public = self.candidates[:2]
+        at_home['content'].update(active_minutes=120)
+        public['content'].update(title='برنامهٔ چهار ساعته', venue='indoor_public', active_minutes=240)
+        context = {**self.context, 'available_minutes':240}
+        self.assertEqual(planning_alternatives(context, [at_home, public], NOW, set())['venue_alternative'],
+                         {'title':'برنامهٔ چهار ساعته','venue':'indoor_public','total_minutes':240})
+        public['content']['required_items'] = ['camera']
+        self.assertIsNone(planning_alternatives(context, [at_home, public], NOW, set())['venue_alternative'])
+        public['content']['required_items'] = []
+        public['content']['requires_venue_check'] = True
+        self.assertIsNone(planning_alternatives(context, [at_home, public], NOW, set())['venue_alternative'])
+
+    def test_mental_game_is_fallback_unless_user_likes_it(self):
+        game, movement, music = self.candidates[:3]
+        movement['content']['tags'] = ['dance', 'movement']
+        music['content']['tags'] = ['music']
+        asked_for_game_dimension = next(goal for goal, d in GOALS.items() if d == game['id'])
+        context = {**self.context, 'activity_intent': asked_for_game_dimension}
+        self.assertEqual(self.first(context, candidates=[game, movement]), movement['id'])
+        self.assertEqual(self.first(context, candidates=[game]), game['id'])
+        self.assertEqual(self.first({**context, 'liked_tags': ['games']},
+                                    candidates=[game, movement]), game['id'])
+        move_goal = next(goal for goal, d in GOALS.items() if d == movement['id'])
+        result = rank([game, movement, music], {**context, 'activity_intent': move_goal},
+                      NOW, set(), 'fixed', [], [], [], seen=[movement])
+        self.assertEqual(result[0]['activity']['id'], music['id'])
 
 
 if __name__ == '__main__':

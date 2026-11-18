@@ -100,7 +100,7 @@ class Settings:
                        demo_content=environ.get('DEMO_CONTENT', 'true').lower() == 'true',
                        catalog_release=environ.get('CATALOG_RELEASE', 'unified'),
                        provider=environ.get('LLM_PROVIDER', environ.get('AI_PROVIDER', 'demo')),
-                       gapgpt_api_key=environ.get('GAPGPT_API_KEY', 'sk-xLFx1Cd1CMGmLYHIIdmRmr67zBKHl3vXBW4qdwjxovPT7MAd'),
+                       gapgpt_api_key=environ.get('GAPGPT_API_KEY', ''),
                        gapgpt_base_url=environ.get('GAPGPT_BASE_URL', 'https://api.gapgpt.app/v1'),
                        gapgpt_model=environ.get('GAPGPT_MODEL', 'gapgpt-deepseek-v4.1-flash'))
         settings.validate()

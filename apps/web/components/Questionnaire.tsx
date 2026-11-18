@@ -102,6 +102,10 @@ export default function Questionnaire({
       setError("یه سقف هزینهٔ معتبر به تومان بنویس.");
       return;
     }
+    if (step === 1 && value.venue !== "home" && value.allow_venue_planning && !value.city?.trim()) {
+      setError("برای پیشنهاد جای مشخص، اسم شهرت رو وارد کن.");
+      return;
+    }
     setError("");
     if (step < stepLabels.length - 1) setStep(step + 1);
     else submit();
@@ -178,6 +182,7 @@ export default function Questionnaire({
                 [30, "نیم ساعت"],
                 [60, "یه ساعت"],
                 [120, "دو ساعت"],
+                [240, "چهار ساعت"],
               ]}
               onChange={(v) => {
                 set("available_minutes", v);
@@ -185,7 +190,7 @@ export default function Questionnaire({
               }}
             />
             <label className="label">
-              یا خودت بنویس،به دقیقه
+              یا به دقیقه بنویس
               <input
                 inputMode="numeric"
                 className="input number-input"
@@ -261,17 +266,71 @@ export default function Questionnaire({
               value={value.venue}
               options={[
                 ["home", "توی خونه"],
+                ["away_from_home", "بیرون از خونه؛ فرقی نداره کجا"],
                 ["outdoor", "هوای آزاد"],
                 ["indoor_public", "یه جای سرپوشیده"],
                 ["any", "هر جا شد"],
               ]}
-              onChange={(v) => set("venue", v)}
+              onChange={(venue) => {
+                setError("");
+                change(venue === "home"
+                  ? { ...value, venue, allow_venue_planning: false, city: null }
+                  : { ...value, venue });
+              }}
             />
             {value.venue !== "home" && (
-              <p className="hint">
-                پیشنهادهای بیرون برای جایی‌ان که همین حالا بهش دسترسی امن و مجاز
-                داری؛ مسیر، بلیت یا محل تازه‌ای رو حدس نمی‌زنیم.
-              </p>
+              <fieldset className="field">
+                <legend>دوست داری یه جای مشخص هم پیشنهاد بدیم؟</legend>
+                <label className="choice">
+                  <input
+                    type="checkbox"
+                    checked={value.allow_venue_planning ?? false}
+                    onChange={(e) => {
+                      setError("");
+                      change({
+                        ...value,
+                        allow_venue_planning: e.target.checked,
+                        city: e.target.checked ? value.city : null,
+                      });
+                    }}
+                  />
+                  <span>آره، پیشنهاد جا هم می‌خوام</span>
+                </label>
+                {value.allow_venue_planning && (
+                  <label className="label">
+                    شهر برای همین نوبت
+                    <input
+                      className="input"
+                      maxLength={100}
+                      value={value.city ?? ""}
+                      placeholder="مثلاً تهران"
+                      onChange={(e) => {
+                        setError("");
+                        set("city", e.target.value);
+                      }}
+                    />
+                  </label>
+                )}
+                <p className="hint">
+                  {value.allow_venue_planning
+                    ? "قبل از رفتن، باز بودن و هزینه رو با خود محل چک کن."
+                    : "پیشنهاد برای جاییه که همین حالا امن و در دسترسته."}
+                </p>
+              </fieldset>
+            )}
+            {["away_from_home", "outdoor", "any"].includes(value.venue) && (
+              <label className="choice">
+                <input
+                  type="checkbox"
+                  checked={value.weather === "fair" && value.daylight === "day"}
+                  onChange={(e) => change({
+                    ...value,
+                    weather: e.target.checked ? "fair" : "unknown",
+                    daylight: e.target.checked ? "day" : "unknown",
+                  })}
+                />
+                <span>هوا روشنه و برای قدم‌زدن مناسبه</span>
+              </label>
             )}
           </>
         )}
@@ -292,9 +351,14 @@ export default function Questionnaire({
                 })
               }
             />
+            {value.allow_venue_planning && value.budget.mode !== "flexible" && (
+              <p className="hint">
+                جاهایی که هزینه‌شون مشخص نیست فقط با بودجهٔ منعطف پیشنهاد می‌شن.
+              </p>
+            )}
             {value.budget.mode === "cap" && (
               <label className="label">
-                سقف هزینه برای همه،تومان
+                سقف هزینه برای همه، به تومان
                 <input
                   className="input number-input"
                   inputMode="numeric"
@@ -307,6 +371,7 @@ export default function Questionnaire({
                     });
                   }}
                 />
+                <span className="hint">تا جای ممکن گزینه‌ای نزدیک به این مبلغ پیشنهاد می‌دیم.</span>
               </label>
             )}
             <p className="hint">
@@ -363,30 +428,6 @@ export default function Questionnaire({
                 changeItems={(v) => set("owned_items", v)}
                 changeInterests={(v) => set("liked_tags", v)}
               />
-              {value.venue !== "home" && (
-                <>
-                  <Choices
-                    legend="هوای جایی که هستی مناسبه؟"
-                    value={value.weather ?? "unknown"}
-                    options={[
-                      ["unknown", "مطمئن نیستم"],
-                      ["fair", "برای بیرون مناسبه"],
-                      ["adverse", "نامساعده"],
-                    ]}
-                    onChange={(v) => set("weather", v)}
-                  />
-                  <Choices
-                    legend="الان روشنایی روز داری؟"
-                    value={value.daylight ?? "unknown"}
-                    options={[
-                      ["unknown", "مطمئن نیستم"],
-                      ["day", "روزه"],
-                      ["night", "شبه"],
-                    ]}
-                    onChange={(v) => set("daylight", v)}
-                  />
-                </>
-              )}
             </details>
           </>
         )}

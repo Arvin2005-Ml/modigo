@@ -39,7 +39,7 @@ def long_now_catalog():
             place=None, requires_venue_check=False, dramma=dict(version='dramma_v1',
                 mechanisms=[dict(dimension=dimension, intent=intent, step_indexes=[2, 3])]))).model_dump()
         fingerprint = identity(content)
-        if key in keys or fingerprint in fingerprints or not 45 <= content['active_minutes'] <= 120:
+        if key in keys or fingerprint in fingerprints or not 45 <= content['active_minutes'] <= 240:
             raise ValueError('Invalid or duplicate long-now activity')
         keys.add(key)
         fingerprints.add(fingerprint)
@@ -51,5 +51,5 @@ def long_now_catalog():
 
 def import_long_now(store, clock):
     return import_additive(store, clock, long_now_catalog(), version=VERSION, source_file=FILE,
-        raw_intent='تجربهٔ ۴۵ تا ۱۲۰ دقیقه‌ای در همان محل، بدون ورود یا خرید اضافه',
+        raw_intent='تجربهٔ ۴۵ تا ۲۴۰ دقیقه‌ای در همان محل، بدون ورود یا خرید اضافه',
         reason='Owner request: meaningful longer activities for longer time windows')

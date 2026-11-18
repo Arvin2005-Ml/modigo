@@ -47,7 +47,11 @@ class Services:
                 seed_demo(self.store, clock)
             elif settings.catalog_release == 'real700':
                 from app.modules.catalog.curated import import_catalog
+                from app.modules.catalog.northern_outings import import_northern_outings
+                from app.modules.catalog.practical_now import import_practical_now
                 import_catalog(self.store, clock)
+                import_practical_now(self.store, clock)
+                import_northern_outings(self.store, clock)
             else:
                 from app.modules.catalog.import_unified import import_unified
                 import_unified(self.store, clock)

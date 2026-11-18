@@ -182,6 +182,15 @@ class ContainerTests(unittest.TestCase):
                 self.assertTrue(all(name not in archive.namelist() for name in forbidden))
                 self.assertNotIn(b'never upload', b''.join(archive.read(n) for n in archive.namelist()))
 
+    def test_checkout_package_includes_frontend_type_contracts(self):
+        sources = {name for _, name in packager.deploy_files(ROOT)}
+        self.assertTrue({
+            'apps/web/types/index.ts',
+            'apps/web/types/domain.ts',
+            'apps/web/types/api.ts',
+            'apps/web/types/admin.ts',
+        }.issubset(sources))
+
     def test_operator_role_command_revokes_sessions_and_writes_audit_without_seeding(self):
         from app.cli import set_role
         from app.core.rate_limit import RateLimiter
@@ -213,7 +222,7 @@ class ProductionApiTests(unittest.IsolatedAsyncioTestCase):
             while True:
                 await asyncio.sleep(.01)
         ticker = asyncio.create_task(tick())
-        origin = 'https://shadophena.liara.run'
+        origin = 'https://moodigo.ir'
         with patch('app.core.config.load_environment', return_value={
                 'APP_ENV': 'production', 'APP_ORIGIN': origin + '/', 'DEMO_CONTENT': 'false',
                 'MONGODB_URI': 'mongodb://public.example.test/app',
@@ -239,10 +248,10 @@ class ProductionApiTests(unittest.IsolatedAsyncioTestCase):
                     client.headers['X-CSRF-Token'] = response.json()['csrf_token']
                     self.assertEqual((await client.get('/api/v1/me')).status_code, 200)
                     for bad_origin in ('https://attacker.test', 'http://127.0.0.1:3000',
-                                       'http://shadophena.liara.run', 'https://shadophena.liara.run.attacker.test',
-                                       'https://shadophena.liara.run:444', 'null', ''):
+                                       'https://shadophena.liara.run', 'http://moodigo.ir',
+                                       'https://moodigo.ir.attacker.test', 'https://moodigo.ir:444', 'null', ''):
                         denied = await client.post('/api/v1/auth/logout', json={}, headers={
-                            'Origin': bad_origin, 'X-Forwarded-Host': 'shadophena.liara.run',
+                            'Origin': bad_origin, 'X-Forwarded-Host': 'moodigo.ir',
                             'X-Forwarded-Proto': 'https'})
                         self.assertEqual(denied.status_code, 403)
                         self.assertNotIn('آدرس محلی', denied.json()['error']['message'])

@@ -2,38 +2,64 @@
 from datetime import timedelta
 from hashlib import sha256
 from collections import Counter
-from app.modules.recommendations.eligibility import eligible, total_minutes
+from app.modules.recommendations.eligibility import eligible, total_minutes, verified_cost
 
 GOALS = {'unwind': 'relaxation', 'switch_off': 'detachment', 'learn': 'mastery',
          'connect': 'affiliation', 'meaning': 'meaning', 'choose': 'autonomy'}
 ENERGY = {'low': 0, 'medium': 1, 'high': 2}
-ALGORITHM_VERSION = 'time_and_variety_v4'
+ALGORITHM_VERSION = 'time_budget_fit_v7'
 
 
 def activity_family(content):
     tags = set(content['tags'])
-    if content.get('place') and {'culture', 'storytelling'} <= tags:
-        return 'screen_and_stage'
+    if content.get('place') or content.get('requires_venue_check'):
+        for name, markers in (
+            ('screen', {'storytelling'}),
+            ('stage', {'music', 'listening'}),
+            ('food', {'food'}),
+            ('moving', {'movement', 'walking', 'dance'}),
+            ('games', {'games', 'play'}),
+        ):
+            if markers & tags:
+                return name
+        return 'visiting'
+    items = set(content.get('required_items', ()))
+    moves = content['mobility_required'] != 'seated'
+    if 'walking' in tags and moves:
+        return 'walking'
+    if {'movement', 'dance'} & tags:
+        return 'moving'
+    if {'board_game', 'playing_cards', 'dice', 'puzzle', 'ball'} & items:
+        return 'games'
+    if {'games', 'puzzles', 'play'} & tags:
+        return 'games' if items or moves else 'mental'
+    if 'imagination' in tags and not items and not moves:
+        return 'mental'
     for name, markers in (
-        ('hands_on', {'craft', 'gardening', 'food', 'drawing', 'design'}),
-        ('moving', {'walking', 'movement', 'dance'}),
-        ('looking', {'observation', 'photography', 'nature'}),
+        ('food', {'food'}),
+        ('hands_on', {'craft', 'gardening', 'drawing'}),
+        ('looking', {'photography', 'nature'}),
+        ('reading', {'reading'}),
+        ('visiting', {'culture'}),
+        ('music', {'music', 'rhythm'}),
+        ('making_stories', {'writing', 'storytelling'}),
         ('with_others', {'conversation', 'cooperation', 'community'}),
-        ('stories_and_music', {'reading', 'music', 'writing', 'storytelling', 'culture'}),
-        ('games', {'games', 'puzzles', 'imagination', 'play'}),
-        ('resting', {'rest', 'mindfulness', 'reflection'}),
     ):
-        if markers & tags:
+        if markers & tags and (items or moves or name == 'music'
+                or (name == 'with_others' and 'together' in content['supported_social_modes'])):
             return name
+    if {'rest', 'mindfulness'} & tags and not {'observation', 'reflection', 'imagination'} & tags:
+        return 'resting'
+    if {'observation', 'reflection', 'play', 'discovery', 'imagination', 'memory',
+         'gratitude', 'language', 'storytelling', 'design', 'puzzles', 'games'} & tags:
+        return 'mental'
     return 'other'
 
 
-def time_tier(minutes, available, matches_interest):
+def time_tier(minutes, available):
     if available < 60:
         return 0
-    if minutes * 5 >= available * 3 or (matches_interest and minutes * 2 >= available):
-        return 2
-    return 1 if minutes * 3 >= available else 0
+    return sum(minutes * 100 >= available * percent for percent in (33, 50, 75, 90))
 
 
 def current_needs(context):
@@ -101,6 +127,7 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
         liked_count = len(likes.intersection(c['tags']))
         interest = liked_count / len(likes) if likes else .5
         minutes = total_minutes(c)
+        cost = verified_cost(c['cost'], execution[1], now) if context['budget']['mode'] == 'cap' else None
         ratio = minutes / context['available_minutes']
         time = min(1, ratio / .85) if context['available_minutes'] >= 60 else (
             .6 if ratio <= .2 else 1 if ratio <= .8 else .8)
@@ -128,9 +155,13 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
             s['created_at'] >= now - timedelta(hours=24) for s in offers) else 0
         score = max(0, min(1, .22 * goal + .20 * energy + .16 * interest + .14 * time + .10 * mood + .10 * fb + .08 * novelty - penalty))
         tie = sha256(f'{seed}:{activity["id"]}'.encode()).hexdigest()
+        family = activity_family(c)
         scored.append(dict(activity=activity, execution=execution, score=score, tie=tie,
-            time_tier=time_tier(minutes, context['available_minutes'], liked_count > 0),
-            family=activity_family(c),
+            time_tier=time_tier(minutes, context['available_minutes']), minutes=minutes,
+            budget_fit=cost or (0, 0),
+            family=family, practical=(family not in {'mental', 'other', 'resting'} or liked_count > 0
+                                      or (family == 'resting' and 'relaxation' in needs)),
+            interest=liked_count > 0, named_place=bool(c.get('place')),
             need_fit=needs.get(c['primary_dimension'], 0),
             dimension_preference=preferences.get(c['primary_dimension'], 0)))
     output = []
@@ -151,9 +182,12 @@ def rank(candidates, context, now, excluded, seed, history, feedback, shown, cou
                 base = item['score'] - .12 * similarity - .08 * n
                 long_window = context['available_minutes'] >= 60
                 preference = item['dimension_preference']
-                options.append((item['time_tier'], item['need_fit'], -family_count,
-                    0 if long_window else preference, base + (.12 * preference if long_window else 0),
-                    item['tie'], item))
+                minutes = item['minutes'] if long_window else 0
+                variety_and_time = ((-family_count, minutes) if seen or others else (minutes, -family_count))
+                options.append((item['time_tier'], item['budget_fit'],
+                    item['practical'], item['named_place'], *variety_and_time, item['interest'],
+                    item['need_fit'], 0 if long_window else preference,
+                    base + (.12 * preference if long_window else 0), item['tie'], item))
             if not options:
                 break
             output.append(max(options, key=lambda x: x[:-1])[-1])

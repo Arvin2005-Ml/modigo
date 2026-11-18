@@ -187,7 +187,7 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
             async with app.router.lifespan_context(app):
                 catalog_counts = counts(app.state.services.store)
                 self.assertEqual(catalog_counts['curated_recommendable'],700)
-                self.assertEqual(catalog_counts['recommendable'],1015)
+                self.assertEqual(catalog_counts['recommendable'],1056)
                 async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app),base_url=origin,
                         headers={'Origin':origin}) as client:
                     csrf=(await client.get('/api/v1/auth/csrf')).json()['csrf_token'];client.headers['X-CSRF-Token']=csrf
@@ -198,6 +198,52 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(login.status_code,200,login.text);client.headers['X-CSRF-Token']=login.json()['csrf_token']
                     async def post(path,data=None):
                         return await client.post('/api/v1'+path,json=data or {},headers={'Idempotency-Key':str(uuid4())})
+                    short_trip = dict(available_minutes=120, energy='low', social_mode='solo', party_size=1,
+                        venue='away_from_home', budget={'mode':'flexible'}, city='رامسر',
+                        allow_venue_planning=True, weather='fair', daylight='day')
+                    short_check = await post('/check-ins', short_trip)
+                    short_response = await post('/recommendation-sessions', {'check_in_id': short_check.json()['id']})
+                    self.assertEqual(short_response.status_code, 201, short_response.text)
+                    short_session = short_response.json()
+                    short_card = short_session['items'][0]
+                    seen_places = set()
+                    for _ in range(5):
+                        self.assertEqual(short_card['place']['city'], 'رامسر')
+                        self.assertTrue(short_card['requires_venue_check'])
+                        seen_places.add(short_card['place']['name'])
+                        if len(seen_places) == 5:
+                            break
+                        replacement = await post(
+                            f'/recommendation-sessions/{short_session["id"]}/slots/{short_card["slot_id"]}/replace',
+                            {'expected_version': short_session['version']})
+                        self.assertEqual(replacement.status_code, 200, replacement.text)
+                        self.assertTrue(replacement.json()['replaced'])
+                        short_session = (await client.get('/api/v1/recommendation-sessions/' + short_session['id'])).json()
+                        short_card = short_session['items'][0]
+                    self.assertEqual(seen_places, {'کاخ‌موزهٔ مرمر رامسر', 'بلوار معلم رامسر',
+                                                   'رستوران برادران رامسر', 'رستوران کشتی رامسر',
+                                                   'شهربازی سرزمین رؤیاها'})
+                    capped = await post('/check-ins', short_trip | {'budget': {'mode':'cap', 'cap_toman': 500000}})
+                    capped_result = await post('/recommendation-sessions', {'check_in_id': capped.json()['id']})
+                    self.assertEqual(capped_result.status_code, 201, capped_result.text)
+                    self.assertTrue(all(not card.get('place') for card in capped_result.json()['items']))
+                    self.assertEqual(capped_result.json()['budget_alternative']['total_minutes'], 120)
+                    self.assertTrue(capped_result.json()['budget_alternative']['title'])
+                    home_plan = short_trip | {'available_minutes':240, 'venue':'home', 'owned_items':['pen','paper'],
+                        'city':None, 'allow_venue_planning':False, 'budget':{'mode':'free'}}
+                    check = await post('/check-ins', home_plan)
+                    full_day = await post('/recommendation-sessions', {'check_in_id':check.json()['id']})
+                    self.assertEqual(full_day.status_code, 201, full_day.text)
+                    self.assertEqual(full_day.json()['items'][0]['total_minutes'], 240)
+                    self.assertEqual(full_day.json()['items'][0]['title'], 'کارگاه چهار ساعتهٔ طراحی در خانه')
+                    check = await post('/check-ins', home_plan | {'venue':'indoor_public'})
+                    venue_filtered = await post('/recommendation-sessions', {'check_in_id':check.json()['id']})
+                    self.assertEqual(venue_filtered.status_code, 201, venue_filtered.text)
+                    # A changed setting requires a new check-in, so no mismatched slot is issued.
+                    preview = venue_filtered.json()['venue_alternative']
+                    self.assertEqual(preview, {'title':'کارگاه چهار ساعتهٔ طراحی در خانه',
+                                               'venue':'home','total_minutes':240})
+                    self.assertTrue(all(card['title'] != preview['title'] for card in venue_filtered.json()['items']))
                     payload=dict(available_minutes=240,energy='low',social_mode='solo',party_size=1,
                         venue='indoor_public',budget={'mode':'flexible'},mood='skip',city='تهران',allow_venue_planning=True)
                     blocked=await client.post('/api/v1/check-ins',json=payload,headers={'X-CSRF-Token':'wrong'})
@@ -277,7 +323,7 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(queue.status_code, 200, queue.text)
                     self.assertEqual(queue.json()['total'], 450)
                     self.assertEqual(len(queue.json()['items']), 3)
-                    self.assertEqual(queue.json()['counts']['active'], 1015)
+                    self.assertEqual(queue.json()['counts']['active'], 1056)
 
                     # At the five-minute floor, the initial home card and all six
                     # replacements must be distinct and stay free and equipment-free.
@@ -299,6 +345,32 @@ class RealCatalogApiTests(unittest.IsolatedAsyncioTestCase):
                         seen.add(result['item']['activity_id'])
                         version = result['session_version']
                     self.assertEqual(len(seen), 7)
+
+                    # A common 30-minute flow gets practical options before word
+                    # exercises, and multiple kinds even with an explicit goal.
+                    check = await post('/check-ins', payload | {
+                        'available_minutes': 30, 'venue': 'home', 'budget': {'mode': 'free'},
+                        'city': None, 'allow_venue_planning': False, 'activity_intent': 'learn',
+                        'owned_items': ['paper', 'pen', 'phone', 'headphones', 'book', 'playing_cards'],
+                    })
+                    home = (await post('/recommendation-sessions', {'check_in_id': check.json()['id']})).json()
+                    from app.modules.recommendations.ranking import activity_family
+                    card, version = home['items'][0], home['version']
+                    families = set()
+                    for attempt in range(5):
+                        revision = store.get('activity_revisions', card['revision_id'])
+                        content = revision['content']
+                        self.assertNotEqual(activity_family(content), 'mental')
+                        self.assertEqual(content['venue'], 'home')
+                        self.assertEqual(card['cost_label'], 'رایگان')
+                        self.assertLessEqual(card['total_minutes'], 30)
+                        families.add(activity_family(content))
+                        if attempt != 4:
+                            result = await post(f'/recommendation-sessions/{home["id"]}/slots/{card["slot_id"]}/replace',
+                                                {'expected_version': version})
+                            self.assertTrue(result.json()['replaced'])
+                            card, version = result.json()['item'], result.json()['session_version']
+                    self.assertGreaterEqual(len(families), 4)
 
                     outside = {**payload, 'available_minutes': 120, 'venue': 'away_from_home',
                         'weather': 'fair', 'daylight': 'day', 'activity_intent': 'any'}

@@ -21,6 +21,20 @@ def total_minutes(content: dict) -> int:
     return sum(content[key] for key in ('active_minutes', 'setup_minutes', 'travel_minutes'))
 
 
+def verified_cost(cost: dict, people: int, now: datetime) -> tuple[int, int] | None:
+    """Return the current estimate for the whole party, including zero for a free plan."""
+    if cost['kind'] == 'free':
+        return (0, 0)
+    verified, until = cost.get('verified_at'), cost.get('valid_until')
+    minimum, maximum = cost.get('min_toman'), cost.get('max_toman')
+    if (cost['kind'] != 'estimated' or not verified or not until or not verified <= now < until
+            or (until - verified).total_seconds() > 30 * 86400
+            or minimum is None or maximum is None or not 0 <= minimum <= maximum):
+        return None
+    multiplier = people if cost['basis'] == 'per_person' else 1
+    return minimum * multiplier, maximum * multiplier
+
+
 def venue_allowed(context: dict, content: dict) -> bool:
     place = content.get('place')
     if (place or content.get('requires_venue_check')) and context.get('allow_venue_planning') is not True:
@@ -61,17 +75,9 @@ def eligible(context: dict, activity: dict, now: datetime, excluded: set[str] | 
     budget = context['budget']
     if budget['mode'] == 'free' and cost['kind'] != 'free':
         return None
-    if budget['mode'] == 'cap' and cost['kind'] != 'free':
-        verified = cost.get('verified_at')
-        valid_until = cost.get('valid_until')
-        if (cost['kind'] != 'estimated' or not verified or not valid_until
-                or verified > now or valid_until <= now
-                or valid_until <= verified
-                or (valid_until - verified).total_seconds() > 30 * 86400
-                or cost.get('max_toman') is None or cost['max_toman'] < 0):
-            return None
-        total = cost['max_toman'] * (people if cost['basis'] == 'per_person' else 1)
-        if total > budget['cap_toman']:
+    if budget['mode'] == 'cap':
+        estimate = verified_cost(cost, people, now)
+        if estimate is None or estimate[1] > budget['cap_toman']:
             return None
     if not set(content['required_items']).issubset(context.get('owned_items', [])):
         return None

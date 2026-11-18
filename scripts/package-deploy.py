@@ -12,12 +12,14 @@ FILES = (
     'content/activities.json', 'content/iran-catalog.json', 'content/dramma-legacy-checksums.json',
     'content/short-now.txt',
     'content/long-now.txt',
+    'content/practical-now.txt',
+    'content/northern-outings.txt',
     'apps/web/package.json', 'apps/web/package-lock.json',
     'apps/web/next.config.mjs', 'apps/web/next-env.d.ts', 'apps/web/tsconfig.json',
     'apps/web/postcss.config.mjs', 'apps/web/tailwind.config.ts',
 )
 DIRECTORIES = ('apps/api/app', 'apps/web/app', 'apps/web/components',
-               'apps/web/lib', 'apps/web/public')
+               'apps/web/lib', 'apps/web/types', 'apps/web/public')
 
 
 def deploy_files(root):

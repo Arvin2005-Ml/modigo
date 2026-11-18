@@ -605,6 +605,7 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         replace(self.s.store, 'activity_revisions', revision)
         slate = await self.slate(context={**CONTEXT, 'budget': {'mode': 'cap', 'cap_toman': 2000}})
         item = slate['items'][0]
+        self.assertEqual(item['cost_range_toman'], {'min': 1000, 'max': 2000})
         self.now += timedelta(minutes=5)
         current = await self.a.get(f'/api/v1/recommendation-sessions/{slate["id"]}')
         self.assertTrue(current.json()['items'][0]['unavailable'])
@@ -823,6 +824,8 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(fresh['replacements_remaining'], 0)
 
     async def test_need_questions_learn_from_starts_and_keep_other_users_private(self):
+        from app.modules.catalog.practical_now import import_practical_now
+        import_practical_now(self.s.store, lambda: self.now)
         b, ub = await self.account('b@example.test')
         context = Context.model_validate(CONTEXT).model_dump()
         before = self.s.recommendations._rank(ub['id'], context, [], 'fixed')[0]['activity']['id']

@@ -9,17 +9,22 @@ from app.modules.catalog.home_short import import_home_short
 from app.modules.catalog.everyday_activities import import_everyday
 from app.modules.catalog.short_now import import_short_now, short_now_catalog
 from app.modules.catalog.long_now import import_long_now, long_now_catalog
+from app.modules.catalog.practical_now import import_practical_now, practical_now_catalog
+from app.modules.catalog.northern_outings import import_northern_outings, northern_outings_catalog
 from app.modules.catalog.unified import unified_catalog
 from app.modules.catalog.deduplication import duplicate_records
 
 IMPORTERS = (import_catalog, import_cinemas, import_food, import_visits,
-             import_short_activities, import_home_short, import_everyday, import_short_now, import_long_now)
+             import_short_activities, import_home_short, import_everyday, import_short_now, import_long_now,
+             import_practical_now, import_northern_outings)
 
 
 def import_unified(store, clock):
     unified_catalog()  # validate all keys before any database writes
     short_now_catalog()
     long_now_catalog()
+    practical_now_catalog()
+    northern_outings_catalog()
     results = [importer(store, clock) for importer in IMPORTERS]
     return {'releases': results, 'inserted': sum(r['inserted'] for r in results),
             'duplicates_skipped': [key for r in results for key in r.get('duplicate_keys', [])],
@@ -37,10 +42,18 @@ def main():
     scope = parser.add_mutually_exclusive_group()
     scope.add_argument('--short-now-only', action='store_true', help='Validate or import only the short same-place release')
     scope.add_argument('--long-now-only', action='store_true', help='Validate or import only the longer same-place release')
+    scope.add_argument('--practical-now-only', action='store_true', help='Validate or import only the practical recreation release')
+    scope.add_argument('--northern-outings-only', action='store_true', help='Validate or import only the northern outing release')
     args = parser.parse_args()
+    selected = next(((loader, importer) for enabled, loader, importer in (
+        (args.short_now_only, short_now_catalog, import_short_now),
+        (args.long_now_only, long_now_catalog, import_long_now),
+        (args.practical_now_only, practical_now_catalog, import_practical_now),
+        (args.northern_outings_only, northern_outings_catalog, import_northern_outings),
+    ) if enabled), None)
     if not args.apply:
-        releases = ([short_now_catalog()] if args.short_now_only else [long_now_catalog()] if args.long_now_only
-                    else [*unified_catalog()['releases'].values(), short_now_catalog(), long_now_catalog()])
+        releases = ([selected[0]()] if selected else [*unified_catalog()['releases'].values(),
+                     short_now_catalog(), long_now_catalog(), practical_now_catalog(), northern_outings_catalog()])
         from app.modules.catalog.schemas import Content
         for release in releases:
             for entry in release['entries']:
@@ -52,7 +65,7 @@ def main():
     try:
         settings = Settings.load()
         store = create_store({'DATA_BACKEND':settings.data_backend,'MONGODB_URI':settings.mongodb_uri})
-        importer = import_short_now if args.short_now_only else import_long_now if args.long_now_only else import_unified
+        importer = selected[1] if selected else import_unified
         result = importer(store, utcnow)
         print(json.dumps({'mode':'real_mongodb', **result},ensure_ascii=False,default=str))
         return 0
