@@ -35,6 +35,19 @@ class MemoryTestStore:
         with self._lock:
             return deepcopy(list(self._collections.get(collection, {}).values()))
 
+    def published_catalog(self) -> list[Document]:
+        with self._lock:
+            revisions = self._collections.get('activity_revisions', {})
+            rows = []
+            for activity in self._collections.get('activities', {}).values():
+                pointer = activity.get('published_revision_id')
+                revision = revisions.get(pointer)
+                if (activity.get('active') is True and revision and revision.get('state') == 'published'
+                        and revision.get('activity_id') == activity['id']):
+                    rows.append(dict(id=activity['id'], active=True, primary_dimension=activity['primary_dimension'],
+                                     published_revision_id=pointer, revision_id=revision['id'],
+                                     state='published', content=revision.get('content')))
+            return deepcopy(rows)
     def insert(self, collection: str, document: Document) -> Document:
         candidate = deepcopy(document)
         record_id = candidate.get('id')

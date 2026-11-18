@@ -12,11 +12,17 @@ def public_response(value, store):
         if item.get('activity_id'):
             activity = store.get('activities', item['activity_id'])
             revision = store.get('activity_revisions', item.get('revision_id', ''))
+            if item.get('slot_id') and 'title' in item and 'requires_venue_check' not in item and revision:
+                # A receipt saved before city/consent existed cannot authorize a venue.
+                content = revision.get('content') or {}
+                if content.get('place') or content.get('requires_venue_check'):
+                    return {'slot_id': item['slot_id'], 'unavailable': True}
             if activity and (not activity['active'] or revision and revision['state'] == 'archived'):
                 if item.get('slot_id') and 'title' in item:
                     return {'slot_id': item['slot_id'], 'unavailable': True}
                 item['unavailable'] = True
-                for field in ('content_snapshot', 'content', 'title', 'teaser', 'first_step', 'steps'):
+                for field in ('content_snapshot', 'content', 'title', 'teaser', 'first_step', 'steps',
+                              'requires_venue_check', 'place', 'venue_check_message'):
                     item.pop(field, None)
         result = {k: walk(v) for k, v in item.items()}
         if 'items' in result and 'result_count' in result:

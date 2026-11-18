@@ -55,6 +55,19 @@ class NeedRankingTests(unittest.TestCase):
         self.assertEqual(self.first({**self.context, 'goal': 'meaning'}), 'meaning')
         self.assertEqual(self.first(), self.first())
 
+    def test_one_intent_replaces_legacy_answers_and_mood(self):
+        legacy = {**self.context, 'need_now': 'unwind', 'desired_outcome': 'connect', 'mood': 'bored'}
+        history = [self.choice('relaxation', i) for i in range(10)]
+        for goal, dimension in GOALS.items():
+            with self.subTest(goal=goal):
+                self.assertEqual(self.first({**legacy, 'activity_intent': goal}, history), dimension)
+        neutral = {**legacy, 'activity_intent': 'any'}
+        self.assertEqual(current_needs(neutral), {})
+        self.assertEqual(self.first(neutral, history), 'relaxation')
+        self.assertEqual(self.first({**neutral, 'goal': 'meaning'}, history), 'meaning')
+        scored = rank(self.candidates, neutral, NOW, set(), 'fixed', [], [], [], count=6)
+        self.assertEqual(len({item['score'] for item in scored}), 1)
+
     def test_frequent_selections_go_first_when_current_need_is_unknown(self):
         history = [self.choice('autonomy', i) for i in range(4)] + [self.choice('mastery', 10)]
         self.assertEqual(self.first(history=history), 'autonomy')
@@ -82,6 +95,28 @@ class NeedRankingTests(unittest.TestCase):
         preferred['content']['required_items'] = []
         preferred['active'] = False
         self.assertEqual(self.first(context, history), 'relaxation')
+
+    def test_long_session_prioritizes_a_good_time_fit_over_short_familiar_games(self):
+        by_dimension = {a['id']: a for a in self.candidates}
+        game = by_dimension['mastery']
+        walk = by_dimension['detachment']
+        walk['content'].update(active_minutes=90, tags=['walking', 'nature'])
+        too_long = by_dimension['meaning']
+        too_long['content'].update(active_minutes=115, travel_minutes=10)
+        context = {**self.context, 'available_minutes': 120, 'activity_intent': 'learn'}
+        history = [self.choice('mastery', i) for i in range(10)]
+        self.assertEqual(self.first(context, history, [game, walk, too_long]), 'detachment')
+        self.assertEqual(self.first(context, history, [game, too_long]), 'mastery')
+
+    def test_replacement_prefers_an_unseen_kind_of_activity_at_the_same_time_fit(self):
+        first, second, different = self.candidates[:3]
+        for activity in (first, second, different):
+            activity['content']['active_minutes'] = 90
+        different['content']['tags'] = ['music', 'listening']
+        history = [self.choice(second['id'], i) for i in range(10)]
+        result = rank([first, second, different], {**self.context, 'available_minutes': 120},
+            NOW, {first['id']}, 'fixed-seed', history, [], [], seen=[first])
+        self.assertEqual(result[0]['activity']['id'], different['id'])
 
 
 if __name__ == '__main__':

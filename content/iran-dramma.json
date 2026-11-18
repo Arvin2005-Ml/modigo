@@ -1,0 +1,4807 @@
+{
+  "version": "dramma_v1",
+  "scope": "editorial_alignment_not_empirical_validation",
+  "entries": {
+    "iran-cinema-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در سالن سینما یک فیلم بلند را با تصویر و صدای پردهٔ بزرگ ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-02": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک انیمیشن مناسب سلیقهٔ بزرگسال را در سالن سینما تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: مستند طبیعت، سفر یا زندگی یک هنرمند را روی پرده ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: چند فیلم کوتاه را در یک سانس ببین؛ هر کدام یک شروع و پایان مستقل دارد.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک فیلم کلاسیک یا بازسازی‌شده را در اکران رسمی تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: فیلم را ببین و بعد در گفت‌وگوی کوتاه با کارگردان یا عوامل شرکت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ضبط حرفه‌ای یک نمایش را در سالن و روی پرده تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک سانس عمومی جشنواره را مثل یک تماشاگر معمولی تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک فیلم را در محوطهٔ روبازِ دارای صندلی و مجوز نمایش ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: فیلم را با یک جمع کوچک ببین و در گفت‌وگوی هدایت‌شدهٔ بعدش بنشین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در یک نمایش مناسب‌سازی‌شده، فیلم را با توضیح صوتی صحنه‌ها تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cinema-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک فیلم غیرایرانیِ دارای اکران مجاز را با زیرنویس فارسی در سالن ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در سالن یک نمایش کمدی زنده ببین و از بازی و واکنش تماشاگرها لذت ببر.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-02": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: بازی زندهٔ یک گروه تئاتر را در یک نمایش درام دنبال کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: بازی عروسک‌ها و عروسک‌گردان‌ها را در یک نمایش زنده ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: نمایشی را ببین که قصه، بازی زنده و موسیقی را کنار هم می‌آورد.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک اجرای بداهه ببین که موقعیت‌هایش جلوی تماشاگر ساخته می‌شوند.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: اجرای زندهٔ یک بازیگر را در یک مونولوگ تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: شنیدن نقش‌ها و روایت یک نمایش را با اجرای زندهٔ خوانندگان تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: داستانی را ببین که با سایهٔ دست، عروسک یا بدن روی پرده ساخته می‌شود.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: قصه و شوخی‌های یک اجرا را از حرکت بدن و صورت بازیگرها دنبال کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک نمایش سنتی ایرانی را با بازیگران زنده و فضای اجرایی خودش ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-11": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ مرزهای خودت را به راهنما بگو؛ تماس بدنی یا بازی کردن روی صحنه نباید اجباری باشد.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-theatre-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: اجرای زندهٔ طنز یک کمدین را در سالن ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: چند قطعهٔ محبوبت را در یک کنسرت پاپِ دارای مجوز با اجرای زنده بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-02": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: آواز و سازهای ایرانی را در یک کنسرت زنده بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: صدای گروه بزرگ سازهای زهی، بادی و کوبه‌ای را در یک اجرای ارکستر بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: اجرای زندهٔ پیانو را از نزدیک و با صدای سالن گوش کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: قطعه‌های گیتار را با صدای زنده و در یک اجرای سالنی بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ریتم‌های گروهی و جواب‌دادن سازها به هم را در اجرای زنده تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: صدای سازها و شیوهٔ اجرای یک ناحیهٔ ایران را زنده بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ترکیب چند خط آوازی را در اجرای زندهٔ یک گروه کُر بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: موسیقی فیلم‌ها را این بار با نوازندگان زنده بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: گفت‌وگوی چند ساز را در کنسرتی با گروه کوچک دنبال کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ساخته‌شدن موسیقی در لحظه را با یک یا چند نوازندهٔ ایرانی بشنو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-music-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ترکیب سازهای ایرانی و سازبندی متفاوت را در یک اجرای زنده تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-01": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ اندازه و مواد را پیش از سفارش بپرس؛ اگر با همراهی، تقسیم غذا با رضایت همه باشد.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-02": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ میزان پخت و ترکیبات حساسیت‌زا را بپرس؛ لازم نیست بزرگ‌ترین اندازه یا چالش خوردن را انتخاب کنی.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: بین غرفه‌ها قدم بزن و از یک فروشندهٔ دارای شرایط بهداشتی یک خوراک تازه بگیر.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-04": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ زمان صبحانه و آماده‌سازی سفارش را بپرس؛ میز کنار پنجره را تنها در صورت امکان انتخاب کن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک غذای محلی گیلانی را در رستورانی که همان غذا را سرو می‌کند امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-06": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ تندی را مطابق توانت سفارش بده؛ برای امتحان‌کردن لازم نیست غذای خیلی تند انتخاب کنی.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-07": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ اگر گیاه‌خواری برایت الزام است، سس، آبِ گوشت و روش آماده‌سازی را هم بررسی کن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-08": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ میز یا تخت را مطابق راحتی‌ات انتخاب کن؛ موسیقی زنده و هزینهٔ سرویس را خودکار فرض نکن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: غذایی را امتحان کن که روش خوردن یا پخت آن با انتخاب‌های همیشگی‌ات فرق دارد.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: چند خوراک کوچکِ از پیش مشخص را به ترتیب سرو و بدون سفارش حجم زیاد بچش.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک وعدهٔ غذا را در فضای بازِ مدیریت‌شده و میان فضای سبز صرف کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-dining-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با رزرو قبلی یک شام مفصل‌تر از روزهای معمول را با ریتم خودت تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک فنجان قهوهٔ دمی با روش انتخابی کافه را بنوش و عطر و بافتش را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: اسپرسو را با توضیح باریستا دربارهٔ دانه و استخراج بچش.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: در چشیدن هدایت‌شدهٔ چند نمونهٔ قهوه، تفاوت عطر و مزه را عملاً امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-04": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. ترکیبات و اندازهٔ قوری را بپرس و به اندازهٔ وقتت بنشین؛ سفارش اضافه لازم نیست.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-05": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. پیش از سفارش بپرس بستهٔ عصرانه دقیقاً چه چیزهایی دارد و با همراه‌ها به اندازهٔ اشتها سفارش بده.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-06": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ قانون استفاده از کتاب‌ها را بپرس و فقط همان‌قدر بخوان که برایت خوشایند است.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: بعد از یک سفارش، آثار نمایشگاه داخل کافه را از نزدیک ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-08": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ ساعت خروج نان و مدت انتظار را بپرس؛ به اندازهٔ یک وعده سفارش بده.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: چند قطعهٔ کوچک شکلات با درصدها یا بافت‌های متفاوت را آگاهانه بچش.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-10": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ مزه‌کردن رایگان را حق خودت ندان؛ یک اندازهٔ کوچک برای تجربهٔ طعم تازه کافی است.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: مراحل نهایی آماده‌کردن یک دسر را ببین و همان‌جا آن را بچش.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cafe-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک نوشیدنی گرم یا سردِ بدون کافئین را در یک کافهٔ تازه امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی مربی خمیر را باز کن، مواد بچین و یک پیتزای کوچک آمادهٔ پخت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کمک مربی خمیر پاستا را ورز بده، باز کن و رشته یا فرم ساده بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: خمیر نان را با راهنمایی مربی شکل بده و مراحل پخت نان تازه را تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با مربی شکلات را آماده کن و در قالب‌های کوچک بریز و تزیین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی یک کیک کوچک آماده، خامه‌کشی و یک تزیین ساده را عملاً امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: خمیر کوکی را آماده کن، اندازه بزن و با راهنمایی مربی روی سینی بچین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: برنج و مواد پخته را روی حصیر مخصوص بچین و یک رول سادهٔ خوراکی بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با مربی یک برگر را از آماده‌کردن مواد تا چیدن مخلفات و سس بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: در آماده‌سازی و پخت یک غذای محلی ایرانی کنار مربی مشارکت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: سبزی‌های آماده را ترکیب کن و با مربی دو سس ساده با مواد روشن بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی باریستا آسیاب، نسبت آب و روش ریختن را برای یک قهوهٔ دمی امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-cooking-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کمک مربی شیر را آماده کن و یک طرح ساده روی فنجان تمرینی بریز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: از یک تکه گل، با فشار انگشت‌ها یک کاسهٔ کوچک بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گل را با راهنمایی مربی روی چرخ مرکز کن و یک فرم ساده بالا بیاور.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک ورقهٔ گل را به بدنه تبدیل کن و دستهٔ ساده‌ای به آن وصل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی یک صفحهٔ گل، با اضافه‌کردن قطعه‌های کوچک یک نقش برجسته بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-05": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ ظرف را برای تکمیل و پخت به مسئول بده؛ شست‌وشو و استفادهٔ خوراکی را تا تأیید نهایی انجام نده.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: قطعه‌های موزاییک را روی یک زیرلیوانی بچین و با راهنمایی مربی ثابت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-07": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ رنگ یا لعاب را با مربی انتخاب کن و کاشی را برای تکمیل و پخت بسپار.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی یک شیشهٔ کوچکِ لبه‌صاف، دورگیری و رنگ‌گذاری ساده را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: از بین قطعه‌های آماده یک ترکیب کوچک انتخاب کن و چیدمان آویز را بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با حجم‌های پایه یک حیوان یا شخصیت کوچک سه‌بعدی بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با دست یا قالب یک گلدان کوچک بساز و زیر نظر مربی سوراخ زهکش ایجاد کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-clay-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با تکه‌های آمادهٔ سفال، یک قاب یا صفحهٔ تزیینی موزاییکی بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند دوخت پایه را روی یک نقش کوچک مثل برگ یا نشان تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-02": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ زمان خشک‌شدن و روش شست‌وشوی بعدی را بپرس و ساک را بدون لکه‌کردن حمل کن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با چند گرهٔ تکرارشونده یک آویز مکرومهٔ کوچک بباف.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: زنجیره و پایهٔ ساده را تمرین کن و یک زیرلیوانی کوچک بباف.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: دو تکهٔ نمد را با دوخت ساده به یک جاکلیدی نرم تبدیل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: پودهای رنگی را روی یک دار کوچک رد کن و یک بافتهٔ ساده بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: طرحی ساده را با روش باتیک و راهنمایی مربی روی پارچه اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-08": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ بازکردن گره و آبکشی را طبق زمان و دستور کارگاه انجام بده؛ رنگ را خودسرانه ترکیب نکن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گلبرگ‌های آماده را کنار هم بگذار و یک گل پارچه‌ای برای سنجاق یا گیره بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با دوخت ساده یک کیف کوچک برای کارت یا وسایل سبک بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-11": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ دور قطعه‌ها را با دوخت ساده بگیر و کار را به عنوان یک تکهٔ تزیینی تمام کن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-textile-12": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: رنگ یا نشانی از یک علاقهٔ ارزشمند برای خودت انتخاب کن تا دست‌ساخته یادآور آن باشد؛ اندازه و قفل گره‌ای را تنظیم کن؛ لازم نیست الگوی پیچیده یا چند محصول بسازی.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: قطعه‌های یک جاکارتی را با دوخت دستی به هم وصل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک دستبند چرمی را اندازه بزن و با طرح یا مهر ساده شخصی کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی یک قطعهٔ آماده طرح بزن و با ابزار مجاز آن را به جاکلیدی تبدیل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: قطعه‌های چوب را روی یک نقش ساده کنار هم بچین و ثابت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با ضربه‌های کنترل‌شده و راهنمایی مربی یک نقش کوچک روی مس ایجاد کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: بخشی از یک نقش ساده را با رنگ مناسب روی قطعهٔ آماده اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: تکه‌های آمادهٔ سنگ را با کمک مربی روی بخش کوچکی از یک قطعه بچین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: مهره‌ها را ترکیب کن و با راهنمایی مربی یک آویز یا گوشوارهٔ ساده بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی یک ورق آماده بافت یا طرح ساده ایجاد کن و فرم زیور را انتخاب کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک نقش بسیار ساده را با ابزار مخصوص و نظارت مستقیم روی چوب اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چهار قطعهٔ آماده را با مربی به یک قاب کوچک وصل و پرداخت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-wood-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک سازهٔ کوچک مثل پایهٔ رومیزی را از قطعه‌های آماده مونتاژ کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-01": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ فقط بخش اصلی تصویر را تمام کن و زمان خشک‌شدن و حمل بوم را بپرس.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-02": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ دو یا سه لایهٔ سبک اضافه کن و کاغذ را برای خشک‌شدن صاف نگه دار.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک شیء واقعی را مقابل خودت ببین و حجم و سایه‌اش را روی کاغذ طراحی کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کاردک روی بوم لکه و بافت بساز و یک تصویر ساده را شکل بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-05": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ تثبیت‌کننده را خودسرانه اسپری نکن؛ نگهداری و پوشاندن سطح را از مربی بپرس.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با تیرگی‌های مختلف محلول آمادهٔ قهوه یک تصویر تک‌رنگ بکش.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: بخشی از یک نقش ایرانی را با قلم‌گیری و رنگ‌گذاری ساده تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک نقش هندسی یا گیاهی کوچک را با راهنمایی مربی رنگ‌گذاری و دورگیری کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گرفتن قلم را تمرین کن و چند حرف یا یک کلمهٔ کوتاه بنویس.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-10": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ چند نسخهٔ کوچک امتحان کن و یکی را روی برگهٔ نهایی اجرا کن؛ خوانایی کامل الزام نیست.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-11": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ گفت‌وگوهای کوتاه اضافه کن و صفحه را به یک داستان کوچکِ قابل ورق‌زدن تبدیل کن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-painting-12": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ زمان خشک‌شدن و پوشش نهایی را بپرس؛ سنگ را از محیط حفاظت‌شده جمع نکن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک طرح ساده را با نظارت مستقیم آماده کن و با رنگ روی کاغذ چاپ بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با مهرهای کارگاه یک ترکیب تصویری چندلایه روی کاغذ چاپ کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: زیر نظر مربی رنگ را از شابلون روی کاغذ یا پارچهٔ آماده عبور بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: اشیای آماده را روی کاغذ حساسِ کارگاه بچین و یک چاپ آبی با نور بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با قاب و توری از خمیر آماده یک برگ کاغذ دست‌ساز بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند دسته کاغذ را تا کن و با دوخت ساده به یک دفترچه تبدیل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: رنگ‌ها را روی سطح آماده جابه‌جا کن و نقش را به یک برگ کاغذ منتقل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با تا و برش‌های آماده یک صفحهٔ برجسته بساز که با بازشدن دفتر بالا می‌آید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-09": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ پس‌زمینه و یک عنصر اصلی را ثابت کن و اثر را برای خشک‌شدن روی صفحه نگه دار.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-10": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: چراغ را با نشانی از یک علاقهٔ شخصی تزیین کن تا یادآور چیزی ارزشمند برای خودت باشد؛ فقط از چراغ مجاز کارگاه استفاده کن؛ شمع، شعله و سیم‌کشی برق شهر وارد کار نکن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: از مقوای اندازه‌خورده یک جعبهٔ کوچک با در و اتصال تمیز بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-paper-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گلبرگ‌های کاغذی را فرم بده و یک گل سه‌بعدی کوچک سرهم کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گرفتن دف و چند ضرب ساده را با راهنمایی مربی عملاً امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: دو یا سه صدای پایهٔ تنبک را آرام تمرین کن و یک ریتم کوتاه بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی پیانو چند نت و یک عبارت موسیقایی بسیار کوتاه را با مربی اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: نحوهٔ گرفتن ساز و یک الگوی سادهٔ ضرب یا نت را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی مربی از یک ساز ایرانی چند صدای پایه دربیاور.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-06": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با گروه و راهنمای مربی یک ریتم ساده را با سازهای کوبه‌ای اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک دیالوگ کوتاه را با نقش و لحن انتخابی در میکروفن بخوان.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک صحنهٔ کوتاه را با راهنمایی مربی هم‌زمان با تصویر صداگذاری کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک موقعیت ساده را با مربی و چند حرکت و دیالوگ کوتاه اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-10": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با کمک مربی یک صحنهٔ کوتاه از پیشنهادهای سادهٔ جمع بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: برداشتن یک شیء خیالی یا بازکردن یک در را با حرکت بدن اجرا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-performance-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: برای یک صحنهٔ مجاز، صدای قدم، کاغذ یا باران را با وسایل واقعی تولید کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-01": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: روی زمین مناسب چند رالی بدمینتون و یک بازی کوتاه با همراهت انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گرفتن راکت و ضربه‌های سادهٔ فورهند را با توپ‌های تمرینی امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-03": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: در گروه چهارنفره و با توضیح مسئول زمین یک بازی کوتاه پدل انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: ضربه‌زدن به دیوار و برگشت توپ را در زمین اسکواش با مربی تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-05": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: چند رالی آرام و یک دست بازی پینگ‌پنگ با همراهت انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-06": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: چهار نفر نوبتی ضربه بزنید و یک دست تنیس روی میز دوبل بازی کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: ترکیب ضربه با پا و استفاده از دیوارهای زمین پدبال را با مربی امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند مسیر کوتاه مینی‌گلف را با ضربه‌های آرام و انتخاب زاویه امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: ایستادن و ضربهٔ پایه را در محدودهٔ آموزشی با مربی تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: گرفتن کمان و نشانه‌گیری به هدف ثابت را زیر نظر مستقیم مربی امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با راهنمایی مسئول چند پرتاب دارت به هدف ثابت انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-racket-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: کفش مخصوص بپوش و یک دست بولینگ با توپ مناسب توانت بازی کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-01": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با گروه خودتان دو تیم کوچک بسازید و یک بازی دوستانهٔ فوتسال انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-02": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: دو تیم سه‌نفره تشکیل بدهید و با یک حلقه بازی دوستانه کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-03": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با تور مناسب یک بازی والیبال سبک و دوستانه انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-04": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراه‌هایتان یک بازی فوتبال در زمین مدیریت‌شده انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-05": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با مربی پاس‌دادن، گرفتن توپ و پرتاب سادهٔ هندبال را تمرین کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-06": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراهت از چند نقطهٔ ثابت به نوبت پرتاب بسکتبال تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-07": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با گروه خودتان دریافت و پاس والیبال را با توپ سبک‌تر تمرین کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-08": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: در دو گروه یک بازی داژبال با توپ نرم و قانون روشن انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-09": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراه‌ها پرتاب و گرفتن فریزبی را در یک محدودهٔ خلوت تمرین کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-10": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: دو گروه کوچک بسازید و با پاس‌های کوتاه گل‌کوچک بازی کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-11": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با راهنمایی مسئول یک بازی پاس‌کاری با توپ نرم در بخش مجاز استخر انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-team_sport-12": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراه‌ها پاس‌کاری یا والیبال سبک را روی زمین شنِ مدیریت‌شده تجربه کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-01": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند حرکت پایه و ملایم را در کلاس حضوری و مطابق توانت امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند تمرین پایهٔ کنترل حرکت را با راهنمایی مربی انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: ایستادن، حرکت کوتاه و ترمز پایه را زیر نظر مربی روی پیست تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی مسیر کوتاه و تأییدشدهٔ مربی چند گیره را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی مربی روی مسیرهای بسیار کوتاهِ نزدیک زمین حرکت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی بخش مجاز چند پرش کوتاه و کنترل‌شده انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کمک مربی وزن بدنت را روی تخته جابه‌جا کن و چند ثانیه تعادل بگیر.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-08": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. تا مرز راحتی بمان و برای حرکت نامناسب جایگزین بخواه؛ فشار هم‌گروهی روی بدن مجاز نیست.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با تنظیم زین و مقاومت کم، یک بخش کوتاه از کلاس دوچرخهٔ ثابت را تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با مربی روی تشک چند حرکت تعادل و جابه‌جایی ساده انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند حرکت سادهٔ ایستاده یا نشسته را با کش مناسب توانت امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-balance-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: یک ترکیب کوتاه از قدم‌های ساده و حرکت هماهنگ با ریتم را تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: اگر شنا بلدی، در بخش مناسب مهارتت چند مسیر کوتاه و با استراحت شنا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با حمایت مربی ورود به آب و چند حرکت پایه را در قسمت کم‌عمق امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-03": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. دامنه و سرعت را با توان خودت تنظیم کن و در صورت ناراحتی از آب خارج شو.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در بخش تعیین‌شده چند رفت‌وبرگشت آرام در آب کم‌عمق قدم بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: از بخش‌های مجاز و متناسب با توانت در یک پارک آبی سرپوشیده استفاده کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-06": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراهت در محدودهٔ تعیین‌شده چند دور آرام قایق پدالی بران.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کمک مربی در آب آرام و محدودهٔ مدیریت‌شده چند حرکت پارو تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: به عنوان مسافر یک گشت کوتاه قایقی در مسیر رسمی مجموعه انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: در آب آرامِ مدیریت‌شده و با مربی، نشستن و تعادل اولیه روی تخته را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی مربی نشستن، حرکت و چرخش سادهٔ کایاک را در آب آرام تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: در بخش مبتدی پیست، ایستادن و سرخوردن کوتاه روی یخ را با مربی تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-water_ice-12": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: روی بخش آموزشی و بسیار ساده، ایستادن و توقف پایهٔ اسکی را با مربی تمرین کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-01": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراهت یک بازی فوتبال‌دستی کوتاه روی میز واقعی انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-02": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: روی میز هوادار با همراهت با دیسک بازی کن و به نوبت حمله و دفاع داشته باشید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با همراهت توپ‌های گروه خودتان را روی میز بیلیارد به ترتیب هدف بگیر.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با توضیح مسئول ترتیب توپ‌های قرمز و رنگی را در یک بازی ساده امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در چند نوبت کوتاه توپ‌های دستگاه بسکتبال را به حلقه پرتاب کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با دو دکمه توپ را روی صفحهٔ مکانیکی پین‌بال نگه دار و مسیرها را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند حلقه را از فاصلهٔ تعیین‌شده به هدف‌های ثابت پرتاب کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: توپ‌ها را به نوبت روی مسیر دستگاه بغلتان و هدف‌های نزدیک و دور را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک بازی تعادل با قطعه‌های چوبی یا صفحهٔ لغزان را روی میز انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با همراهت مهره‌ها را با قواعد ساده روی میز بچین و یک دور دومینو بازی کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با همراهت یک بازی شطرنجِ بدون زمان‌سنج یا با کمک راهنما انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-table_games-12": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: به نوبت قطعه‌های چوبی را از برج بیرون بکشید و بالای آن بگذارید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-01": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: در یک فضای واقعی، سرنخ‌ها و قفل‌های داستان را با همکاری گروه حل کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-02": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: در یک بازی محیطی با داستان ماجراجویانه، اشیا را پیدا کنید و مرحله‌ها را جلو ببرید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-03": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: در یک اتاق فرار دارای بازیگر، با گروه خودتان روایت و معماها را دنبال کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-04": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با گروه خودتان مدارک پرونده را روی میز بررسی و فرضیه‌های بازی را مقایسه کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-05": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: یک دور بازی نقش‌مخفی مافیا را با توضیح گرداننده و همراه‌ها انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-06": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: همهٔ اعضای گروه با هم برای بردن یک بازی رومیزی مشترک تصمیم بگیرید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-07": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: منابع و حرکت‌ها را در یک بازی رومیزی استراتژیکِ معرفی‌شده توسط راهنما مدیریت کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-08": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با کارت‌ها و تصویرهای واقعی یک بازی حدس و روایت گروهی انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-09": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: دو گروه شوید و با کارت‌ها و قواعد بازی، کلمه‌ها را به هم برسانید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-10": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: نقش‌های داستانی بگیرید و با سرنخ‌های آماده در یک معمای نمایشی گروهی شرکت کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-11": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با جلیقه و تجهیزات مجموعه در یک بازی گروهی هدف‌گیری نوری شرکت کنید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-group_games-12": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراه‌ها و زیر نظر داور یک سناریوی سادهٔ پینت‌بال انجام بدهید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: روی دستگاه شبیه‌ساز یک مسیر مسابقه‌ای را با فرمان و پدال طی کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-02": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: روی شبیه‌ساز موتور، پیچ‌ها و مسیر بازی را با کنترل‌های دستگاه تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با دسته‌ها و نمایشگر شبیه‌ساز، یک مسیر پرواز مجازی را هدایت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کنترلرها و حرکت‌های کوتاه به هدف‌های هماهنگ با موسیقی در بازی ضربه بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با کنترلرهای بازی به هدف‌های مجازی نشانه برو و چند مرحلهٔ کوتاه انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-06": {
+      "primary_dimension": "affiliation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "affiliation",
+            "intent": "فرصت تعامل متقابل، نوبت‌گیری و تجربهٔ مشترک: با همراهت در یک محیط مجازی مرحله‌ها را با هماهنگی دو نفر جلو ببرید.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با هدست و کنترلرها سرنخ‌های یک اتاق مجازی را پیدا و معماهایش را حل کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با هدست، یک محیط یا منظرهٔ سه‌بعدی را در حالی که روی صندلی ثابت هستی ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک فیلم کوتاه را با افکت‌های مجاز صندلی و سالن تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: هدف‌های تصویری دیوار را با توپ نرم یا لمس مجازِ تعریف‌شدهٔ بازی دنبال کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با قدم‌های کوتاه روی تصویرهای کف، یک بازی حرکتی با حسگر انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-simulation-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با کنترلرِ بدون پرتابه به هدف‌های تصویری بازی نشانه برو.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک دور با کابین چرخ‌وفلک در مجموعهٔ مدیریت‌شده بالا برو و چشم‌انداز را ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-02": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در محوطهٔ بستهٔ شهربازی یک نوبت ماشین برقی بازی کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با قطار کوچک گردشگری در مسیر مشخص مجموعه یک دور بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: بعد از آموزش مسئول، چند دور کارتینگ در پیست بسته و با سرعت مجاز بران.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک نوبت سورتمهٔ ریلی را در مسیر کنترل‌شدهٔ مجموعه تجربه کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با تله‌کابین تا یک ایستگاه نزدیک و مناسب وقتت برو و برگرد.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک رفت‌وبرگشت کوتاه با تله‌سیژ در مسیر رسمی مجموعه انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: یک دور کوتاه روی وسیلهٔ گردان مناسب بزرگسال در شهربازی بنشین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با حمایت و راهنمایی مربی از چند مانع سادهٔ مسیر طنابی عبور کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با یک ماشین پدالی در مسیر مجاز و بدون ترافیک مجموعه چند دور بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با کنترل مجموعه یک قایق کوچک را در حوض محصور هدایت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-amusement-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با دستهٔ دستگاه، جریان آب را به هدف‌های بازی بگیر و یک دور مهارتی انجام بده.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ویترین‌های یک بخش از موزه را ببین و آثار واقعی چند دورهٔ تاریخی را از نزدیک تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-02": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: یک بخش مرتبط با میراث یا علاقه‌ای ارزشمند برای خودت انتخاب کن و معرفی همان بخش را بخوان؛ از مسیر مجاز حرکت کن و روی دو یا سه اثر بیشتر مکث کن؛ تحلیل تخصصی لازم نیست.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: فرش‌ها و بافته‌های واقعی را از نزدیک ببین و تفاوت اندازه، بافت و نقش‌ها را تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ظرف‌های شیشه‌ای و سفالی واقعی را در ویترین‌ها و نور سالن تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با توجه به تجربهٔ بیرونی: سازهای واقعی را از نزدیک ببین و اگر ایستگاه شنیداری فعال است نمونهٔ صدایشان را گوش کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: خودروهای واقعی دوره‌های مختلف را در مسیر نمایشگاه تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ابزار واقعی نامه‌رسانی، تلفن یا ارتباطات قدیمی را در موزه ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ساعت‌های مکانیکی و شکل‌های مختلف سنجش زمان را در نمایشگاه تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-09": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: یک بخش مرتبط با میراث یا علاقه‌ای ارزشمند برای خودت انتخاب کن و معرفی همان بخش را بخوان؛ قانون عکاسی از آثار را رعایت کن و بازدید را به یک بخش دلخواه محدود نگه دار.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: نمونه‌های زمین‌شناسی و مجموعه‌های طبیعیِ نمایش‌داده‌شده را در سالن ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: کارهای واقعی چوب، فلز، پارچه و سفال را در ویترین‌ها ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-museum-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: فضای زندگی یا کار و اشیای نمایش‌داده‌شدهٔ یک هنرمند را در خانه‌موزه ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در حیاط و اتاق‌های مجاز یک خانهٔ تاریخی قدم بزن و فضاهای واقعی را ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-02": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: یک بخش مرتبط با میراث یا علاقه‌ای ارزشمند برای خودت انتخاب کن و معرفی همان بخش را بخوان؛ فقط بلیت بخش موردعلاقه‌ات را بگیر؛ همهٔ مجموعه را لازم نیست در یک نوبت ببینی.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: حیاط و حجره‌های مجاز کاروانسرا را ببین و در فضای واقعی آن قدم بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: زیر سقف و در گذرهای عمومی یک تیمچهٔ بازار قدم بزن و معماری آن را ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: سربینه و بخش‌های قابل بازدید بنای حمام را از نزدیک ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: از قسمت‌های مجاز آب‌انبار، مخزن یا راه‌پلهٔ بازدید را با راهنما ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-07": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: یک بخش مرتبط با میراث یا علاقه‌ای ارزشمند برای خودت انتخاب کن و معرفی همان بخش را بخوان؛ از بالا رفتن روی دیوار و ورود به قسمت بسته پرهیز کن و به راهنمایی مسئول بنا توجه کن.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: بادگیر و ارتباطش با حیاط و فضای داخلیِ بازدید را در ساختمان واقعی ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با راهنما در مسیر عمومی پل قدم بزن و سازه و اطرافش را از نزدیک ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: سردر، کاشی‌کاری و حیاط مجاز یک بنای تاریخی را در محل تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: از ورودی تا کوشک و آبراه‌های مجاز یک باغ ایرانی قدم بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-heritage-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با راهنما مسیر تعیین‌شدهٔ محوطه را طی کن و سازه‌های باقی‌مانده را ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-01": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. یک مسیر کوتاه انتخاب کن و روی نیمکت مجاز استراحت کن؛ برگ و گل نچین.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-02": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. اگر گرما یا رطوبت اذیتت کرد زودتر خارج شو؛ لمس و خرید گیاه اجباری نیست.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-03": {
+      "primary_dimension": "relaxation",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "relaxation",
+            "intent": "فرصت استراحت با ریتم راحت و بدون هدف عملکردی: با ریتم راحت و مکث دلخواه پیش برو؛ هدف سرعت یا امتیاز نیست. فقط بازدید کن یا برای یک خرید اختیاری سقف بگذار؛ زمان برگزاری همیشگی فرض نشده است.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: کاکتوس‌ها و ساکولنت‌های متنوع را در فضای نمایش یا فروش مجاز ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت تمرین یک مهارت عملی با راهنمایی مربی: با راهنمایی مربی یک گیاه آماده را در گلدان مناسب بکار.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-06": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت تمرین یک مهارت عملی با راهنمایی مربی: لایه‌های آماده و گیاهان سازگار را با مربی در یک ظرف تراریوم بچین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-07": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در مسیر تعیین‌شدهٔ باغ میوه قدم بزن و درخت‌ها و کار باغ را از نزدیک ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-08": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: زیر نظر مسئول مقدار کمی از محصول مجاز فصل را خودت برداشت کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "شناخت دو پرنده با کمک راهنما و تشخیص یک نشانهٔ ظاهری، تمرین کوچک یادگیری در همین بازدید است.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-10": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با توجه به تجربهٔ بیرونی: در مسیر مشخص و عمومی پارک جنگلی همراه راهنما قدم بزن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در مسیر بازدید آکواریوم، مخزن‌ها و جانوران آبزی را از پشت شیشه ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-garden-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: در مسیر بازدید عمومی باغ پرندگان قدم بزن و جانورها را از فاصلهٔ مجاز ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: ساخت یک ظرف واقعی با دست یا چرخ را از محل مجاز تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-02": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: از فاصلهٔ مجاز شکل‌گرفتن نقش روی فلز را در کارگاه واقعی ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-03": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با توجه به تجربهٔ بیرونی: کار با دار واقعی و ردشدن پودها را در یک کارگاه فعال تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-04": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با توجه به تجربهٔ بیرونی: از پشت محدودهٔ ایمن، شکل‌دادن شیشهٔ داغ توسط استادکار را ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-05": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: تراش یا چیدن قطعه‌های یک اثر چوبی را در کارگاه واقعی تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: آماده‌سازی و چاپ یک اثر را با توضیح مسئول از محل مجاز ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-07": {
+      "primary_dimension": "autonomy",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "autonomy",
+            "intent": "فرصت انتخاب مطابق سلیقه و کنترل مسیر تجربه: طرح، ترکیب یا بخش موردعلاقه‌ات را خودت انتخاب کن و اگر نخواستی ادامه نده؛ ابزار خودت را بردار و برای عکس از چهرهٔ افراد اجازه بگیر؛ تعداد عکس و انتشارشان اختیاری است.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: چند غرفه و کارگاه مجاز بازارچه را ببین و روش ساخت دو محصول را از فروشنده بپرس.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-09": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با راهنما در چند توقف کوتاه، سهم‌های کوچک خوراک محلی را بچش.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-10": {
+      "primary_dimension": "meaning",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "meaning",
+            "intent": "فرصت پیوند تجربه با چیزی که برای خود فرد ارزش دارد: یک بخش مرتبط با میراث یا علاقه‌ای ارزشمند برای خودت انتخاب کن و معرفی همان بخش را بخوان؛ اگر توقف دارد، زمان حرکت بعدی را رعایت کن؛ همهٔ دیدنی‌ها را لازم نیست در همین نوبت پیاده شوی.",
+            "step_indexes": [
+              3
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-11": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: از محل امن، آماده‌سازی و تقطیر گلاب را با توضیح مسئول تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-local_tour-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: با راهنما در گذرهای عمومی یک محلهٔ تاریخی قدم بزن و چند بنای واقعی را ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-01": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: چند دستگاه مجاز موزهٔ علم را با راهنمایی مسئول خودت امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-02": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با آینه‌ها و عدسی‌های مجاز، بازتاب و تشکیل تصویر را عملاً ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-03": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با قرقره، اهرم یا ابزار تعادلِ مجاز اثر نیرو را روی دستگاه واقعی امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-04": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی مربی یک مدار سادهٔ چراغ و کلید را از قطعه‌های آماده بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-05": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند قطعهٔ یک ربات آموزشی ساده را وصل و حرکت پایه‌اش را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-06": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با توجه به تجربهٔ بیرونی: زیر گنبد آسمان‌نما، نمایش ستاره‌ها و اجرام آسمانی را روی سقف ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-07": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با اندازه‌ها و قطعه‌های آموزشی، مدل ساده‌ای از گردش سیاره‌ها بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-08": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: اسطرلاب، ساعت و مدل ابزارهای رصد را از نزدیک و در محل مجاز ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-09": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: چند شیء آماده را ذره‌ذره جابه‌جا کن و با مربی یک استاپ‌موشن کوتاه بساز.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-10": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با راهنمایی مربی یک برگ یا نمونهٔ آماده را زیر میکروسکوپ ببین.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-11": {
+      "primary_dimension": "mastery",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "mastery",
+            "intent": "فرصت یادگیری یا تمرین یک چالش کوچک با بازخورد: با قطعه‌های سبک یک پل یا برج کوچک بساز و ایستایی آن را امتحان کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    },
+    "iran-science-12": {
+      "primary_dimension": "detachment",
+      "secondary_dimensions": [],
+      "dramma": {
+        "version": "dramma_v1",
+        "mechanisms": [
+          {
+            "dimension": "detachment",
+            "intent": "فرصت فاصله از کارهای روزمره با درگیرشدن در تجربهٔ مشخص: مدل سادهٔ آماده را روی نرم‌افزار مجموعه ببین و آغاز چاپش را با اپراتور تماشا کن.",
+            "step_indexes": [
+              2
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "aligned_on": "2026-11-14"
+}

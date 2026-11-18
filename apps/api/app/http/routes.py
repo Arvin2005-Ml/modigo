@@ -5,6 +5,8 @@ from fastapi.responses import JSONResponse
 from app.core.schemas import AccountEmail, ResetPassword, PasswordConfirm, ChangePassword, Signup, Credentials, Empty, Context, SlateInput, ReplaceInput, NavigateInput, StartInput, Feedback, PreferencesUpdate
 from app.core.errors import DomainError
 from app.modules.catalog.schemas import DraftUpdate, ReviewInput, WithdrawInput, CloneInput, CookInput
+from app.modules.catalog.activation import ActivationStatus, activation_queue
+from app.modules.recommendations.eligibility import VENUE_POLICY_VERSION
 from app.http.presentation import public_response
 
 router = APIRouter()
@@ -27,10 +29,11 @@ def send(s, data, status=200):
     return JSONResponse(jsonable_encoder(public_response(data, s.store)), status_code=status)
 
 
-def idem(request, actor, scope, payload, action, status=200):
+def idem(request, actor, scope, payload, action, status=200, *, on_replay=None):
     s = services(request)
     s.identity.user(actor['id'])
-    value = s.idempotency.run(actor['id'], scope, request.headers.get('idempotency-key'), payload, action)
+    value = s.idempotency.run(actor['id'], scope, request.headers.get('idempotency-key'), payload, action,
+                              on_replay=on_replay)
     return send(s, value, status)
 
 
@@ -38,7 +41,10 @@ def idem(request, actor, scope, payload, action, status=200):
 def ready(request: Request):
     s = services(request)
     s.store.ping()
-    return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider, 'local_demo_content': s.settings.demo_content}
+    return {'status': 'ready', 'data_backend': s.settings.data_backend, 'provider': s.settings.provider,
+            'venue_policy': VENUE_POLICY_VERSION,
+            'local_demo_content': s.settings.demo_content and s.settings.catalog_release == 'legacy',
+            'catalog_release': s.settings.catalog_release if s.settings.demo_content else None}
 
 
 @router.get('/health/live')
@@ -104,7 +110,8 @@ def check_in(data: Context, actor: User, request: Request):
 def create_slate(data: SlateInput, actor: User, request: Request):
     s = services(request)
     s.limiter.take('slate', actor['id'], 20, 60)
-    return idem(request, actor, 'slate', data.model_dump(), lambda: s.recommendations.create(actor['id'], data.check_in_id), 201)
+    return idem(request, actor, 'slate', data.model_dump(), lambda: s.recommendations.create(actor['id'], data.check_in_id), 201,
+                on_replay=lambda receipt: s.recommendations.replay(actor['id'], receipt['id'], receipt))
 
 
 @router.get('/recommendation-sessions/{session_id}')
@@ -117,7 +124,8 @@ def replace_slot(session_id: str, slot_id: str, data: ReplaceInput, actor: User,
     s = services(request)
     s.limiter.take('replace', actor['id'], 30, 60)
     return idem(request, actor, f'replace:{session_id}:{slot_id}', data.model_dump(),
-                lambda: s.recommendations.replace_slot(actor['id'], session_id, slot_id, data.expected_version))
+                lambda: s.recommendations.replace_slot(actor['id'], session_id, slot_id, data.expected_version),
+                on_replay=lambda receipt: s.recommendations.replay(actor['id'], session_id, receipt))
 
 
 @router.post('/recommendation-sessions/{session_id}/navigate')
@@ -125,12 +133,18 @@ def navigate_suggestion(session_id: str, data: NavigateInput, actor: User, reque
     s = services(request)
     s.limiter.take('navigate_suggestion', actor['id'], 120, 60)
     return idem(request, actor, f'navigate:{session_id}', data.model_dump(),
-                lambda: s.recommendations.navigate(actor['id'], session_id, data.direction, data.expected_version))
+                lambda: s.recommendations.navigate(actor['id'], session_id, data.direction, data.expected_version),
+                on_replay=lambda receipt: s.recommendations.replay(actor['id'], session_id, receipt))
 
 
 @router.get('/activity-revisions/{revision_id}')
 def revision(revision_id: str, actor: User, request: Request):
     return services(request).catalog.visible_revision(revision_id)
+
+
+@router.get('/activity-cities')
+def activity_cities(actor: User, request: Request):
+    return {'cities': services(request).catalog.cities()}
 
 
 @router.post('/experiences', status_code=201)
@@ -207,6 +221,13 @@ def admin_list(actor: User, request: Request, limit: int = Query(default=20, ge=
         items = [a for a in items if a['id'] in ids]
     items.sort(key=lambda a: a['seed_key'])
     return {'items': items[offset:offset + limit], 'total': len(items), 'next_offset': offset + limit if len(items) > offset + limit else None}
+
+
+@router.get('/admin/catalog/activation')
+def admin_activation(actor: User, request: Request, status: ActivationStatus | None = None,
+                     limit: int = Query(default=20, ge=1, le=100),
+                     offset: int = Query(default=0, ge=0)):
+    return activation_queue(services(request).catalog, actor, status, offset, limit)
 
 
 @router.get('/admin/activities/{activity_id}')

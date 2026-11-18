@@ -12,7 +12,7 @@ from app.modules.recommendations.eligibility import eligible
 MINUTES = (5, 15, 30, 60, 120, 480)
 PARTIES = (('solo', 1), ('together', 2), ('together', 3), ('together', 4),
            ('together', 8), ('together', 12), ('either', 1), ('either', 2), ('either', 12))
-VENUES = ('home', 'outdoor', 'indoor_public', 'any')
+VENUES = ('home', 'away_from_home', 'any', 'outdoor', 'indoor_public')
 BUDGETS = ({'mode': 'free'}, {'mode': 'cap', 'cap_toman': 1}, {'mode': 'flexible'})
 
 
@@ -31,7 +31,8 @@ def coverage(candidates, now):
 
 def markdown(candidates, now):
     rows = coverage(candidates, now)
-    labels = {'home': 'خانه', 'outdoor': 'هوای آزاد', 'indoor_public': 'سرپوشیده', 'any': 'هرجا'}
+    labels = {'home': 'خانه', 'away_from_home': 'بیرون از خانه', 'any': 'هرجا',
+              'outdoor': 'هوای آزاد (قرارداد قبلی)', 'indoor_public': 'سرپوشیده (قرارداد قبلی)'}
     lines = ['# پوشش کاتالوگ نمایشی', '', f'تاریخ تولید: {now:%Y-%m-%d}؛ {len(candidates)} تجربهٔ فعالِ نمایشی.', '',
         f'{len(rows)} ترکیب زمان، همراه، محیط و بودجه با تابع واقعی فیلتر بررسی شد. '
         f'کمینهٔ گزینهٔ معتبر: {min(r["eligible_count"] for r in rows)}؛ '

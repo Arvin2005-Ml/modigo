@@ -1,4 +1,6 @@
+from pydantic import ValidationError
 from app.core.errors import DomainError, conflict, missing
+from app.core.schemas import city_key
 from app.core.values import uid, replace
 from app.modules.catalog.schemas import Content
 
@@ -36,17 +38,43 @@ class Catalog:
         activity = self.activity(revision['activity_id'])
         if not activity['active'] or revision['state'] == 'archived':
             raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
-        return dict(id=revision['id'], activity_id=activity['id'], content=revision['content'], origin=revision['origin'])
+        content = revision.get('content')
+        if not isinstance(content, dict):
+            raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
+        # Historical content may predate the new schema. Only surface verified
+        # source metadata when it passes the current contract.
+        if content.get('place') or content.get('requires_venue_check'):
+            parsed = self.checked_content(content, activity['primary_dimension'])
+            if parsed is None:
+                raise DomainError('CONTENT_WITHDRAWN', 'این پیشنهاد فعلاً در دسترس نیست.', 410)
+            content = parsed.model_dump()
+        return dict(id=revision['id'], activity_id=activity['id'], content=content, origin=revision['origin'])
 
     def candidates(self):
         result = []
-        for activity in self.store.list('activities'):
-            revision = self.store.get('activity_revisions', activity.get('published_revision_id', ''))
-            if not activity['active'] or not revision or revision['state'] != 'published':
-                continue
-            result.append(dict(id=activity['id'], active=True, published_revision_id=revision['id'],
-                revision_id=revision['id'], state=revision['state'], content=revision['content']))
+        for row in self.store.published_catalog():
+            content = self.checked_content(row.get('content'), row.get('primary_dimension'))
+            if content is not None and row.get('revision_id') == row['published_revision_id']:
+                result.append({**row, 'content': content.model_dump()})
         return result
+
+    def cities(self):
+        cities = sorted({row['content']['place']['city'] for row in self.candidates() if row['content']['place']})
+        return list({city_key(city): city for city in cities}.values())
+
+    @staticmethod
+    def checked_content(raw, dimension):
+        try:
+            content = Content.model_validate(raw)
+        except ValidationError:
+            return None
+        return content if content.primary_dimension == dimension else None
+
+    def reviewable_content(self, revision, activity):
+        content = self.checked_content(revision.get('content'), activity['primary_dimension'])
+        if content is None:
+            raise DomainError('VALIDATION_ERROR', 'محتوای نسخه کامل نیست یا با بُعد اصلی فعالیت سازگار نیست.', 422)
+        return content
 
     def detail(self, actor, activity_id):
         self.authorize(actor)
@@ -94,9 +122,7 @@ class Catalog:
             self.authorize(actor)
             revision = self.revision(revision_id)
             self.check_draft(revision, expected, ('draft', 'rejected'))
-            if not revision.get('content'):
-                raise DomainError('VALIDATION_ERROR', 'اول محتوای کامل این پیش‌نویس رو آماده کن.', 422)
-            Content.model_validate(revision['content'])
+            self.reviewable_content(revision, self.activity(revision['activity_id']))
             revision.update(state='review', draft_version=revision['draft_version'] + 1)
             result = replace(self.store, 'activity_revisions', revision)
             self.audit(actor['id'], 'revision_submitted', revision_id)
@@ -107,17 +133,19 @@ class Catalog:
             self.authorize(actor, admin=True)
             revision = self.revision(revision_id)
             self.check_draft(revision, expected, ('review',))
-            content = Content.model_validate(revision['content'])
+            activity = self.activity(revision['activity_id'])
+            content = self.reviewable_content(revision, activity)
             if content.cost.kind == 'estimated':
                 # Evidence editing is deferred; never accept an unsupported estimate in this slice.
                 raise DomainError('VALIDATION_ERROR', 'انتشار قیمت برآوردی به مسیر ثبت مدرک نیاز داره.', 422)
-            activity = self.activity(revision['activity_id'])
             old = self.store.get('activity_revisions', activity.get('published_revision_id', ''))
             if old and old['state'] == 'published':
                 old['state'] = 'superseded'
                 replace(self.store, 'activity_revisions', old)
             revision.update(state='published', draft_version=revision['draft_version'] + 1,
-                reviewed_by=actor['id'], reviewed_at=self.clock(), published_at=self.clock())
+                reviewed_by=actor['id'], reviewed_at=self.clock(), published_at=self.clock(),
+                validation_report={**revision.get('validation_report', {}), 'schema_valid': True,
+                                   'human_approval': True, 'dramma_version': content.dramma.version})
             saved = replace(self.store, 'activity_revisions', revision)
             activity.update(published_revision_id=revision_id, active=not activity.get('withdrawn', False))
             replace(self.store, 'activities', activity)

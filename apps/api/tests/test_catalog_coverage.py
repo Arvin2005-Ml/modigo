@@ -25,9 +25,9 @@ class CatalogCoverageTests(unittest.TestCase):
     def ranked(self, context, excluded=None):
         return rank(self.candidates, context, NOW, excluded or set(), 'coverage-test', [], [], [], count=6)
 
-    def test_648_onboarding_combinations_have_six_without_items(self):
+    def test_810_check_in_combinations_have_six_without_items(self):
         rows = coverage(self.candidates, NOW)
-        self.assertEqual(len(rows), 648)
+        self.assertEqual(len(rows), 810)
         for row in rows:
             with self.subTest(row=row):
                 self.assertGreaterEqual(row['eligible_count'], 6)

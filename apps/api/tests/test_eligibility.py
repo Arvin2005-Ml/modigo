@@ -21,6 +21,14 @@ class EligibilityTests(unittest.TestCase):
         self.assertEqual(self.check(), ('solo', 1))
         self.a['content']['travel_minutes'] = 10
         self.assertIsNone(self.check())
+    def test_away_from_home_still_requires_fair_weather_and_daylight(self):
+        self.ctx['venue'] = 'away_from_home'
+        self.a['content'].update(venue='outdoor', weather_requirement='fair', daylight_requirement='day')
+        self.assertIsNone(self.check())
+        self.ctx.update(weather='fair', daylight='night')
+        self.assertIsNone(self.check())
+        self.ctx['daylight'] = 'day'
+        self.assertEqual(self.check(), ('solo', 1))
     def test_publication_and_exclusion(self):
         for key, value in [('active', False), ('state', 'draft'), ('published_revision_id', 'old')]:
             a = deepcopy(self.a); a[key] = value
