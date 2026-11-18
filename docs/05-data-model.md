@@ -10,7 +10,8 @@
 Dimension = detachment | relaxation | autonomy | mastery | meaning | affiliation
 Energy = low | medium | high | unknown
 SocialMode = solo | together | either
-Venue = home | outdoor | indoor_public | any
+CheckInVenue = home | away_from_home | any | outdoor | indoor_public
+ActivityVenue = home | outdoor | indoor_public
 BudgetMode = free | cap | flexible
 Mood = tired | restless | bored | low | okay | skip
 Goal = unwind | switch_off | learn | connect | meaning | choose | any
@@ -25,6 +26,8 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
 
 ## Context؛ snapshot هر نوبت
 
+**پرسش‌نامهٔ کوتاه — ۱۸ نوامبر ۲۰۲۶:** در ورودی و snapshot نوبت، `away_from_home` یعنی اجتماع `outdoor` و `indoor_public` و خانه را شامل نمی‌شود. دو مقدار تفکیک‌شده برای سازگاری با درخواست‌ها و snapshotهای قبلی معتبرند. `activity_intent` پاسخ واحد و یک `Goal` است؛ فرانت جدید آن را صریح می‌فرستد. مقدار صریح، حتی `any`، جای `mood`، `need_now` و `desired_outcome` را در رتبه‌بندی می‌گیرد. نبود فیلد یا `null` مسیر قبلی را حفظ می‌کند. `mood`ِ حذف‌شده `skip`، و دو پاسخ قبلیِ حذف‌شده `any` هستند. پاسخ جدید فقط در snapshot نوبت می‌ماند؛ قرارداد پروفایل و کاتالوگ تغییر نمی‌کنند. نمونهٔ [سند35](35-individual-questionnaire.md) برای کلاینت جدید است.
+
 **تصمیم جاری مالک — ۹ نوامبر ۲۰۲۶:** دو فیلد `need_now` و `desired_outcome` از نوع `Goal` با پیش‌فرض `any` به context اضافه شدند. این‌ها پاسخ دو سؤال موقعیتی‌اند و در profile ذخیره نمی‌شوند. session پیشنهاد حداکثر یک item دارد و شامل `replacement_count=0` و `replacement_limit=6` است؛ `check_ins.recommendation_session_id` به تنها session آن نوبت اشاره می‌کند. `suggestion_history` حداکثر هفت snapshot مرتب از itemهای عرضه‌شده و `suggestion_index` اندیس صفرمبنای جاری است. مرور شمارنده را تغییر نمی‌دهد؛ فقط نسخه و item جاری عوض می‌شوند. DTO شامل `suggestion_index` و `suggestion_count` است و تاریخچهٔ داخلی را نمی‌دهد. سابقهٔ انتخاب بُعد از `primary_dimension_snapshot` تجربه‌های همان کاربر، با یک رأی برای هر recommendation session و نخستین شروع موفق آن، خوانده می‌شود؛ نمایش، تعویض، ذخیره و پایان مجدد رأی نیستند. مشخصات جاری در [23](23-single-suggestion.md) بر متن‌های قدیمی شش‌کارتی این سند مقدم است.
 
 ```json
@@ -35,10 +38,8 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
   "party_size": 1,
   "venue": "home",
   "budget": {"mode": "free", "cap_toman": null},
-  "mood": "tired",
-  "goal": "unwind",
-  "need_now": "unwind",
-  "desired_outcome": "any",
+  "activity_intent": "unwind",
+  "goal": "any",
   "owned_items": [],
   "max_mobility": "light",
   "requires_step_free": false,
@@ -121,7 +122,7 @@ FeedbackReason = time | cost | interest | access | too_hard | repeated
 | profiles | user_id unique، preferences شامل goal/tags/owned_items/constraints، updated_at |
 | activities | seed_key unique sparse، active، primary_dimension، published_revision_id |
 | activity_revisions | unique(activity_id,version)، index state و activity_id |
-| check_ins | user_id، context،recommendation_session_id=null،created_slate_count=0،shown_activity_ids=[]،version، created_at، expires_at؛ index(user_id,created_at)، TTL expires_at=۹۰روز |
+| check_ins | user_id، context، context_input (پاسخ‌های صریحِ نرمال‌شده؛ در رکوردهای جدید، فقط داخلی)، recommendation_session_id=null،created_slate_count=0،shown_activity_ids=[]،version، created_at، expires_at؛ index(user_id,created_at)، TTL expires_at=۹۰روز |
 | recommendation_sessions | user_id، check_in_id، context_snapshot، items، suggestion_history،suggestion_index=0،replacement_count=0،replacement_limit=6،shown_activity_ids، version، algorithm_version، seed، created_at، expires_at=۲۴ساعت،purge_at=۹۰روز؛ index(user_id,created_at) |
 | experiences | user_id، activity_id، revision_id، recommendation_session_id، slot_id، content_snapshot، context_snapshot، status active/completed/cancelled/expired، started_at، completed_at، completion_local_date، timezone_at_start، award_result؛ unique partial(user_id) where status=active |
 | feedback | experience_id unique، user_id، rating، reason|null، updated_at؛ index(user_id,updated_at) |

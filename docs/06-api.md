@@ -6,6 +6,8 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 
 **قرارداد جاری مالک — ۹ نوامبر ۲۰۲۶:** نتیجه یک پیشنهاد و حداکثر شش تعویض موفق در همان نوبت است. `items` صفر یا یک عضو و `partial` فقط در نتیجهٔ صفر true است؛ `empty_reason` فقط `null` یا `NO_MATCHES` است. پاسخ session شامل `replacement_count`, `replacement_limit`, `replacements_remaining`, `replacement_available` است. همچنین `suggestion_index` صفرمبنا و `suggestion_count` تعداد دیده‌شده‌ها را دارد؛ فقط کارت جاری برمی‌گردد. ساخت مجدد با همان check-in، همان session و شمارنده و جای مرور جاری را برمی‌گرداند. مرور قبلی/بعدی بدون مصرف سهمیه است و بعد از شش تعویض هم مجاز می‌ماند؛ گزینهٔ تازه فقط در انتهای تاریخچه گرفته می‌شود. POST تعویض علاوه بر این چهار فیلد، `replaced` را برای موفقیت همین درخواست می‌دهد؛ `replacement_available` امکان تعویض بعدی است. نبود گزینه 200 و `replaced:false`، بدون مصرف سهمیه؛ پس از شش موفقیت، تلاش بعدی 409 `REPLACEMENT_LIMIT` است. مالکیت، CSRF، idempotency و expected_version همچنان لازم‌اند. دو فیلد اختیاری `need_now` و `desired_outcome` از enum `Goal` به check-in اضافه شدند. [سند23](23-single-suggestion.md) بر جدول‌ها و مثال‌های قدیمی شش‌کارتی و سقف سه slate در ادامه مقدم است.
 
+**قرارداد پرسش‌نامهٔ کوتاه — ۱۸ نوامبر ۲۰۲۶:** `POST /check-ins` مقدار `venue: "away_from_home"` و پاسخ `activity_intent` از enum `Goal` را می‌پذیرد. فرانت تازه به‌جای سه کلید `mood`، `need_now` و `desired_outcome` فقط `activity_intent` را (با پیش‌فرض صریح `"any"`) می‌فرستد. درخواست قبلی هم پذیرفته می‌شود؛ `activity_intent` حذف‌شده یا `null` یعنی استفاده از رفتار قبلی. `context_summary.venue` مقدار ذخیره‌شدهٔ نوبت را برمی‌گرداند و ممکن است یکی از پنج مقدار سند05 باشد. نمونهٔ درخواست و راه اعمال فرانت در [سند35](35-individual-questionnaire.md) است.
+
 ## قواعد عمومی
 
 موفقیت: entity مستقیم؛ لیست `{items:[],next_cursor:null}`. pagination با cursor opaque و limit پیش‌فرض۲۰، سقف۱۰۰ و ترتیب پایدار `(created_at,id)` نزولی. فهرست عمومی همهٔ کاربران، کاتالوگ خام و jobها نداریم. پاسخ‌های شخصی `Cache-Control: no-store`. خطا:
@@ -92,6 +94,8 @@ create slate در transaction با CAS روی check_ins.version،افزایش cr
 برای یک کارت قابل نمایش `partial:false,empty_reason:null`؛ صفر کارت مجاز `partial:true,empty_reason:"NO_MATCHES"`. تاریخچهٔ مرور می‌تواند کارت withdrawn بدون متن را در slot جاری نگه دارد؛ با قبلی/بعدی همچنان جابه‌جا می‌شود. مدل یا score از خروجی حذف می‌شود. `content_snapshot` تجربهٔ مالک پس از withdrawal با برچسب unavailable و حذف دستورالعمل ممنوع پاسخ داده شود، هرچند snapshot داخلی برای audit حفظ است.
 
 GET یک session قدیمی،کارت withdrawn یا archived را با `{slot_id,unavailable:true}` بدون متن محتوا پاسخ دهد؛ slot حفظ شود تا کاربر replace کند. `result_count` تعداد کارت‌های قابل نمایش است. جایگزینی خودکار و بی‌خبر انجام نشود؛برای نسخهٔ superseded ولی هنوز مجاز،جزئیات تاریخی قابل دیدن است و شروع نیازمند پیشنهاد تازه طبق قاعدهٔ بالا. expiry پیشنهاد،expiry تجربهٔ شروع‌شده نیست؛تجربه از started_at خود۲۴ساعت فرصت دارد.
+
+کارت نشست پس از تغییر محدودیت پروفایل، منقضی‌شدن قیمتِ لازم برای سقف هزینه، یا عوض‌شدن نسخهٔ جاری نیز سمت سرور دوباره سنجیده می‌شود. اگر نامعتبر باشد شکل همان `{slot_id,unavailable:true}` است. صفر کارت نمایشی به معنی نبود جایگزین نیست: `replacement_available` را جدا بخوانید. تکرار درخواست با همان کلید عمل را دوباره انجام نمی‌دهد؛ تا وقتی نسخهٔ نشست یکسان است، واجد شرایط بودن کارت و امکان تعویض دوباره سنجیده می‌شود. رسید نسخهٔ قدیمی هنوز نتیجه و شمارندهٔ عمل خودش را دارد؛ برای اقدام بعدی نشست جاری را از GET بگیرید.
 
 ## ادمین؛ همه با audit و مجوز سرور
 

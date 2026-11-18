@@ -1,0 +1,71 @@
+# شهر|نام محل|نوع|منبع (فهرست‌های گردآوری‌شده؛ سرویس و فعالیت امروز تأیید نشده)
+رشت|رستوران بی بی کیو|restaurant|rasht
+رشت|رستوران باباخان|restaurant|rasht
+رشت|رستوران ترنگ طلایی|restaurant|rasht
+رشت|رستوران سنتی ارک|restaurant|rasht
+رشت|رستوران مارال|restaurant|rasht
+رشت|رستوران گیله مرد اصیل|restaurant|rasht
+رشت|کافه رستوران ماهی جنوب|restaurant|rasht
+رشت|رستوران پورصفر|restaurant|rasht
+رشت|رستوران خورشخانه|restaurant|rasht
+رشت|رستوران رشتی مشتی|restaurant|rasht
+رشت|رستوران نازبداشته|restaurant|rasht
+رشت|رستوران یادگار پدر|restaurant|rasht
+رشت|کافه رستوران اردک آبی|restaurant|rasht
+رشت|کافه رستوران آسو|restaurant|rasht
+رشت|رستوران کیوان|restaurant|rasht
+رشت|رستوران ترش واش|restaurant|rasht
+رشت|رستوران سنتی کولمه|restaurant|rasht
+رشت|رستوران گردشگری ریژان|restaurant|rasht
+رشت|رستوران گیل بانو کاسپین|restaurant|rasht
+رشت|رستوران خوتکا|restaurant|rasht
+رشت|رستوران سنتی پاپلی|restaurant|rasht
+رشت|رستوران عظیم|restaurant|rasht
+رشت|شکم الملوک|restaurant|rasht
+رشت|پیتزا دنیز|fastfood|rasht
+رشت|فست فود شکموها|fastfood|rasht
+رشت|کافه و فست فود چتر|fastfood|rasht
+رشت|گیلافل شعبه ۱|fastfood|rasht
+رشت|اسکمو وحید شعبه مرکزی|fastfood|rasht
+رشت|پاچینی جزیره|fastfood|rasht
+رشت|فست فود فلاویچ|fastfood|rasht
+شیراز|رویال برگر شیراز|fastfood|shiraz
+شیراز|مجموعه غذایی اسپیرو|restaurant|shiraz
+شیراز|اکبر جوجه ساحلی غربی|restaurant|shiraz
+شیراز|ایرانویچ ۳|fastfood|shiraz
+شیراز|بلک برگر شعبه زرهی|fastfood|shiraz
+شیراز|تیکا تایم|restaurant|shiraz
+شیراز|جگر کباب ترنج|restaurant|shiraz
+شیراز|چلو کباب و باربیکیو ناب|restaurant|shiraz
+شیراز|رستوران باباطاهر بلوار صنعت|restaurant|shiraz
+شیراز|رستوران سوان|restaurant|shiraz
+شیراز|رستوران مطعم تورنگ|restaurant|shiraz
+شیراز|سوشی خونه شیراز|fastfood|shiraz
+شیراز|سیب ذر دنیای کتلت عابدی ۲|fastfood|shiraz
+شیراز|عمارت تاریخی کازرونیان|restaurant|shiraz
+شیراز|فست فود اشکان شعبه ۲|fastfood|shiraz
+شیراز|فست فود بابا کیلویی|fastfood|shiraz
+شیراز|فست فود دکه|fastfood|shiraz
+شیراز|فلافل و سمبوسه تک|fastfood|shiraz
+شیراز|کافه رستوران پاپریکا|restaurant|shiraz
+شیراز|کبابستان|restaurant|shiraz
+شیراز|باغ رستوران شهرزاد|restaurant|shiraz
+اصفهان|کباب و بریان دایی رضا|restaurant|isfahan
+اصفهان|مستر پیتزا|fastfood|isfahan
+اصفهان|آقای برگر|fastfood|isfahan
+اصفهان|پیتزا لیمون|fastfood|isfahan
+اصفهان|خوانسالار|restaurant|isfahan
+اصفهان|رستوران آراخوان|restaurant|isfahan
+اصفهان|رستوران سیب|restaurant|isfahan
+اصفهان|سفره خانه خانوادگی سلطان|restaurant|isfahan
+اصفهان|فست فود پسران من|fastfood|isfahan
+اصفهان|کافه رستوران بال لند|restaurant|isfahan
+اصفهان|کافه و رستوران ترمه و ترنج|restaurant|isfahan
+اصفهان|کبابی و بریانی تاک|restaurant|isfahan
+اصفهان|رستوران نگارستان|restaurant|isfahan
+اصفهان|پیتزا گریل|fastfood|isfahan
+اصفهان|خانه تاریخی هووآنس|restaurant|isfahan
+اصفهان|فست فود ناژو|fastfood|isfahan
+اصفهان|فست فود نیکشان جی|fastfood|isfahan
+اصفهان|میز مادربزرگ|restaurant|isfahan
+اصفهان|آرا برگر|fastfood|isfahan
