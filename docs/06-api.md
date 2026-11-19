@@ -55,7 +55,7 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | GET `/recommendation-sessions/{id}` | 200 session مالک؛ expired→410 با امکان ساخت check-in جدید |
 | POST `/recommendation-sessions/{id}/slots/{slot_id}/replace` | `{expected_version:1}`؛ 200 `{session_version,item,replaced,replacement_count,replacement_limit,replacements_remaining,replacement_available,suggestion_index,suggestion_count}`؛ نبود گزینه200 با item قبلی و `replaced:false`، بدون مصرف سهمیه/نسخه؛ سقف409 `REPLACEMENT_LIMIT`، میانهٔ تاریخچه409 `HISTORY_NOT_AT_END` |
 | POST `/recommendation-sessions/{id}/navigate` | `{direction:"previous"\|"next",expected_version}`؛ 200 session کامل با کارت جاری؛ مرور نسخه را زیاد می‌کند، سهمیه ثابت؛ مرز409 `HISTORY_BOUNDARY`؛ CSRF و idempotency لازم |
-| GET `/discover` | نشست لازم؛ 200 `{items:[{activity_id,revision_id,title,primary_dimension}]}`؛ فقط نسخهٔ جاری و معتبر فعالیت‌های فعال و منتشرشده |
+| GET `/discover` | نشست لازم؛ 200 `{items:[{activity_id,revision_id,title,teaser,primary_dimension,venue,place}]}`؛ `place` شامل نام و شهر یا `null`؛ فقط نسخهٔ جاری و معتبر فعالیت‌های فعال و منتشرشده |
 | GET `/activity-revisions/{id}` | 200 content کامل منتشرشده/superseded به‌همراه activity_id و `catalog_start`؛ withdrawn410؛ draft404 برای user |
 | GET `/saved` | لیست آخرین revision فعال هر activity؛ مورد inactive با `{unavailable:true,activity_id}`، بدون محتوای ممنوع |
 | PUT `/saved/{activity_id}` | `{}`؛ 204؛ فقط activity منتشرشده و فعال |
@@ -71,7 +71,7 @@ Base path: `/api/v1`. همهٔ JSONها UTF-8، نام فیلدها snake_case. 
 | GET `/me/journey` | 200 `{total_points,rewarded_completions,completed_dimensions,badges}` |
 | POST `/analytics/events` | `{events:[{event_id,name,occurred_at,properties}]}`؛ 202 `{accepted,duplicates}`؛ سقف۲۰ در batch، allowlist13 |
 
-فهرست خلاصهٔ `/discover` به ترتیب عنوان و سپس شناسه مرتب است و در یک پاسخ می‌آید تا مرورگر جست‌وجو و فیلتر دسته را روی تمام عنوان‌ها انجام دهد. متن و اطلاعات داخلی کاتالوگ در این فهرست نیستند؛ پاسخ `no-store` است.
+فهرست خلاصهٔ `/discover` به ترتیب عنوان و سپس شناسه مرتب است و در یک پاسخ می‌آید. کارت توضیح کوتاه `teaser`، دسته و نام و شهر مکان را نمایش می‌دهد. برای فعالیت بدون مقصد ثبت‌شده، نوع محیط از `venue` نمایش داده می‌شود. پاسخ `no-store` است و متن کامل فعالیت از مسیر جزئیات خوانده می‌شود.
 
 گردش کامل فقط از مسیر پیشنهاد به دست می‌آید و در `/discover` و گزینه‌های شهرِ گردش کوتاه افزوده نمی‌شود. `outing_days: 1|2` به‌ترتیب ۱۴۴۰/۲۸۸۰ دقیقه، `away_from_home`، اجازهٔ پیشنهاد مکان و یکی از پنج مبدأ را لازم دارد؛ ترکیب ناسازگار ۴۲۲ است. فیلتر بر اساس مبدأ و مدت دقیق است؛ `context_summary.city` مبدأ و `items[].place.city` مقصد اصلی‌اند. `items[].outing` خلاصهٔ سفر و `content.outing` برنامهٔ روزها را دارد. در گردش کامل `venue_alternative` ارائه نمی‌شود. هزینهٔ تأییدنشده فقط با بودجهٔ منعطف واجد شرایط است؛ `budget_alternative` صرفاً پیش‌نمایش است. برای شروع این نوع پیشنهاد، `conditions_confirmed:true` ضروری است؛ بدون آن ۴۲۲ و `error.fields.conditions_confirmed="required"`. `catalog_start` این محتوا `null` است. [سند45](45-full-day-outings-frontend.md) نمونهٔ بدنه و رفتار رابط را دارد.
 

@@ -1,7 +1,13 @@
 import type {CSSProperties} from 'react';
 
-export type IconName = 'spark' | 'arrow' | 'bookmark' | 'journey' | 'user' | 'download' | 'close' | 'check' | 'clock' | 'leaf' | 'sun' | 'shuffle' | 'shield' | 'wifi' | 'heart' | 'coffee' | 'headphones' | 'plus' | 'dashboard' | 'settings';
+export type IconName = 'spark' | 'arrow' | 'bookmark' | 'journey' | 'user' | 'download' | 'close' | 'check' | 'clock' | 'leaf' | 'sun' | 'shuffle' | 'shield' | 'wifi' | 'heart' | 'coffee' | 'headphones' | 'plus' | 'dashboard' | 'settings' | 'pin' | 'search' | 'book' | 'users' | 'home' | 'building';
 const paths: Record<IconName, React.ReactNode> = {
+  search: <><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4.5 4.5"/></>,
+  book: <path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14"/>,
+  users: <><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2m2-15a3 3 0 0 1 0 6m4 9v-2a5 5 0 0 0-3-4.6"/></>,
+  home: <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9"/>,
+  building: <path d="M4 21h16M6 21V5l12-2v18M10 8h.01M14 8h.01M10 12h.01M14 12h.01M10 16h.01M14 16h.01"/>,
+  pin: <><path d="M19 10c0 5-7 10-7 10s-7-5-7-10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.25"/></>,
   dashboard: <><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="15" y="3" width="6" height="8" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/></>,
   settings: <><path d="M4 6h8m4 0h4M4 12h3m4 0h9M4 18h10m4 0h2"/><circle cx="14" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></>,
   spark: <><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/><path d="m20 2 .6 1.4L22 4l-1.4.6L20 6l-.6-1.4L18 4l1.4-.6L20 2Z"/></>,

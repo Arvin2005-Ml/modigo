@@ -593,6 +593,17 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(started.status_code, 201, started.text)
         self.assertEqual((started.json()['execution_social_mode'], started.json()['execution_people']), ('together', 3))
 
+        revision = self.s.catalog.revision(revision['id'])
+        revision['content'].update(requires_venue_check=True, place=dict(
+            name='پارک ملت', city='تهران', source_url='https://www.tehran.ir/',
+            source_name='شهرداری تهران', researched_on='2026-11-19',
+            evidence_scope='place_and_activity_type_only',
+        ))
+        replace(self.s.store, 'activity_revisions', revision)
+        response = await self.a.get('/api/v1/discover')
+        summary = next(item for item in response.json()['items'] if item['activity_id'] == row['id'])
+        self.assertEqual(summary['place'], {'name': 'پارک ملت', 'city': 'تهران'})
+
     async def test_daily_cap_and_recent_activity(self):
         slate = await self.slate()
         first = slate['items'][0]
@@ -632,9 +643,14 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             return response.json()['items']
 
         indexed = await discover()
-        self.assertIn(dict(activity_id=item['activity_id'], revision_id=item['revision_id'],
-                           title=item['title'],
-                           primary_dimension=self.s.catalog.activity(item['activity_id'])['primary_dimension']), indexed)
+        summary = next(row for row in indexed if row['activity_id'] == item['activity_id'])
+        content = self.s.catalog.revision(item['revision_id'])['content']
+        self.assertEqual(summary, dict(
+            activity_id=item['activity_id'], revision_id=item['revision_id'],
+            title=item['title'], teaser=content['teaser'],
+            primary_dimension=content['primary_dimension'], venue=content['venue'],
+            place={key: content['place'][key] for key in ('name', 'city')} if content['place'] else None,
+        ))
         seed = next(row for row in self.s.store.list('activities') if row['seed_key'] == 'bank:D-001')
         self.assertNotIn(seed['id'], {row['activity_id'] for row in indexed})
 

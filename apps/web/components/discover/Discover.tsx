@@ -6,24 +6,47 @@ import { useState } from "react";
 
 import { number } from "@/lib/api";
 import { useAuth } from "@/lib/hooks/useAuth";
-import { paths } from "@/lib/navigation";
 import { apiSlice } from "@/lib/store/api/apiSlice";
 import { toApiError } from "@/lib/store/api/baseQuery";
+import type { DiscoverItem } from "@/types";
 
-import Icon from "../Icon";
-import MomentArt from "../MomentArt";
+import Icon, { type IconName } from "../Icon";
+import { updateDiscoverFilter } from "./discoverFilters";
 import styles from "./Discover.module.css";
 
-const categories = new Map([
-  ["detachment", "فاصله از روزمرگی"],
-  ["relaxation", "آرامش"],
-  ["autonomy", "انتخاب آزاد"],
-  ["mastery", "یادگیری و مهارت"],
-  ["meaning", "کارهای معنادار"],
-  ["affiliation", "وقت گذراندن با دیگران"],
+const categories = new Map<string, { label: string; icon: IconName }>([
+  ["detachment", { label: "فاصله از روزمرگی", icon: "leaf" }],
+  ["relaxation", { label: "آرامش", icon: "coffee" }],
+  ["autonomy", { label: "انتخاب آزاد", icon: "spark" }],
+  ["mastery", { label: "یادگیری و مهارت", icon: "book" }],
+  ["meaning", { label: "کارهای معنادار", icon: "heart" }],
+  ["affiliation", { label: "وقت گذراندن با دیگران", icon: "users" }],
+]);
+
+type DiscoverFilter = {
+  label: string;
+  icon: IconName;
+  matches: (activity: DiscoverItem, saved: ReadonlySet<string>) => boolean;
+};
+
+const filters = new Map<string, DiscoverFilter>([
+  ["", { label: "همه", icon: "dashboard", matches: () => true }],
+  ...Array.from(categories, ([key, category]): [string, DiscoverFilter] => [
+    key, { ...category, matches: (activity) => activity.primary_dimension === key },
+  ]),
+  ["home", { label: "در خانه", icon: "home", matches: (activity) => activity.venue === "home" }],
+  ["outdoor", { label: "فضای باز", icon: "sun", matches: (activity) => activity.venue === "outdoor" }],
+  ["indoor_public", { label: "سرپوشیده", icon: "building", matches: (activity) => activity.venue === "indoor_public" }],
+  ["named_place", { label: "مکان مشخص", icon: "pin", matches: (activity) => Boolean(activity.place) }],
+  ["saved", { label: "ذخیره‌شده‌ها", icon: "bookmark", matches: (activity, saved) => saved.has(activity.activity_id) }],
 ]);
 
 const pageSize = 30;
+const venueLabels = {
+  home: "در خانه",
+  outdoor: "فضای باز",
+  indoor_public: "فضای عمومی سرپوشیده",
+};
 
 function normalize(value: string) {
   return value
@@ -38,7 +61,8 @@ export default function Discover() {
   const { user } = useAuth();
   const params = useSearchParams();
   const query = params.get("q") ?? "";
-  const category = params.get("tag") ?? "";
+  const requestedFilter = params.get("tag") ?? "";
+  const selectedFilter = filters.has(requestedFilter) ? requestedFilter : "";
   const requestedLimit = Number(params.get("limit"));
   const limit = Number.isSafeInteger(requestedLimit)
     ? Math.max(pageSize, requestedLimit)
@@ -51,9 +75,6 @@ export default function Discover() {
   const saved = apiSlice.endpoints.getSaved.useQuery(undefined, {
     skip: !user,
   });
-  const active = apiSlice.endpoints.getActiveExperience.useQuery(undefined, {
-    skip: !user,
-  });
   const [save, saving] = apiSlice.endpoints.saveActivity.useMutation();
   const [remove, removing] = apiSlice.endpoints.removeSaved.useMutation();
   const [notice, setNotice] = useState("");
@@ -61,27 +82,14 @@ export default function Discover() {
   if (!user) return null;
 
   const term = normalize(query);
-  const activities = catalog.isError || catalog.isFetching ? [] : (catalog.data?.items ?? []);
-  const results = activities.filter(({ title, primary_dimension: dimension }) => {
-    const label = categories.get(dimension) ?? "";
-
-    return (
-      (!category || dimension === category) &&
-      normalize(`${title} ${label}`).includes(term)
-    );
-  });
   const savedIds = new Set(saved.data?.items.map((item) => item.activity_id));
-
-  function updateFilter(key: string, value: string) {
-    const url = new URL(window.location.href);
-
-    if (value) url.searchParams.set(key, value);
-    else url.searchParams.delete(key);
-
-    if (key !== "limit") url.searchParams.delete("limit");
-
-    window.history.replaceState(null, "", url);
-  }
+  const filter = filters.get(selectedFilter);
+  const activities = catalog.isError || catalog.isFetching ? [] : (catalog.data?.items ?? []);
+  const results = activities.filter((activity) => {
+    const label = categories.get(activity.primary_dimension)?.label ?? "";
+    return (!filter || filter.matches(activity, savedIds)) &&
+      normalize(`${activity.title} ${label}`).includes(term);
+  });
 
   async function toggle(id: string, exists: boolean) {
     try {
@@ -94,56 +102,29 @@ export default function Discover() {
 
   return (
     <main id="main" className={`page-shell ${styles.feed}`}>
-      <header className={styles.heading}>
-        <h1>کشف فعالیت‌ها</h1>
-        <Link href={paths.questions}>
-          <Icon name="spark" size={18} /> پیشنهاد برای همین الان
-        </Link>
-        <Link href={paths.saved}>فعالیت‌های ذخیره‌شده</Link>
-        {active.data?.experience?.status === "active" && (
-          <Link
-            href={`/experiences/${encodeURIComponent(active.data.experience.id)}`}
-          >
-            ادامهٔ فعالیت قبلی
-          </Link>
-        )}
-      </header>
-
-      <input
-        className={styles.search}
-        type="search"
-        aria-label="جست‌وجوی فعالیت"
-        placeholder="دنبال چه فعالیتی می‌گردی؟"
-        value={query}
-        onChange={(event) => updateFilter("q", event.target.value)}
-      />
-
-      <div className={styles.chips} role="group" aria-label="دسته‌بندی فعالیت">
-        <button
-          aria-pressed={!category}
-          onClick={() => updateFilter("tag", "")}
-        >
-          همه
-        </button>
-        {Array.from(categories, ([key, label]) => (
+      <h1 className="sr-only">کشف فعالیت‌ها</h1>
+      <div className={styles.chips} role="group" aria-label="فیلتر فعالیت‌ها">
+        {Array.from(filters, ([key, { label, icon }]) => (
           <button
             key={key}
-            aria-pressed={category === key}
-            onClick={() => updateFilter("tag", key)}
+            type="button"
+            aria-pressed={selectedFilter === key}
+            onClick={() => updateDiscoverFilter("tag", key)}
           >
+            <span className={styles.filterIcon}><Icon name={icon} size={18} /></span>
             {label}
           </button>
         ))}
       </div>
 
-      {catalog.isFetching ? (
+      {catalog.isFetching || (selectedFilter === "saved" && saved.isFetching) ? (
         <p role="status">در حال دریافت فعالیت‌ها…</p>
       ) : catalog.isError ? (
         <p role="alert">
           فعالیت‌ها دریافت نشد.{" "}
           <button onClick={catalog.refetch}>تلاش دوباره</button>
         </p>
-      ) : catalog.isSuccess && (
+      ) : catalog.isSuccess && (selectedFilter !== "saved" || !saved.isError) && (
         <p role="status">
           {results.length
             ? `${number(results.length)} فعالیت`
@@ -162,6 +143,10 @@ export default function Discover() {
       <div className={styles.grid}>
         {results.slice(0, limit).map((activity) => {
           const exists = savedIds.has(activity.activity_id);
+          const description = activity.teaser?.trim();
+          const location = activity.place
+            ? [activity.place.name, activity.place.city].filter(Boolean).join("، ")
+            : activity.venue && venueLabels[activity.venue];
           const detail = new URLSearchParams({
             from: "discover",
             filters: params.toString(),
@@ -169,25 +154,16 @@ export default function Discover() {
 
           return (
             <article className={styles.card} key={activity.activity_id}>
-              <Link
-                prefetch={false}
-                href={`/activities/${encodeURIComponent(activity.revision_id)}?${detail}`}
-              >
-                <div className={styles.cover}>
-                  <MomentArt
-                    variant={activity.primary_dimension === "mastery" ? 2 : 0}
-                  />
-                </div>
-                <div className={styles.copy}>
-                  <small>{categories.get(activity.primary_dimension)}</small>
-                  <h2>{activity.title}</h2>
-                </div>
-              </Link>
-
-              <div className={styles.actions}>
+              <div className={styles.cardHeader}>
+                <span className={styles.category} data-dimension={activity.primary_dimension}>
+                  {categories.get(activity.primary_dimension)?.label}
+                </span>
                 <button
+                  type="button"
+                  className={styles.bookmark}
                   aria-pressed={exists}
-                  aria-label={`${exists ? "حذف از ذخیره‌ها" : "ذخیره برای بعد"}، ${activity.title}`}
+                  aria-label={`ذخیره برای بعد، ${activity.title}`}
+                  title={exists ? "حذف از ذخیره‌ها" : "ذخیره برای بعد"}
                   disabled={
                     !saved.data ||
                     saved.isFetching ||
@@ -196,9 +172,26 @@ export default function Discover() {
                   }
                   onClick={() => toggle(activity.activity_id, exists)}
                 >
-                  <Icon name="bookmark" size={16} />
-                  {exists ? "ذخیره‌شده" : "ذخیره برای بعد"}
+                  <Icon name="bookmark" size={19} />
                 </button>
+              </div>
+              <h2>{activity.title}</h2>
+              {description && <p className={styles.description}>{description}</p>}
+              <div className={styles.cardFooter}>
+                {location && (
+                  <span className={styles.location}>
+                    <Icon name="pin" size={18} />
+                    <span>{location}</span>
+                  </span>
+                )}
+                <Link
+                  className={styles.details}
+                  aria-label={`جزئیات ${activity.title}`}
+                  prefetch={false}
+                  href={`/activities/${encodeURIComponent(activity.revision_id)}?${detail}`}
+                >
+                  جزئیات <Icon name="arrow" size={16} />
+                </Link>
               </div>
             </article>
           );
@@ -209,7 +202,7 @@ export default function Discover() {
         <p>
           <button
             className="text-button"
-            onClick={() => updateFilter("limit", String(limit + pageSize))}
+            onClick={() => updateDiscoverFilter("limit", String(limit + pageSize))}
           >
             نمایش فعالیت‌های بیشتر
           </button>

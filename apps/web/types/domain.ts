@@ -173,4 +173,7 @@ export type DiscoverItem = {
   revision_id: string;
   title: string;
   primary_dimension: string;
+  teaser?: string;
+  venue?: Extract<Context["venue"], "home" | "outdoor" | "indoor_public">;
+  place?: Pick<Place, "name" | "city"> | null;
 };

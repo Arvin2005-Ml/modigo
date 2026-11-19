@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 import { paths } from "@/lib/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
@@ -9,9 +11,12 @@ import { apiSlice } from "@/lib/store/api/apiSlice";
 
 import Icon from "@/components/Icon";
 import Pwa from "@/components/Pwa";
+import DiscoverSearch from "@/components/discover/DiscoverSearch";
+import discoverStyles from "@/components/discover/Discover.module.css";
 
 export default function AppHeader() {
   const user = useAppSelector((state) => state.auth.user);
+  const isDiscover = usePathname() === paths.discover;
 
   const { data: activeData } = apiSlice.endpoints.getActiveExperience.useQuery(
     undefined,
@@ -23,7 +28,7 @@ export default function AppHeader() {
   const activeExperience = activeData?.experience;
 
   return (
-    <header className="site-header">
+    <header className={isDiscover ? `site-header ${discoverStyles.searchHeader}` : "site-header"}>
       <Link
         href={user ? paths.dashboard : paths.landing}
         className="wordmark"
@@ -39,7 +44,13 @@ export default function AppHeader() {
         />
       </Link>
 
-      <div className="header-caption">یه کم وقت برای خودت.</div>
+      {isDiscover ? (
+        <Suspense fallback={<div className={discoverStyles.search} aria-hidden="true" />}>
+          <DiscoverSearch />
+        </Suspense>
+      ) : (
+        <div className="header-caption">یه کم وقت برای خودت.</div>
+      )}
 
       <div className="header-actions">
         <Pwa />

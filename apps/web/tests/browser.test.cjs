@@ -86,7 +86,20 @@ async function setup(browser, options = {}) {
       return send(state.preferences);
     }
     if (endpoint === '/discover') return send({items:[
-      {activity_id:'activity-0', revision_id:'revision-0', title:content.title, primary_dimension:content.primary_dimension},
+      {activity_id:'activity-0', revision_id:'revision-0', title:activityContent.title,
+        teaser:activityContent.teaser, primary_dimension:activityContent.primary_dimension,
+        venue:activityContent.place ? 'indoor_public' : 'home',
+        place:activityContent.place ? {name:activityContent.place.name, city:activityContent.place.city} : null},
+      {activity_id:'activity-1', revision_id:'revision-1', title:'یه طرح کوچیک برای خودت',
+        teaser:'با کاغذ و قلم، یه چیز ساده از دوروبرت بکش.', primary_dimension:'mastery', venue:'home', place:null},
+      {activity_id:'activity-2', revision_id:'revision-2', title:'یه مسیر تازه برای قدم‌زدن',
+        teaser:'یه مسیر آشنا رو از کوچه‌ای که کمتر رفتی ادامه بده و به اطرافت دقت کن.', primary_dimension:'detachment', venue:'outdoor', place:null},
+      {activity_id:'activity-3', revision_id:'revision-3', title:'یه چیدمان تازه برای میز',
+        teaser:'چند وسیلهٔ روی میز رو با سلیقهٔ خودت دوباره بچین.', primary_dimension:'autonomy', venue:'home', place:null},
+      {activity_id:'activity-4', revision_id:'revision-4', title:'یادداشت برای خودِ فردا',
+        teaser:'یک چیز مهم از امروز رو برای فردا یادداشت کن.', primary_dimension:'meaning', venue:'home', place:null},
+      {activity_id:'activity-5', revision_id:'revision-5', title:'چای و گپ دونفره',
+        teaser:'با یکی از نزدیکانت چای بخور و از روزش بپرس.', primary_dimension:'affiliation', venue:'home', place:null},
     ]});
     if (endpoint === '/saved') return send({items:state.saved ? [{activity_id:'activity-0',revision_id:'revision-0',content,unavailable:false}] : []});
     if (endpoint.startsWith('/saved/')) {state.saved=method==='PUT';return send(null,204);}
@@ -213,6 +226,66 @@ async function catalogFlow(browser) {
   await page.setViewportSize({width:360,height:800});
   await page.goto(origin + '/discover');
   const detail = page.getByRole('link', {name:/یه مکث آروم/});
+  const card = page.getByRole('article').filter({has:detail});
+  await card.getByText(content.teaser, {exact:true}).waitFor();
+  await card.getByText('آرامش', {exact:true}).waitFor();
+  await card.getByText('تالار رودکی، تهران', {exact:true}).waitFor();
+  await page.getByRole('article').getByText('در خانه', {exact:true}).first().waitFor();
+  await page.getByRole('article').getByText('فضای باز', {exact:true}).waitFor();
+  assert.equal(await page.getByRole('article').locator('img, picture, .moment-art').count(), 0);
+  const colors = await page.locator('[data-dimension]').evaluateAll(
+    badges => badges.map(badge => getComputedStyle(badge).backgroundColor),
+  );
+  assert.equal(new Set(colors).size, 6);
+  const header = page.getByRole('banner');
+  const search = header.getByRole('searchbox', {name:'جست‌وجوی فعالیت'});
+  const filters = page.getByRole('group', {name:'فیلتر فعالیت‌ها'});
+  assert.equal(await page.getByRole('link', {name:'پیشنهاد برای همین الان'}).count(), 0);
+  assert.equal(await page.getByRole('link', {name:'فعالیت‌های ذخیره‌شده'}).count(), 0);
+  assert.equal(await filters.getByRole('button').count(), 12);
+  assert.equal(await filters.locator('button svg').count(), 12);
+  assert.equal(await filters.evaluate(element =>
+    element.scrollWidth > element.clientWidth &&
+    getComputedStyle(element).scrollbarWidth === 'none' &&
+    new Set([...element.children].map(button => button.offsetTop)).size === 1), true);
+  await search.fill('قدم‌زدن');
+  await page.getByRole('article').nth(1).waitFor({state:'hidden'});
+  await page.getByRole('heading', {name:'یه مسیر تازه برای قدم‌زدن'}).waitFor();
+  assert.equal(await page.getByRole('article').count(), 1);
+  await search.fill('');
+  await filters.getByRole('button', {name:'وقت گذراندن با دیگران'}).click();
+  await page.getByRole('heading', {name:'چای و گپ دونفره'}).waitFor();
+  assert.equal(await page.getByRole('article').count(), 1);
+  for (const [label, title, count] of [
+    ['در خانه', 'یه طرح کوچیک برای خودت', 4],
+    ['فضای باز', 'یه مسیر تازه برای قدم‌زدن', 1],
+    ['سرپوشیده', content.title, 1],
+    ['مکان مشخص', content.title, 1],
+  ]) {
+    await filters.getByRole('button', {name:label, exact:true}).click();
+    await filters.getByRole('button', {name:label, exact:true, pressed:true}).waitFor();
+    await page.getByRole('heading', {name:title, exact:true}).waitFor();
+    assert.equal(await page.getByRole('article').count(), count);
+  }
+  const allActivities = filters.getByRole('button', {name:'همه', exact:true});
+  await allActivities.click();
+  await card.waitFor();
+  await screen(page, 'discover-search-mobile');
+  await page.setViewportSize({width:1440,height:1200});
+  const headerBox = await header.boundingBox();
+  const searchBox = await header.getByRole('search').boundingBox();
+  assert.ok(Math.abs(headerBox.x + headerBox.width / 2 - searchBox.x - searchBox.width / 2) <= 1);
+  await page.screenshot({path:path.join(artifacts,'discover-search-desktop.png'),fullPage:true});
+  await page.setViewportSize({width:360,height:800});
+  const bookmark = card.getByRole('button', {name:/ذخیره برای بعد/});
+  await bookmark.click();
+  await bookmark.and(page.locator('[aria-pressed=true]')).waitFor();
+  await filters.getByRole('button', {name:'ذخیره‌شده‌ها', exact:true}).click();
+  await filters.getByRole('button', {name:'ذخیره‌شده‌ها', pressed:true}).waitFor();
+  assert.equal(await page.getByRole('article').count(), 1);
+  await bookmark.click();
+  await page.getByText('فعالیتی پیدا نشد.', {exact:true}).waitFor();
+  await allActivities.click();
   await detail.click();
   const programLink = page.getByRole('link', {name:program.label,exact:true});
   await programLink.waitFor();
@@ -240,7 +313,7 @@ async function catalogFlow(browser) {
   await page.getByRole('button', {name:'ادامهٔ همین فعالیت'}).click();
   await page.waitForURL('**/experiences/experience-1');
   await page.goto(origin + '/discover');
-  await page.getByRole('link', {name:'ادامهٔ فعالیت قبلی'}).click();
+  await page.getByRole('link', {name:'تجربهٔ بازت'}).click();
   await page.waitForURL('**/experiences/experience-1');
   await page.reload();
   await page.getByRole('button', {name:'تمومش کردم'}).click();
@@ -262,7 +335,7 @@ async function questionnaireFromDiscover(browser) {
   const app = await setup(browser);
   const {page} = app;
   await page.goto(origin + '/discover');
-  await page.getByRole('link', {name:'پیشنهاد برای همین الان'}).click();
+  await page.getByRole('navigation', {name:'صفحه‌های اصلی'}).getByRole('link', {name:'Individual'}).click();
   await page.waitForURL('**/individual');
   await page.getByRole('radio', {name:'چهار ساعت'}).check();
   const next = page.getByRole('button', {name:'بریم بعدی'});

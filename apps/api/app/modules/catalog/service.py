@@ -100,9 +100,18 @@ class Catalog:
         return list({city_key(city): city for city in cities}.values())
 
     def discover(self):
-        items = [dict(activity_id=row['id'], revision_id=row['revision_id'],
-                      title=row['content']['title'], primary_dimension=row['primary_dimension'])
-                 for row in self.candidates() if not row['content'].get('outing')]
+        items = []
+        for row in self.candidates():
+            content = row['content']
+            if content.get('outing'):
+                continue
+            place = content['place']
+            items.append(dict(
+                activity_id=row['id'], revision_id=row['revision_id'],
+                title=content['title'], teaser=content['teaser'],
+                primary_dimension=row['primary_dimension'], venue=content['venue'],
+                place={'name': place['name'], 'city': place['city']} if place else None,
+            ))
         return sorted(items, key=lambda item: (item['title'], item['activity_id']))
 
     @staticmethod
