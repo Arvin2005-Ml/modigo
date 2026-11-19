@@ -8,7 +8,10 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { makeStore } from "@/lib/store/store";
 import AuthBootstrap from "@/components/auth/AuthBootstrap";
 
-export default function StoreProvider({ children }: { children: ReactNode }) {
+export default function StoreProvider({ children, allowUnavailable }: {
+  children: ReactNode;
+  allowUnavailable?: boolean;
+}) {
   const [store] = useState(makeStore);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ export default function StoreProvider({ children }: { children: ReactNode }) {
 
   return (
     <Provider store={store}>
-      <AuthBootstrap>{children}</AuthBootstrap>
+      <AuthBootstrap allowUnavailable={allowUnavailable}>{children}</AuthBootstrap>
     </Provider>
   );
 }

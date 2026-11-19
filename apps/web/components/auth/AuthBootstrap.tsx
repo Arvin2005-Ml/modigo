@@ -17,9 +17,10 @@ import { Button } from "@/components/ui";
 
 type Props = {
   children: ReactNode;
+  allowUnavailable?: boolean;
 };
 
-export default function AuthBootstrap({ children }: Props) {
+export default function AuthBootstrap({ children, allowUnavailable = false }: Props) {
   const dispatch = useAppDispatch();
 
   const status = useAppSelector((state) => state.auth.status);
@@ -74,7 +75,7 @@ export default function AuthBootstrap({ children }: Props) {
     );
   }
 
-  if (status === "unavailable") {
+  if (status === "unavailable" && !allowUnavailable) {
     return (
       <main id="main" className="route-loading">
         <h1>فعلاً به سرور دسترسی نداریم.</h1>

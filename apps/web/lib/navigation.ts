@@ -20,6 +20,8 @@ export const paths = {
   discover: "/discover",
   questions: "/individual",
   results: "/individual/results",
+  guestQuestions: "/try",
+  guestResult: "/try/result",
   saved: "/saved",
   journey: "/journey",
   settings: "/settings",
@@ -29,6 +31,8 @@ export const paths = {
   forgot: "/forgot-password",
   reset: "/reset-password",
 } as const;
+
+export const guestSignupPath = `${paths.signup}?next=${encodeURIComponent(paths.questions)}`;
 
 export function viewFromPathname(pathname: string): AppView {
   if (pathname === paths.dashboard) return "dashboard";

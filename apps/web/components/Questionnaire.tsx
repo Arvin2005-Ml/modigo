@@ -25,6 +25,14 @@ const stepIntros = [
   "با این جواب، اولین پیشنهاد رو به خواستهٔ الانت نزدیک‌تر می‌کنیم.",
 ];
 const originRequired = "شهر مبدأ رو انتخاب کن.";
+const shortDurations = [
+  [15, "یه ربع"],
+  [30, "نیم ساعت"],
+  [60, "یه ساعت"],
+  [120, "دو ساعت"],
+  [240, "چهار ساعت"],
+] as const;
+const allDurations = [...shortDurations, [1440, "یک روز کامل"], [2880, "دو روز"]] as const;
 
 export default function Questionnaire({
   value,
@@ -32,24 +40,28 @@ export default function Questionnaire({
   submit,
   busy,
   defaults,
-  origins,
-  originsUnavailable,
-  retryOrigins,
+  outings,
+  submitMessage,
 }: {
   value: Context;
   change: (v: Context) => void;
   submit: () => void;
   busy: boolean;
-  origins?: readonly OutingOrigin[];
-  originsUnavailable: boolean;
-  retryOrigins: () => void;
+  outings?: {
+    origins?: readonly OutingOrigin[];
+    unavailable: boolean;
+    retry: () => void;
+  };
+  submitMessage?: string;
   defaults?: {
     owned_items: string[];
     liked_tags: string[];
   };
 }) {
+  const outingDays = outings ? value.outing_days : undefined;
+  const origins = outings?.origins;
   const [step, setStep] = useState(0);
-  const [minutes, setMinutes] = useState(value.outing_days ? "30" : String(value.available_minutes));
+  const [minutes, setMinutes] = useState(outingDays ? "30" : String(value.available_minutes));
   const [cap, setCap] = useState(
     value.budget.cap_toman ? String(value.budget.cap_toman) : "",
   );
@@ -58,7 +70,6 @@ export default function Questionnaire({
   const heading = useRef<HTMLHeadingElement>(null);
   const originHintId = useId();
   const originErrorId = useId();
-  const { outing_days: outingDays } = value;
   const showOrigins = outingDays === 1 || (outingDays === 2 && value.allow_venue_planning);
   const originInvalid = error === originRequired;
   useEffect(() => {
@@ -70,7 +81,7 @@ export default function Questionnaire({
   const selectDuration = (availableMinutes: number) => {
     setError("");
     const days = availableMinutes === 1440 ? 1 : availableMinutes === 2880 ? 2 : undefined;
-    if (days) {
+    if (outings && days) {
       if (days === outingDays) return;
       change({
         ...value,
@@ -207,15 +218,7 @@ export default function Questionnaire({
             <Choices
               legend="چقدر وقت آزادی؟"
               value={outingDays || value.available_minutes <= 480 ? value.available_minutes : null}
-              options={[
-                [15, "یه ربع"],
-                [30, "نیم ساعت"],
-                [60, "یه ساعت"],
-                [120, "دو ساعت"],
-                [240, "چهار ساعت"],
-                [1440, "یک روز کامل"],
-                [2880, "دو روز"],
-              ]}
+              options={outings ? allDurations : shortDurations}
               onChange={selectDuration}
             />
             {!outingDays && <label className="label">
@@ -336,10 +339,10 @@ export default function Questionnaire({
               </>
             )}
             {showOrigins && (
-              originsUnavailable ? (
+              outings?.unavailable ? (
                 <div>
                   <p className="error" role="alert">فهرست شهرها دریافت نشد.</p>
-                  <Button type="button" secondary onClick={retryOrigins}>دریافت دوبارهٔ شهرها</Button>
+                  <Button type="button" secondary onClick={outings.retry}>دریافت دوبارهٔ شهرها</Button>
                 </div>
               ) : !origins ? (
                 <p className="hint" role="status">در حال دریافت شهرها…</p>
@@ -486,8 +489,8 @@ export default function Questionnaire({
             <details className="personalization">
               <summary>اگه دوست داری، سلیقه و وسایل رو هم بگو</summary>
               <p className="hint">
-                اختیاری و فقط برای همین نوبته؛ انتخاب‌های قبلی حساب هم اینجا در
-                دسترسن.
+                اختیاری و فقط برای همین نوبته.
+                {outings && " انتخاب‌های قبلی حساب هم اینجا در دسترسن."}
               </p>
               <Personalization
                 items={value.owned_items ?? defaults?.owned_items ?? []}
@@ -502,6 +505,9 @@ export default function Questionnaire({
           <p role="alert" className="error">
             {error}
           </p>
+        )}
+        {step === stepLabels.length - 1 && submitMessage && (
+          <p role="alert" className="error">{submitMessage}</p>
         )}
         <div className="question-actions">
           <Button onClick={advance} disabled={busy}>

@@ -1,8 +1,9 @@
-import { Button } from "../ui";
+import Link from "next/link";
+import { paths } from "@/lib/navigation";
 import Icon from "../Icon";
 import MomentArt from "../MomentArt";
 
-export default function Landing({ start }: { start: () => void }) {
+export default function Landing() {
   return (
     <>
       <section className="hero" aria-labelledby="hero-title">
@@ -24,9 +25,9 @@ export default function Landing({ start }: { start: () => void }) {
             <br className="desktop-break" /> با چند سؤال کوتاه، پیداش می‌کنیم.
           </p>
           <div className="hero-actions">
-            <Button onClick={start}>
+            <Link href={paths.guestQuestions} className="button-primary">
               ببینیم چی می‌چسبه <Icon name="arrow" size={20} />
-            </Button>
+            </Link>
             <a className="how-link" href="#how-it-works">
               مودیگو چطور کار می‌کنه؟ <span aria-hidden="true">↙</span>
             </a>
@@ -34,7 +35,7 @@ export default function Landing({ start }: { start: () => void }) {
           <div className="hero-reassurance">
             <span>
               <Icon name="clock" size={15} />
-              کمتر از یک دقیقه سؤال
+              اولین پیشنهاد بدون ثبت‌نام
             </span>
             <span>
               <Icon name="leaf" size={15} />
@@ -114,7 +115,7 @@ export default function Landing({ start }: { start: () => void }) {
           <article>
             <span className="how-number">۰۲</span>
             <h3>پیشنهادت رو ببین</h3>
-            <p>یک پیشنهاد متناسب می‌بینی؛ اگه نچسبید، تا شش بار عوضش کن.</p>
+            <p>یک پیشنهاد متناسب می‌بینی. با ساخت حساب می‌تونی گزینه‌های بیشتری بگیری.</p>
           </article>
           <article>
             <span className="how-number">۰۳</span>
@@ -129,9 +130,9 @@ export default function Landing({ start }: { start: () => void }) {
           <h2>لازم نیست روز خاصی باشه.</h2>
           <p>همین حالا هم می‌شه یه وقت کوچیک برای خودت ساخت.</p>
         </div>
-        <Button onClick={start}>
+        <Link href={paths.guestQuestions} className="button-primary">
           وقتِ خودمه <Icon name="arrow" size={19} />
-        </Button>
+        </Link>
       </section>
     </>
   );

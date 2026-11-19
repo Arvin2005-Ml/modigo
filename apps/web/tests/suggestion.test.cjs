@@ -30,6 +30,9 @@ function load(filename) {
 }
 const SingleSuggestion = load('components/SingleSuggestion.tsx').default;
 const {ContentDetails} = load('components/Activity.tsx');
+const {guestActivities} = load('lib/guest/catalog.ts');
+const {recommendGuestActivity} = load('lib/guest/recommendation.ts');
+const {initialContext} = load('lib/individual/initialContext.ts');
 const item = {slot_id:'slot',activity_id:'activity',revision_id:'revision',title:'پیشنهاد اول',
   teaser:'یک تجربهٔ کوتاه و قابل انجام',total_minutes:10,cost_label:'رایگان',explanation:'متناسب با شرایطت',unavailable:false};
 const slate = {id:'session',check_in_id:'check',version:1,items:[item],result_count:1,partial:false,
@@ -114,4 +117,70 @@ test('history boundaries disable only the unavailable direction', () => {
   assert.doesNotMatch(last, /<button[^>]*disabled=""[^>]*>پیشنهاد قبلی/);
   assert.match(last, /<button[^>]*disabled=""[^>]*>پیشنهاد بعدی/);
   assert.ok(last.includes('یه پیشنهاد دیگه'));
+});
+
+test('guest suggestions use activities marked active with a published revision in the frontend snapshot', () => {
+  const snapshot = fs.readFileSync('activities(1).json', 'utf8').replace(/^\uFEFF/, '');
+  const source = new Map(snapshot.split(/\r?\n/).filter(line => line.trim()).map(line => {
+    const row = JSON.parse(line);
+    return [row.seed_key, row];
+  }));
+  assert.ok(guestActivities.length > 0);
+  assert.equal(new Set(guestActivities.map(activity => activity.key)).size, guestActivities.length);
+  for (const activity of guestActivities) {
+    const row = source.get(activity.key);
+    assert.ok(row?.active && row.published_revision_id, activity.key);
+    assert.equal(activity.title, row.raw_title);
+    assert.equal(activity.dimension, row.primary_dimension);
+  }
+});
+
+test('guest ranking follows intent, energy, time, interests and available items', () => {
+  const recommend = options => recommendGuestActivity({...initialContext, ...options});
+  assert.equal(recommend({activity_intent:'unwind'}).dimension, 'relaxation');
+  assert.equal(recommend({energy:'high'}).energy, 'high');
+  assert.equal(recommend({energy:'low'}).energy, 'low');
+  const reading = {activity_intent:'switch_off', owned_items:['book'], liked_tags:['reading']};
+  assert.equal(recommend(reading).key, 'real:everyday-solo-014');
+  assert.equal(recommend({...reading, available_minutes:120}).key, 'real:long-now-home-book-reading');
+  assert.equal(recommend({...reading, owned_items:[]}).items, undefined);
+  const creative = {activity_intent:'meaning', owned_items:['paper','pen']};
+  assert.equal(recommend({...creative, liked_tags:['drawing']}).key, 'real:everyday-solo-012');
+  assert.equal(recommend({...creative, liked_tags:['photography'], owned_items:['phone']}).key, 'real:everyday-solo-008');
+});
+
+test('the guest suggestion fits short times and party sizes without assuming tools or outdoor conditions', () => {
+  for (const venue of ['home','away_from_home','any']) {
+    for (const [social_mode, party_size] of [['solo',1],['either',1],['together',2],['together',12],['either',12]]) {
+      for (const available_minutes of [5,15,30,120,480]) {
+        const activity = recommendGuestActivity({...initialContext, venue, social_mode, party_size, available_minutes});
+        assert.ok(activity?.minutes <= available_minutes);
+        assert.equal(activity.items, undefined);
+        assert.equal(activity.city, undefined);
+        assert.notEqual(activity.venue, 'outdoor');
+        if (venue === 'home') assert.equal(activity.venue, 'home');
+        if (venue === 'away_from_home') assert.equal(activity.venue, 'indoor_public');
+        if (social_mode !== 'either' || party_size === 1) {
+          assert.ok(activity.people[0] <= party_size && activity.people[1] >= party_size);
+        }
+      }
+    }
+  }
+  for (const available_minutes of [4, 30.5, 481, 1440, 2880]) {
+    assert.equal(recommendGuestActivity({...initialContext, available_minutes}), undefined);
+  }
+  assert.equal(recommendGuestActivity({...initialContext, outing_days:1}), undefined);
+});
+
+test('a guest destination needs a matched city, permission, suitable weather and a flexible budget', () => {
+  const context = {...initialContext, activity_intent:'unwind', liked_tags:['nature'], energy:'medium',
+    available_minutes:60, venue:'away_from_home', city:' شيراز ', allow_venue_planning:true,
+    weather:'fair', daylight:'day', budget:{mode:'flexible',cap_toman:null}};
+  assert.equal(recommendGuestActivity(context).city, 'شیراز');
+  for (const change of [
+    {city:'رشت'}, {allow_venue_planning:false}, {daylight:'unknown'}, {weather:'adverse'},
+    {budget:{mode:'free',cap_toman:null}}, {budget:{mode:'cap',cap_toman:100000}},
+  ]) {
+    assert.equal(recommendGuestActivity({...context, ...change}).city, undefined);
+  }
 });

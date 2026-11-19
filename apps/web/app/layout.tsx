@@ -3,8 +3,6 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./brand.css";
 
-import StoreProvider from "./StoreProviders";
-
 export const metadata: Metadata = {
   title: "مودیگو — یه وقت کوچیک برای خودت",
   description: "چند پیشنهاد ساده برای وقت آزاد، با حال و شرایط خودت.",
@@ -41,9 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body>
-        <StoreProvider>{children}</StoreProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

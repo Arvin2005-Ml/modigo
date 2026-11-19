@@ -471,10 +471,81 @@ async function fullDayQuestionnaire(browser) {
   console.log('PASS full-day questionnaire: duration, travel consent, rejected inputs, cities, retry, session expiry, and payload.');
 }
 
+async function guestFlow(browser) {
+  const app = await setup(browser, {authenticated:false});
+  const {page, context, requests} = app;
+  const signupUrl = `${origin}/signup?next=%2Findividual`;
+  await page.goto(`${origin}/try/result`);
+  await page.waitForURL(`${origin}/try`);
+  await page.goto(origin);
+  await page.getByRole('link', {name:'ببینیم چی می‌چسبه'}).click();
+  await page.waitForURL(`${origin}/try`);
+
+  const next = page.getByRole('button', {name:'بریم بعدی'});
+  await page.getByRole('heading', {name:'الان چقدر وقت و انرژی داری؟'}).waitFor();
+  assert.equal(await page.getByRole('radio', {name:'یک روز کامل',exact:true}).count(), 0);
+  assert.equal(await page.getByRole('radio', {name:'دو روز',exact:true}).count(), 0);
+  await screen(page, 'guest-questions');
+
+  const minutes = page.getByLabel('یا به دقیقه بنویس');
+  await minutes.fill('۱۴۴۰');
+  await next.click();
+  await page.getByRole('alert').filter({hasText:'بین ۵ تا ۴۸۰'}).waitFor();
+  await minutes.fill('۳۰');
+  await next.focus();
+  await page.keyboard.press('Enter');
+  await page.getByRole('radio', {name:'بیرون از خونه'}).check();
+  await page.getByRole('checkbox', {name:'آره، پیشنهاد جا هم می‌خوام'}).waitFor();
+  assert.equal(await page.getByLabel('از کدوم شهر راه می‌افتی؟').count(), 0);
+  await page.getByRole('radio', {name:'توی خونه',exact:true}).check();
+  await next.click();
+  await next.click();
+  await page.getByRole('radio', {name:'یه تجربهٔ موندنی'}).check();
+  await page.getByText('اگه دوست داری، سلیقه و وسایل رو هم بگو').click();
+  await page.getByRole('checkbox', {name:'نقاشی',exact:true}).check();
+  await page.getByRole('checkbox', {name:'کاغذ',exact:true}).check();
+  await page.getByRole('checkbox', {name:'قلم',exact:true}).check();
+  await page.getByRole('button', {name:'پیشنهادم رو ببینم'}).click();
+
+  const title = page.getByRole('heading', {level:1, name:'کارت یک خاطره خوش'});
+  await page.waitForURL(`${origin}/try/result`);
+  await title.waitFor();
+  assert.equal(await page.getByRole('article').count(), 1);
+  await page.waitForFunction(() => document.activeElement?.id === 'guest-activity-title');
+  await page.getByText('وسایل لازم کاغذ، قلم', {exact:true}).waitFor();
+  assert.equal(await page.getByRole('link', {name:'ثبت‌نام برای پیشنهاد بعدی'}).getAttribute('href'), '/signup?next=%2Findividual');
+  await screen(page, 'guest-result');
+  await page.reload();
+  await title.waitFor();
+  assert.deepEqual(requests, [], 'The landing page, questionnaire and suggestion must not call the API');
+
+  const anotherTab = await context.newPage();
+  await anotherTab.goto(`${origin}/try`);
+  await anotherTab.waitForURL(signupUrl);
+  await anotherTab.close();
+
+  await page.getByRole('link', {name:'مودیگو، صفحهٔ اصلی'}).click();
+  await page.getByRole('link', {name:'ببینیم چی می‌چسبه'}).click();
+  await page.waitForURL(signupUrl);
+  await page.getByLabel('ایمیل', {exact:true}).fill('guest@example.com');
+  await page.getByLabel('رمز عبور', {exact:false}).fill('a-test-password');
+  await page.getByRole('checkbox', {name:'۱۸ سالم شده و می‌خوام حساب بسازم.'}).check();
+  await page.getByRole('button', {name:'حساب بسازم',exact:true}).click();
+  await page.waitForURL(`${origin}/individual`);
+  await page.getByRole('radio', {name:'یک روز کامل',exact:true}).waitFor();
+  assert.equal(requests.some(req => req.endpoint === '/check-ins' || req.endpoint === '/recommendation-sessions'), false);
+  await app.finish();
+  console.log('PASS guest flow: no API, shared short questionnaire, matched suggestion, reload and signup on repeat.');
+}
+
 async function main() {
   const browserType=process.env.WEB_TEST_BROWSER === 'firefox' ? firefox : chromium;
   const browser=await browserType.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE_PATH || undefined});
   try {
+    if (process.argv.includes('--guest')) {
+      await guestFlow(browser);
+      return;
+    }
     if (process.argv.includes('--dashboard')) {
       await dashboardFlow(browser);
       return;
@@ -489,13 +560,14 @@ async function main() {
     await questionnaireFromDiscover(browser);
     await fullDayQuestionnaire(browser);
     await dashboardFlow(browser);
+    await guestFlow(browser);
     {
       const app=await setup(browser,{authenticated:false});
       const {page}=app;
       await page.goto(origin);
       await visible(page,'.hero');
       await screen(page,'home');
-      await page.getByRole('button',{name:'ببینیم چی می‌چسبه'}).click();
+      await page.goto(`${origin}/individual`);
       await page.getByLabel('ایمیل',{exact:true}).fill('test@example.com');
       await page.getByLabel('رمز عبور',{exact:false}).fill('a-test-password');
       await page.getByRole('button',{name:'وارد بشم',exact:true}).click();
@@ -548,7 +620,8 @@ async function main() {
     }
     {
       const app=await setup(browser,{role:'admin'});
-      const {page}=app;
+      const {page, context}=app;
+      await context.addCookies([{name:'funilo_session_dev',value:'test-session',url:origin,httpOnly:true}]);
       await page.goto(origin);
       await page.getByRole('heading',{name:'پنل کاربری',level:1}).waitFor();
       await page.getByRole('link',{name:'کارگاه محتوا',exact:true}).click();

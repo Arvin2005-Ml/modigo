@@ -144,9 +144,11 @@ export default function IndividualQuestionnairePage() {
       <Questionnaire
         value={context}
         defaults={preferencesQuery.data?.preferences}
-        origins={originsQuery.isError ? undefined : originsQuery.currentData?.cities}
-        originsUnavailable={originsQuery.isError}
-        retryOrigins={() => void originsQuery.refetch()}
+        outings={{
+          origins: originsQuery.isError ? undefined : originsQuery.currentData?.cities,
+          unavailable: originsQuery.isError,
+          retry: () => void originsQuery.refetch(),
+        }}
         change={handleChange}
         submit={() => {
           void handleRecommend();
